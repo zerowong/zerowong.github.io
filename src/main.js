@@ -6,6 +6,7 @@ import {
   Menu,
   MenuItem,
   Button,
+  Tooltip,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import App from './App.vue'
@@ -20,6 +21,7 @@ Vue.use(Main)
 Vue.use(Menu)
 Vue.use(MenuItem)
 Vue.use(Button)
+Vue.use(Tooltip)
 
 Vue.use(VueTypedJs)
 

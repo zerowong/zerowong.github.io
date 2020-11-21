@@ -1,8 +1,8 @@
 <template>
   <div class="btn-bar">
-    <MessageBtn></MessageBtn>
-    <FeedbackBtn></FeedbackBtn>
-    <BooklistBtn></BooklistBtn>
+    <MessageBtn :config="tooltipConfig"></MessageBtn>
+    <FeedbackBtn :config="tooltipConfig"></FeedbackBtn>
+    <BooklistBtn :config="tooltipConfig"></BooklistBtn>
   </div>
 </template>
 
@@ -13,6 +13,12 @@ import BooklistBtn from './booklistBtn.vue'
 
 export default {
   name: 'ButtonBar',
+  data: () => ({
+    tooltipConfig: {
+      placement: 'top',
+      transition: 'el-zoom-in-bottom',
+    },
+  }),
   components: {
     MessageBtn,
     FeedbackBtn,

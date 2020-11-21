@@ -1,12 +1,17 @@
 <template>
-  <el-button class="btn" type="text">
-    <i class="iconfont icon-shezhi"></i>
-  </el-button>
+  <el-tooltip :content="tip" placement="bottom" transition="el-zoom-in-top">
+    <el-button class="btn" type="text">
+      <i class="iconfont icon-shezhi"></i>
+    </el-button>
+  </el-tooltip>
 </template>
 
 <script>
 export default {
   name: 'SettingBtn',
+  data: () => ({
+    tip: '设置',
+  }),
 }
 </script>
 
