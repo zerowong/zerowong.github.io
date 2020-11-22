@@ -30,16 +30,14 @@ export default {
 
 <style>
 :root {
-  --bg_1: #4456a7;
-  --bg_2: #474747;
-  --bg_footer: #252D38;
-  --bg_btnBar: #c6c9cf;
+  --bg_docBody: #4456a7;
+  --bg_footer: #252d38;
   --primary-btn-size: 60px;
   --primary-btn-margin-bottom: 20px;
 }
 
 body {
-  background-color: var(--bg_1);
+  background-color: var(--bg_docBody);
   margin: 0;
   padding: 0;
   height: 100%;
