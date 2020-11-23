@@ -26,21 +26,28 @@ export default {
 .el-header {
   background-color: white;
 }
+
+.el-container {
+  height: inherit;
+}
 </style>
 
 <style>
 :root {
   --bg_docBody: #4456a7;
   --bg_footer: #252d38;
+  --bg-pw-header: #e2e2e2;
   --primary-btn-size: 60px;
-  --primary-btn-margin-bottom: 20px;
 }
 
 body {
   background-color: var(--bg_docBody);
   margin: 0;
   padding: 0;
-  height: 100%;
+}
+
+#app {
+  height: 100vh;
 }
 
 /* 全局按钮hover动效 */
