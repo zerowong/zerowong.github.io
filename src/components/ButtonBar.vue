@@ -52,6 +52,6 @@ export default {
 
 /* 底部按钮栏hover动效 */
 .btn:hover {
-  transform: scale(1.5, 1.5) translateY(-10px);
+  transform: scale(1.5) translateY(-10px);
 }
 </style>

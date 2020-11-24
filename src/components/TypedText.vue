@@ -1,6 +1,6 @@
 <template>
   <div>
-    <vue-typed-js :strings="tyepedText.line1" @onComplete="line1Done = true" :showCursor="false">
+    <vue-typed-js :strings="tyepedText.line1" @onComplete="handleComplete" :showCursor="false">
       <h2 class="typing"></h2>
     </vue-typed-js>
     <vue-typed-js :strings="tyepedText.line2" v-if="line1Done">
@@ -19,6 +19,11 @@ export default {
     },
     line1Done: false,
   }),
+  methods: {
+    handleComplete() {
+      this.line1Done = true
+    },
+  },
 }
 </script>
 

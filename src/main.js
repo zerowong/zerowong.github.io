@@ -15,13 +15,11 @@ import store from './store'
 
 Vue.config.productionTip = false
 
-Vue.use(Container)
-Vue.use(Header)
-Vue.use(Main)
-Vue.use(Menu)
-Vue.use(MenuItem)
-Vue.use(Button)
-Vue.use(Tooltip)
+const elementComponents = [Container, Header, Main, Menu, MenuItem, Button, Tooltip]
+
+elementComponents.forEach((component) => {
+  Vue.use(component)
+})
 
 Vue.use(VueTypedJs)
 

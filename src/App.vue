@@ -34,14 +34,14 @@ export default {
 
 <style>
 :root {
-  --bg_docBody: #4456a7;
-  --bg_footer: #252d38;
+  --bg-docBody: #008080;
+  --bg-footer: #252d38;
   --bg-pw-header: #e2e2e2;
   --primary-btn-size: 60px;
 }
 
 body {
-  background-color: var(--bg_docBody);
+  background-color: var(--bg-docBody);
   margin: 0;
   padding: 0;
 }
@@ -53,6 +53,6 @@ body {
 /* 全局按钮hover动效 */
 .btn:hover {
   display: block;
-  transform: scale(1.5, 1.5);
+  transform: scale(1.5);
 }
 </style>

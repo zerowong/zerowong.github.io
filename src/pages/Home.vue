@@ -20,13 +20,6 @@ import RunningTime from '../components/RunningTime.vue'
 
 export default {
   name: 'Home',
-  data: () => ({
-    tyepedText: {
-      line1: ['Welcome'],
-      line2: ["ApassEr's Blog"],
-    },
-    line1Done: false,
-  }),
   components: {
     TypedText,
     ButtonBar,
@@ -53,7 +46,7 @@ export default {
   height: 100px;
   width: 100%;
   margin-top: 10px;
-  background-color: var(--bg_footer);
+  background-color: var(--bg-footer);
 }
 
 .footer-info-inner {
