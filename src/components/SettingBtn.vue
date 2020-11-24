@@ -1,6 +1,6 @@
 <template>
   <el-tooltip :content="tip" placement="bottom" transition="el-zoom-in-top">
-    <el-button class="btn" type="text">
+    <el-button class="btn" type="text" @click="openPopupWindow">
       <i class="iconfont icon-shezhi"></i>
     </el-button>
   </el-tooltip>
@@ -12,6 +12,11 @@ export default {
   data: () => ({
     tip: '设置',
   }),
+  methods: {
+    openPopupWindow() {
+      this.$emit('open-popup-window')
+    },
+  },
 }
 </script>
 
