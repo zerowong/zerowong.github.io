@@ -1,0 +1,46 @@
+:root {
+  --bg-footer: #252d38;
+  --pw-header-bgcolor: #282c35;
+  --pw-title-color: white;
+  --primary-color: #409eff;
+  --primary-btn-size: 60px;
+}
+
+body {
+  background-image: url('./escape.jpg');
+  background-color: var(--bg-footer);
+  margin: 0;
+  padding: 0;
+}
+
+#app {
+  height: 100vh;
+}
+
+/* 全局按钮hover动效 */
+.btn:hover {
+  display: block;
+  transform: scale(1.5);
+}
+
+::selection {
+  background-color: black;
+  color: white;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: rgba(64, 158, 255, 0.7);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(64, 158, 255, 1);
+}
+
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
