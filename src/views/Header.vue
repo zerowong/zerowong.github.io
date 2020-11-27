@@ -58,8 +58,6 @@ export default {
 
 .setting {
   width: 400px;
-  height: 400px;
-  left: calc(50% - 200px);
-  top: calc(50% - 200px);
+  height: 600px;
 }
 </style>

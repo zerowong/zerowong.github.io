@@ -9,9 +9,6 @@
     <div class="pw-body">
       <slot></slot>
     </div>
-    <div class="pw-footer">
-      <slot name="footer"></slot>
-    </div>
   </div>
 </template>
 
@@ -62,9 +59,16 @@ export default {
     close() {
       this.$emit('close')
     },
+    // 居中
+    centered() {
+      const { height, width } = window.getComputedStyle(this.$el)
+      this.$el.style.left = `calc(50% - ${parseInt(width, 10) / 2}px)`
+      this.$el.style.top = `calc(50% - ${parseInt(height, 10) / 2}px)`
+    },
   },
   mounted() {
     if (this.moveable) {
+      this.centered()
       window.addEventListener('mousemove', this.mouseMove)
     }
   },
@@ -84,32 +88,36 @@ export default {
 }
 
 .pw-body {
-  height: calc(100% - 84px);
+  height: calc(100% - 42px);
   width: 100%;
-  border-left: 1px solid black;
-  border-right: 1px solid black;
+  border: 1px solid black;
+  border-radius: 0 0 18px 18px;
+  /* 禁用滚动防止覆盖border-radius样式 */
+  overflow: hidden;
 }
 
-.pw-footer,
+.pw-body > * {
+  border-radius: inherit;
+  overflow-y: auto;
+}
+
 .pw-header {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   height: 40px;
-  background-color: var(--bg-pw-header);
+  background-color: var(--pw-header-bgcolor);
   border: 1px solid black;
+  border-bottom: 0;
 }
 
 .pw-header {
   border-radius: 18px 18px 0 0;
 }
 
-.pw-footer {
-  border-radius: 0 0 18px 18px;
-}
-
 .pw-title {
+  color: var(--pw-title-color);
   font-size: x-large;
 }
 

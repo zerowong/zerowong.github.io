@@ -31,28 +31,3 @@ export default {
   height: inherit;
 }
 </style>
-
-<style>
-:root {
-  --bg-docBody: #008080;
-  --bg-footer: #252d38;
-  --bg-pw-header: #e2e2e2;
-  --primary-btn-size: 60px;
-}
-
-body {
-  background-color: var(--bg-docBody);
-  margin: 0;
-  padding: 0;
-}
-
-#app {
-  height: 100vh;
-}
-
-/* 全局按钮hover动效 */
-.btn:hover {
-  display: block;
-  transform: scale(1.5);
-}
-</style>
