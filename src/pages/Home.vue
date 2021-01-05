@@ -6,7 +6,7 @@
       <div class="footer-info">
         <div class="footer-info-inner">
           <RunningTime></RunningTime>
-          <!-- 备案 -->
+          <el-link class="beian" :href="beian[0]" :underline="false">{{ beian[1] }}</el-link>
         </div>
       </div>
     </div>
@@ -20,6 +20,9 @@ import RunningTime from '../components/RunningTime.vue'
 
 export default {
   name: 'Home',
+  data: () => ({
+    beian: ['http://beian.miit.gov.cn', '湘ICP备2020022697号-1'],
+  }),
   components: {
     TypedText,
     ButtonBar,
@@ -52,5 +55,9 @@ export default {
 .footer-info-inner {
   color: white;
   text-align: center;
+}
+
+.beian {
+  color: white;
 }
 </style>
