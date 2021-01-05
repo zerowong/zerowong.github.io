@@ -13,7 +13,14 @@
       <SettingBtn @open-popup-window="openSetting"></SettingBtn>
     </el-menu>
     <transition name="el-zoom-in-center">
-      <PopupWindow class="setting" title="设置" v-if="showSetting" @close="closeSetting">
+      <PopupWindow
+        class="setting"
+        title="设置"
+        v-if="showSetting"
+        @close="closeSetting"
+        :showClose="true"
+        :moveable="true"
+      >
         <Setting></Setting>
       </PopupWindow>
     </transition>
