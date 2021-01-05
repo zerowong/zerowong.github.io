@@ -10,10 +10,10 @@
       <el-menu-item class="route" index="/">HOME</el-menu-item>
       <el-menu-item class="route" index="/blog">BLOG</el-menu-item>
       <el-menu-item class="route" index="/about">ABOUT</el-menu-item>
-      <SettingBtn @open-popup-window="openSetting"></SettingBtn>
+      <setting-btn @open-popup-window="openSetting"></setting-btn>
     </el-menu>
     <transition name="el-zoom-in-center">
-      <PopupWindow
+      <popup-window
         class="setting"
         title="设置"
         v-if="showSetting"
@@ -21,8 +21,8 @@
         :showClose="true"
         :moveable="true"
       >
-        <Setting></Setting>
-      </PopupWindow>
+        <setting :isDarkMode="blogDarkMode" @dark-mode-change="darkModeChange"></setting>
+      </popup-window>
     </transition>
   </div>
 </template>
@@ -36,6 +36,7 @@ export default {
   name: 'Header',
   data: () => ({
     showSetting: false,
+    blogDarkMode: true,
   }),
   methods: {
     closeSetting() {
@@ -43,6 +44,9 @@ export default {
     },
     openSetting() {
       this.showSetting = true
+    },
+    darkModeChange(val) {
+      this.blogDarkMode = val
     },
   },
   computed: {

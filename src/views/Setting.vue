@@ -24,6 +24,18 @@
         />
       </div>
     </div>
+    <div class="item">
+      <div class="title">博文暗黑模式</div>
+      <div>
+        <el-switch
+          v-model="blogDarkMode"
+          :width="60"
+          active-icon-class="iconfont icon-moon"
+          inactive-icon-class="iconfont icon-sun"
+          @change="darkModeChange"
+        ></el-switch>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,8 +48,12 @@ export default {
     color: ['#e2e2e2', '#4456a7', '#44a75e', '#a74444', '#474747', '#282c35', '#008080'],
     rootStyle: document.documentElement.style,
     bodyStyle: document.body.style,
+    blogDarkMode: false,
     backgroundImage,
   }),
+  props: {
+    isDarkMode: Boolean,
+  },
   methods: {
     showColor(color) {
       return { backgroundColor: color }
@@ -50,6 +66,14 @@ export default {
     imagePicker(img) {
       this.bodyStyle.setProperty('background-image', `url(${img})`)
     },
+    darkModeChange(val) {
+      this.$emit('dark-mode-change', val)
+      this.rootStyle.setProperty('--blog-bgcolor', val ? '#2f3133' : 'white')
+      this.rootStyle.setProperty('--blog-color', val ? 'white' : 'black')
+    },
+  },
+  mounted() {
+    this.blogDarkMode = this.isDarkMode
   },
 }
 </script>
@@ -64,11 +88,12 @@ export default {
 }
 
 .item {
-  padding: 20px;
+  padding: 10px 20px;
 }
 
 .title {
   font-size: x-large;
+  margin-bottom: 10px;
 }
 
 .color-picker {
@@ -110,5 +135,30 @@ export default {
 
 .image-picker-item:hover {
   border: 2px solid var(--primary-color);
+}
+
+.el-switch {
+  margin-left: 6px;
+}
+</style>
+
+<style>
+.el-switch__core {
+  height: 30px;
+  border-radius: 15px;
+}
+
+.el-switch__core::after {
+  top: 1.5px;
+  width: 24px;
+  height: 24px;
+}
+
+.el-switch.is-checked .el-switch__core::after {
+  margin-left: -25.5px;
+}
+
+.el-switch__label * {
+  font-size: 21px;
 }
 </style>
