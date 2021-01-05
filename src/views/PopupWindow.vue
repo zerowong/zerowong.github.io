@@ -22,11 +22,11 @@ export default {
     },
     showClose: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     moveable: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   data: () => ({
@@ -59,16 +59,17 @@ export default {
     close() {
       this.$emit('close')
     },
-    // 居中
-    centered() {
+    // 居中及设置z-index
+    init() {
       const { height, width } = window.getComputedStyle(this.$el)
       this.$el.style.left = `calc(50% - ${parseInt(width, 10) / 2}px)`
       this.$el.style.top = `calc(50% - ${parseInt(height, 10) / 2}px)`
+      this.$el.style.zIndex = '10000'
     },
   },
   mounted() {
     if (this.moveable) {
-      this.centered()
+      this.init()
       window.addEventListener('mousemove', this.mouseMove)
     }
   },
@@ -84,7 +85,6 @@ export default {
 .pw-container {
   /* 限制在可视窗口内，不影响滚动 */
   position: fixed;
-  z-index: 10000;
 }
 
 .pw-body {
