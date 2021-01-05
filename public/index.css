@@ -7,7 +7,7 @@
 }
 
 body {
-  background-image: url('./escape.jpg');
+  background-image: url('https://cdn.apasser.xyz/blog/escape.jpg');
   background-color: var(--bg-footer);
   margin: 0;
   padding: 0;
