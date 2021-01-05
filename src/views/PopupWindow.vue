@@ -1,5 +1,5 @@
 <template>
-  <div class="pw-container">
+  <div :class="['pw-container', { 'pw-container-moveable': moveable }]">
     <div class="pw-header" @mousedown.self.left="mouseDown" @mouseup="mouseUp">
       <span class="pw-title">{{ title }}</span>
       <el-button class="pw-header-btn" type="text" v-if="showClose" @click="close">
@@ -59,12 +59,12 @@ export default {
     close() {
       this.$emit('close')
     },
-    // 居中及设置z-index
+    // 配置初始化
     init() {
+      // 居中
       const { height, width } = window.getComputedStyle(this.$el)
       this.$el.style.left = `calc(50% - ${parseInt(width, 10) / 2}px)`
       this.$el.style.top = `calc(50% - ${parseInt(height, 10) / 2}px)`
-      this.$el.style.zIndex = '10000'
     },
   },
   mounted() {
@@ -83,8 +83,15 @@ export default {
 
 <style scoped>
 .pw-container {
+  /* 默认为100%，设置为可拖动时提供确定数值 */
+  height: 100%;
+}
+
+.pw-container-moveable {
   /* 限制在可视窗口内，不影响滚动 */
   position: fixed;
+  /* 确保在其它元素之上 */
+  z-index: 10000;
 }
 
 .pw-body {

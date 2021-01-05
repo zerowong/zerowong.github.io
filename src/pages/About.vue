@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div class="me">
-      <popup-window class="me-pw" title="Me">
+      <popup-window title="Me">
         <div class="me-inner">
           <div class="avatar">
             <el-image class="me-inner-img" :src="avatar">
@@ -25,12 +25,12 @@
       </popup-window>
     </div>
     <div class="show">
-      <popup-window class="show-pw" title="Show">
+      <popup-window title="Show">
         <div class="show-inner">TODO...</div>
       </popup-window>
     </div>
     <div class="friends">
-      <popup-window class="friends-pw" title="Friends">
+      <popup-window title="Friends">
         <div class="friends-inner">
           <!-- TODO -->
         </div>
@@ -66,11 +66,6 @@ export default {
   display: flex;
   flex-direction: column;
   margin-right: 15px;
-}
-
-.me-pw {
-  position: static;
-  height: 100%;
 }
 
 .me-inner {
@@ -124,11 +119,6 @@ export default {
   margin-right: 15px;
 }
 
-.show-pw {
-  position: static;
-  height: 100%;
-}
-
 .show-inner {
   display: flex;
   justify-content: center;
@@ -142,13 +132,8 @@ export default {
   width: 25%;
 }
 
-.friends-pw {
-  position: static;
-  height: 100%;
-}
-
 .friends-inner {
   height: 100%;
-  background-color: var(--bg-footer);
+  background-color: var(--footer-bgcolor);
 }
 </style>
