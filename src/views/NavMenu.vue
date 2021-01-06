@@ -1,17 +1,11 @@
 <template>
-  <div>
-    <el-menu
-      mode="horizontal"
-      text-color="#000"
-      active-text-color="#000"
-      :default-active="activeIndex"
-      router
-    >
-      <el-menu-item class="route" index="/">HOME</el-menu-item>
-      <el-menu-item class="route" index="/blog">BLOG</el-menu-item>
-      <el-menu-item class="route" index="/about">ABOUT</el-menu-item>
+  <div class="nav-menu">
+    <nav class="nav">
+      <router-link class="route" exact-active-class="route-active" to="/">HOME</router-link>
+      <router-link class="route" exact-active-class="route-active" to="/blog">BLOG</router-link>
+      <router-link class="route" exact-active-class="route-active" to="/about">ABOUT</router-link>
       <setting-btn @open-popup-window="openSetting"></setting-btn>
-    </el-menu>
+    </nav>
     <transition name="el-zoom-in-center">
       <popup-window
         class="setting"
@@ -33,10 +27,10 @@ import PopupWindow from './PopupWindow.vue'
 import Setting from './Setting.vue'
 
 export default {
-  name: 'Header',
+  name: 'NavMenu',
   data: () => ({
     showSetting: false,
-    blogDarkMode: true,
+    blogDarkMode: false,
   }),
   methods: {
     closeSetting() {
@@ -49,10 +43,6 @@ export default {
       this.blogDarkMode = val
     },
   },
-  computed: {
-    // 根据url确定active index
-    activeIndex: () => new URL(document.URL).pathname,
-  },
   components: {
     SettingBtn,
     PopupWindow,
@@ -62,9 +52,34 @@ export default {
 </script>
 
 <style scoped>
+.nav-menu {
+  height: 100%;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  height: 100%;
+}
+
 .route {
-  font-size: larger;
-  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90px;
+  height: 100%;
+  text-decoration: none;
+  color: var(--blog-color);
+}
+
+.route:hover {
+  background-color: var(--primary-color);
+  opacity: 0.7;
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.7, 1);
+}
+
+.route-active {
+  background-color: var(--primary-color);
 }
 
 .setting {

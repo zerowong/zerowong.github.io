@@ -1,26 +1,21 @@
 :root {
-  --bg-footer: #252d38;
-  --pw-header-bgcolor: #282c35;
-  --pw-title-color: white;
+  --pw-header-bgcolor: #e2e2e2;
+  --pw-title-color: black;
   --primary-color: #409eff;
   --primary-btn-size: 60px;
+  --blog-bgcolor: white;
+  --blog-color: black;
 }
 
 body {
   background-image: url('https://cdn.apasser.xyz/blog/escape.jpg');
-  background-color: var(--bg-footer);
+  background-color: var(--blog-bgcolor);
   margin: 0;
   padding: 0;
 }
 
 #app {
   height: 100vh;
-}
-
-/* 全局按钮hover动效 */
-.btn:hover {
-  display: block;
-  transform: scale(1.5);
 }
 
 ::selection {

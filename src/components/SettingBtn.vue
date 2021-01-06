@@ -28,6 +28,11 @@ export default {
   padding: 0;
 }
 
+.btn:hover {
+  display: block;
+  transform: scale(1.5);
+}
+
 .iconfont {
   font-size: 35px;
   color: #7a80fc;

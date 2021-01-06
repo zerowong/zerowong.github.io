@@ -74,7 +74,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: #3c3431;
+  background-color: var(--blog-bgcolor);
 }
 
 .me-inner-img {
@@ -124,8 +124,8 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: black;
-  color: white;
+  background-color: var(--blog-bgcolor);
+  color: var(--blog-color);
 }
 
 .friends {
@@ -134,6 +134,6 @@ export default {
 
 .friends-inner {
   height: 100%;
-  background-color: var(--footer-bgcolor);
+  background-color: var(--blog-bgcolor);
 }
 </style>

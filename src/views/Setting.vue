@@ -1,6 +1,18 @@
 <template>
   <div class="setting-interface">
     <div class="item">
+      <div class="title">暗黑模式</div>
+      <div>
+        <el-switch
+          v-model="blogDarkMode"
+          :width="60"
+          active-icon-class="iconfont icon-moon"
+          inactive-icon-class="iconfont icon-sun"
+          @change="darkModeChange"
+        ></el-switch>
+      </div>
+    </div>
+    <div class="item">
       <div class="title">弹窗主题</div>
       <div class="color-picker">
         <div
@@ -13,7 +25,7 @@
       </div>
     </div>
     <div class="item">
-      <div class="title">背景图片</div>
+      <div class="title">桌面壁纸</div>
       <div class="image-picker">
         <img
           class="image-picker-item"
@@ -22,18 +34,6 @@
           :src="item"
           @click="imagePicker(item)"
         />
-      </div>
-    </div>
-    <div class="item">
-      <div class="title">博文暗黑模式</div>
-      <div>
-        <el-switch
-          v-model="blogDarkMode"
-          :width="60"
-          active-icon-class="iconfont icon-moon"
-          inactive-icon-class="iconfont icon-sun"
-          @change="darkModeChange"
-        ></el-switch>
       </div>
     </div>
   </div>
@@ -68,8 +68,9 @@ export default {
     },
     darkModeChange(val) {
       this.$emit('dark-mode-change', val)
-      this.rootStyle.setProperty('--blog-bgcolor', val ? '#2f3133' : 'white')
+      this.rootStyle.setProperty('--blog-bgcolor', val ? '#252d38' : 'white')
       this.rootStyle.setProperty('--blog-color', val ? 'white' : 'black')
+      this.colorPicker(val ? this.color[5] : this.color[0])
     },
   },
   mounted() {
@@ -81,7 +82,8 @@ export default {
 <style scoped>
 .setting-interface {
   height: 100%;
-  background-color: white;
+  background-color: var(--blog-bgcolor);
+  color: var(--blog-color);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -160,5 +162,6 @@ export default {
 
 .el-switch__label * {
   font-size: 21px;
+  color: var(--blog-color);
 }
 </style>

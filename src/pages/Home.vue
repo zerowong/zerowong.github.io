@@ -1,11 +1,11 @@
 <template>
   <div>
-    <TypedText></TypedText>
+    <typed-text></typed-text>
     <div class="footer">
-      <ButtonBar></ButtonBar>
+      <button-bar></button-bar>
       <div class="footer-info">
         <div class="footer-info-inner">
-          <RunningTime></RunningTime>
+          <running-time></running-time>
           <el-link class="beian" :href="beian[0]" :underline="false">{{ beian[1] }}</el-link>
         </div>
       </div>
@@ -49,15 +49,15 @@ export default {
   height: 100px;
   width: 100%;
   margin-top: 10px;
-  background-color: var(--bg-footer);
+  background-color: var(--blog-bgcolor);
 }
 
 .footer-info-inner {
-  color: white;
+  color: var(--blog-color);
   text-align: center;
 }
 
 .beian {
-  color: white;
+  color: var(--blog-color);
 }
 </style>
