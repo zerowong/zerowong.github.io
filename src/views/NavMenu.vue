@@ -15,7 +15,7 @@
         :showClose="true"
         :moveable="true"
       >
-        <setting :isDarkMode="blogDarkMode" @dark-mode-change="darkModeChange"></setting>
+        <setting :config="config"></setting>
       </popup-window>
     </transition>
   </div>
@@ -25,13 +25,19 @@
 import SettingBtn from '../components/SettingBtn.vue'
 import PopupWindow from './PopupWindow.vue'
 import Setting from './Setting.vue'
+import settingMixin from '../utils/settingMixin'
 
 export default {
   name: 'NavMenu',
   data: () => ({
     showSetting: false,
-    blogDarkMode: false,
+    config: {
+      darkmode: false,
+      pwHeaderBgColor: '#e2e2e2',
+      backgroundImage: 'https://cdn.apasser.xyz/blog/escape.jpg',
+    },
   }),
+  mixins: [settingMixin],
   methods: {
     closeSetting() {
       this.showSetting = false
@@ -39,14 +45,20 @@ export default {
     openSetting() {
       this.showSetting = true
     },
-    darkModeChange(val) {
-      this.blogDarkMode = val
-    },
   },
   components: {
     SettingBtn,
     PopupWindow,
     Setting,
+  },
+  mounted() {
+    const initConfig = window.localStorage.getItem('config')
+    if (initConfig !== null) {
+      this.config = JSON.parse(window.localStorage.getItem('config'))
+    }
+    this.colorPicker(this.config.pwHeaderBgColor)
+    this.imagePicker(this.config.backgroundImage)
+    this.darkModeChange(this.config.darkmode)
   },
 }
 </script>
