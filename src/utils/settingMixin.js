@@ -19,7 +19,7 @@ const settingMixin = {
     },
     darkModeChange(val) {
       this.$emit('dark-mode-change', val)
-      this.rootStyle.setProperty('--blog-bgcolor', val ? '#252d38' : 'white')
+      this.rootStyle.setProperty('--blog-bgcolor', val ? 'var(--darkmode-bgcolor)' : 'white')
       this.rootStyle.setProperty('--blog-color', val ? 'white' : 'black')
       this.colorPicker(val ? this.color[5] : this.color[0])
       window.localStorage.setItem('config', JSON.stringify(this.config))

@@ -1,16 +1,17 @@
 /* eslint-disable object-curly-newline */
 import Vue from 'vue'
-import { Container, Header, Main, Button, Tooltip, Link, Image, Switch } from 'element-ui'
+import { Container, Header, Main, Button, Tooltip, Link, Image, Switch, Loading } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
 import 'overlayscrollbars/css/OverlayScrollbars.min.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+import filters from './utils/filters'
 
 Vue.config.productionTip = false
 
-const elementComponents = [Container, Header, Main, Button, Tooltip, Link, Image, Switch]
+const elementComponents = [Container, Header, Main, Button, Tooltip, Link, Image, Switch, Loading]
 
 elementComponents.forEach((component) => {
   Vue.use(component)
@@ -18,6 +19,10 @@ elementComponents.forEach((component) => {
 
 Vue.use(VueTypedJs)
 Vue.use(OverlayScrollbarsPlugin)
+
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key])
+})
 
 new Vue({
   router,

@@ -117,15 +117,12 @@ export default {
   background-color: var(--pw-header-bgcolor);
   border: 1px solid black;
   border-bottom: 0;
-}
-
-.pw-header {
   border-radius: 18px 18px 0 0;
 }
 
 .pw-title {
   color: var(--pw-title-color);
-  font-size: x-large;
+  font-size: larger;
 }
 
 .pw-header-btn {
