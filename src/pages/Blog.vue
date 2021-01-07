@@ -1,18 +1,22 @@
 <template>
   <div class="blog">
-    <div class="title-list">
+    <div class="list">
       <popup-window title="blogs">
         <div
-          class="title-list-inner"
+          class="list-inner"
           v-loading="blogsLoading"
           element-loading-background="var(--blog-bgcolor)"
         >
-          <blog-item
+          <el-card
+            :class="['list-card', { 'list-card-active': listCardActiveIndex[index] }]"
             v-for="(blog, index) in blogs"
             :key="index"
-            :blog="blog"
-            :activeIndex.sync="activeIndex"
-          ></blog-item>
+            @click.native="changeActiveIndex(index)"
+            shadow="hover"
+          >
+            <h4 class="list-card-title">{{ blog.title }}</h4>
+            <div class="list-card-date">{{ blog.date | date }}</div>
+          </el-card>
         </div>
       </popup-window>
     </div>
@@ -35,27 +39,43 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import PopupWindow from '../views/PopupWindow.vue'
-import BlogItem from '../components/blogItem.vue'
 
 export default {
   name: 'Blog',
   data: () => ({
-    activeIndex: 1,
+    activeIndex: 0,
+    listCardActiveIndex: [],
   }),
   components: {
     PopupWindow,
-    BlogItem,
   },
   computed: {
     ...mapState(['blogs']),
     ...mapGetters(['blogsLoading']),
     currentBlog() {
-      // 未取得数据时返回空对象
-      return this.blogs.length !== 0 ? this.blogs[this.activeIndex - 1] : {}
+      // 未取得数据时返回临时对象
+      return this.blogs.length !== 0 ? this.blogs[this.activeIndex] : { title: '', content: '' }
     },
   },
   methods: {
     ...mapActions(['getData']),
+    changeActiveIndex(val) {
+      this.activeIndex = val
+      for (let i = 0; i < this.listCardActiveIndex.length; i++) {
+        this.listCardActiveIndex[i] = false
+      }
+      this.listCardActiveIndex[val] = true
+    },
+  },
+  watch: {
+    'blogs.length': {
+      handler(val) {
+        this.listCardActiveIndex.length = val
+        this.listCardActiveIndex.fill(false)
+        this.listCardActiveIndex[0] = true
+      },
+      immediate: true,
+    },
   },
   created() {
     this.getData('blogs')
@@ -70,7 +90,7 @@ export default {
   height: 100%;
 }
 
-.title-list {
+.list {
   width: 20%;
   margin-right: 15px;
 }
@@ -79,14 +99,14 @@ export default {
   width: calc(100% - 20% - 15px);
 }
 
-.title-list-inner,
+.list-inner,
 .content-container-inner {
   background-color: var(--blog-bgcolor);
   color: var(--blog-color);
   height: 100%;
 }
 
-.title-list-inner {
+.list-inner {
   padding: 0 15px;
 }
 
@@ -94,5 +114,41 @@ export default {
   width: 80%;
   margin: 0 auto;
   padding: 30px 0;
+}
+
+.list-card {
+  background-color: inherit;
+  color: inherit;
+  border: unset;
+  margin: 10px;
+}
+
+.list-card-active {
+  background-color: var(--primary-color);
+}
+
+/* 处在active状态的card标题不变色 */
+.list-card-active:hover .list-card-title {
+  color: unset !important;
+}
+
+.list-card:hover {
+  box-shadow: 0 2px 12px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.list-card:hover .list-card-title {
+  color: var(--primary-color);
+}
+
+.list-card-title {
+  margin: 0 0 5px 0;
+  max-height: 3rem;
+  overflow-y: hidden;
+}
+
+.list-card-date {
+  opacity: 0.5;
+  font-size: small;
 }
 </style>

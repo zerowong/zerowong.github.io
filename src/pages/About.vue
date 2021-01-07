@@ -177,9 +177,13 @@ export default {
 }
 
 .friend-card {
-  background-color: var(--blog-bgcolor);
+  background-color: inherit;
   color: var(--blog-color);
   border: unset;
+}
+
+.friend-card:hover {
+  box-shadow: 0 2px 12px 10px rgba(0, 0, 0, 0.1);
 }
 
 .friend-card-inner {
@@ -202,7 +206,7 @@ export default {
 }
 
 .friend-desc {
-  opacity: 0.6;
+  opacity: 0.7;
   font-size: small;
   max-height: 2rem;
   overflow-y: hidden;
