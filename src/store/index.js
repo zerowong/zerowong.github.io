@@ -9,17 +9,20 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV === 'development',
   state: () => ({
     blogs: [],
+    friends: [],
     errorMsg: ['发生了一些错误'],
     signal: {
-      blogsDone: false,
+      blogsLoading: true,
+      friendsLoading: true,
     },
   }),
   getters: {
-    blogsDone: (state) => state.signal.blogsDone,
+    blogsLoading: (state) => state.signal.blogsLoading,
+    friendsLoading: (state) => state.signal.friendsLoading,
   },
   mutations: {
-    initBlogs(state, blogs) {
-      state.blogs = blogs
+    initData(state, { key, val }) {
+      state[key] = val
     },
     showErrorMsg(state, index) {
       Message.error({
@@ -33,17 +36,18 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async getBlogs({ commit, state }) {
-      if (state.signal.blogsDone) {
-        commit('changeSignal', { key: 'blogsDone', val: false })
+    async getData({ commit, state }, key) {
+      const targetSignal = `${key}Loading`
+      if (state.signal[targetSignal]) {
+        commit('changeSignal', { key: targetSignal, val: true })
       }
       try {
-        const response = await axios.get('/blogs')
-        commit('initBlogs', response.data)
+        const response = await axios.get(`/${key}`)
+        commit('initData', { key, val: response.data })
       } catch (e) {
         commit('showErrorMsg', 0)
       }
-      commit('changeSignal', { key: 'blogsDone', val: true })
+      commit('changeSignal', { key: targetSignal, val: false })
     },
   },
 })

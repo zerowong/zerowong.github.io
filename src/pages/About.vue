@@ -31,8 +31,26 @@
     </div>
     <div class="friends">
       <popup-window title="Friends">
-        <div class="friends-inner">
-          <!-- TODO -->
+        <div
+          class="friends-inner"
+          v-loading="friendsLoading"
+          element-loading-background="var(--blog-bgcolor)"
+        >
+          <a v-for="friend in friends" :key="friend.id" :href="friend.link" target="_blank">
+            <el-card class="friend-card" shadow="hover">
+              <div class="friend-card-inner">
+                <el-image class="friend-avatar" :src="friend.avatar" lazy>
+                  <div slot="error">
+                    <i class="el-icon-picture-outline icon-error"></i>
+                  </div>
+                </el-image>
+                <div>
+                  <div class="friend-name">{{ friend.name }}</div>
+                  <div class="friend-desc">{{ friend.desc }}</div>
+                </div>
+              </div>
+            </el-card>
+          </a>
         </div>
       </popup-window>
     </div>
@@ -40,6 +58,7 @@
 </template>
 
 <script>
+import { mapState, mapGetters, mapActions } from 'vuex'
 import PopupWindow from '../views/PopupWindow.vue'
 import { avatar } from '../utils/img-urls'
 
@@ -50,6 +69,16 @@ export default {
   }),
   components: {
     PopupWindow,
+  },
+  computed: {
+    ...mapState(['friends']),
+    ...mapGetters(['friendsLoading']),
+  },
+  methods: {
+    ...mapActions(['getData']),
+  },
+  created() {
+    this.getData('friends')
   },
 }
 </script>
@@ -135,5 +164,47 @@ export default {
 .friends-inner {
   height: 100%;
   background-color: var(--blog-bgcolor);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.friends-inner > a {
+  width: 100%;
+  margin-bottom: 10px;
+  text-decoration: none;
+}
+
+.friend-card {
+  background-color: var(--blog-bgcolor);
+  color: var(--blog-color);
+  border: unset;
+}
+
+.friend-card-inner {
+  display: flex;
+}
+
+.friend-avatar {
+  border-radius: 4px;
+  width: 60px;
+  min-width: 60px;
+  height: 60px;
+  margin-right: 10px;
+}
+
+.friend-name {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+  max-height: 1.3125rem;
+  overflow-y: hidden;
+}
+
+.friend-desc {
+  opacity: 0.6;
+  font-size: small;
+  max-height: 2rem;
+  overflow-y: hidden;
 }
 </style>

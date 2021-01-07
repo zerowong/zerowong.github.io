@@ -4,7 +4,7 @@
       <popup-window title="blogs">
         <div
           class="title-list-inner"
-          v-loading="!blogsDone"
+          v-loading="blogsLoading"
           element-loading-background="var(--blog-bgcolor)"
         >
           <blog-item
@@ -20,7 +20,7 @@
       <popup-window :title="currentBlog.title">
         <div
           class="content-container-inner"
-          v-loading="!blogsDone"
+          v-loading="blogsLoading"
           element-loading-background="var(--blog-bgcolor)"
         >
           <div>
@@ -48,17 +48,17 @@ export default {
   },
   computed: {
     ...mapState(['blogs']),
-    ...mapGetters(['blogsDone']),
+    ...mapGetters(['blogsLoading']),
     currentBlog() {
       // 未取得数据时返回空对象
       return this.blogs.length !== 0 ? this.blogs[this.activeIndex - 1] : {}
     },
   },
   methods: {
-    ...mapActions(['getBlogs']),
+    ...mapActions(['getData']),
   },
   created() {
-    this.getBlogs()
+    this.getData('blogs')
   },
 }
 </script>
