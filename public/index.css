@@ -19,11 +19,6 @@ body {
   height: 100vh;
 }
 
-::selection {
-  background-color: black;
-  color: white;
-}
-
 ::-webkit-scrollbar {
   width: 5px;
 }

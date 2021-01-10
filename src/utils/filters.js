@@ -6,4 +6,8 @@ function date(value) {
   return moment(value).format('YYYY/M/D HH:mm')
 }
 
-export default { date }
+function dateFromNow(value) {
+  return moment(value).fromNow()
+}
+
+export default { date, dateFromNow }

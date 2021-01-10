@@ -4,16 +4,16 @@
       <router-link class="route" exact-active-class="route-active" to="/">HOME</router-link>
       <router-link class="route" exact-active-class="route-active" to="/blog">BLOG</router-link>
       <router-link class="route" exact-active-class="route-active" to="/about">ABOUT</router-link>
-      <setting-btn @open-popup-window="openSetting"></setting-btn>
+      <setting-btn @open-setting-window="openSettingWindow"></setting-btn>
     </nav>
     <transition name="el-zoom-in-center">
       <popup-window
         class="setting"
         title="设置"
-        v-if="showSetting"
-        @close="closeSetting"
         :showClose="true"
         :moveable="true"
+        v-if="settingWindowIsOpen"
+        @close-popup-window="closeSettingWindow"
       >
         <setting :config="config"></setting>
       </popup-window>
@@ -30,7 +30,7 @@ import settingMixin from '../utils/settingMixin'
 export default {
   name: 'NavMenu',
   data: () => ({
-    showSetting: false,
+    settingWindowIsOpen: false,
     config: {
       darkmode: false,
       pwHeaderBgColor: '#e2e2e2',
@@ -39,11 +39,11 @@ export default {
   }),
   mixins: [settingMixin],
   methods: {
-    closeSetting() {
-      this.showSetting = false
+    closeSettingWindow() {
+      this.settingWindowIsOpen = false
     },
-    openSetting() {
-      this.showSetting = true
+    openSettingWindow() {
+      this.settingWindowIsOpen = true
     },
   },
   components: {

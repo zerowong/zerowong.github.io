@@ -11,6 +11,9 @@ import {
   Switch,
   Loading,
   Card,
+  Avatar,
+  Input,
+  Pagination,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
@@ -33,6 +36,9 @@ const elementComponents = [
   Switch,
   Loading,
   Card,
+  Avatar,
+  Input,
+  Pagination,
 ]
 
 elementComponents.forEach((component) => {

@@ -10,7 +10,7 @@ export default new Vuex.Store({
   state: () => ({
     blogs: [],
     friends: [],
-    errorMsg: ['发生了一些错误'],
+    errorMsg: ['数据获取失败'],
     signal: {
       blogsLoading: true,
       friendsLoading: true,

@@ -1,6 +1,6 @@
 <template>
-  <el-tooltip :content="tip" :placement="config.placement" :transition="config.transition">
-    <el-button class="btn" type="text">
+  <el-tooltip content="留言" :placement="config.placement" :transition="config.transition">
+    <el-button class="btn" type="text" @click="openMessageWindow">
       <i class="iconfont icon-shequ"></i>
     </el-button>
   </el-tooltip>
@@ -10,9 +10,11 @@
 export default {
   name: 'MessageBtn',
   props: ['config'],
-  data: () => ({
-    tip: '留言',
-  }),
+  methods: {
+    openMessageWindow() {
+      this.$emit('open-message-window')
+    },
+  },
 }
 </script>
 

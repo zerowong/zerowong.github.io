@@ -1,15 +1,29 @@
 <template>
   <div class="btn-bar">
-    <MessageBtn :config="tooltipConfig"></MessageBtn>
-    <FeedbackBtn :config="tooltipConfig"></FeedbackBtn>
-    <BooklistBtn :config="tooltipConfig"></BooklistBtn>
+    <message-btn :config="tooltipConfig" @open-message-window="openWindow('message')"></message-btn>
+    <feedback-btn :config="tooltipConfig"></feedback-btn>
+    <booklist-btn :config="tooltipConfig"></booklist-btn>
+    <transition name="el-zoom-in-center">
+      <popup-window
+        class="message-window"
+        title="留言"
+        :showClose="true"
+        :moveable="true"
+        v-if="windowIsOpen.message"
+        @close-popup-window="closeWindow('message')"
+      >
+        <message-interface></message-interface>
+      </popup-window>
+    </transition>
   </div>
 </template>
 
 <script>
 import MessageBtn from './MessageBtn.vue'
 import FeedbackBtn from './FeedbackBtn.vue'
-import BooklistBtn from './booklistBtn.vue'
+import BooklistBtn from './BooklistBtn.vue'
+import PopupWindow from '../views/PopupWindow.vue'
+import MessageInterface from './MessageInterface.vue'
 
 export default {
   name: 'ButtonBar',
@@ -18,11 +32,26 @@ export default {
       placement: 'top',
       transition: 'el-zoom-in-bottom',
     },
+    windowIsOpen: {
+      message: false,
+      feedback: false,
+      booklist: false,
+    },
   }),
+  methods: {
+    openWindow(key) {
+      this.windowIsOpen[key] = true
+    },
+    closeWindow(key) {
+      this.windowIsOpen[key] = false
+    },
+  },
   components: {
     MessageBtn,
     FeedbackBtn,
     BooklistBtn,
+    PopupWindow,
+    MessageInterface,
   },
 }
 </script>
@@ -53,5 +82,10 @@ export default {
 /* 底部按钮栏hover动效 */
 .btn:hover {
   transform: scale(1.5) translateY(-10px);
+}
+
+.message-window {
+  width: 600px;
+  height: 850px;
 }
 </style>

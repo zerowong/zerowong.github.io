@@ -164,7 +164,7 @@ export default {
 .friends-inner {
   height: 100%;
   background-color: var(--blog-bgcolor);
-  padding: 30px;
+  padding: 0 30px;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -172,7 +172,7 @@ export default {
 
 .friends-inner > a {
   width: 100%;
-  margin-bottom: 10px;
+  margin: 5px 0;
   text-decoration: none;
 }
 

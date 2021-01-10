@@ -57,7 +57,7 @@ export default {
       this.isMove = false
     },
     close() {
-      this.$emit('close')
+      this.$emit('close-popup-window')
     },
     // 配置初始化
     init() {
