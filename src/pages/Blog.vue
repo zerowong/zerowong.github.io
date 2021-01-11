@@ -6,6 +6,9 @@
           class="list-inner"
           v-loading="blogsLoading"
           element-loading-background="var(--blog-bgcolor)"
+          v-infinite-scroll="loadBlogs"
+          infinite-scroll-immediate="false"
+          infinite-scroll-disabled="infiniteScrollDisable"
         >
           <el-card
             :class="['list-card', { 'list-card-active': listCardActiveIndex[index] }]"
@@ -17,6 +20,13 @@
             <h4 class="list-card-title">{{ blog.title }}</h4>
             <div class="list-card-date">{{ blog.date | date }}</div>
           </el-card>
+          <div
+            class="infinite-scroll-loading"
+            v-loading="infiniteScrollLoading"
+            element-loading-background="var(--blog-bgcolor)"
+          >
+            <span v-if="noMore">没有更多了</span>
+          </div>
         </div>
       </popup-window>
     </div>
@@ -37,48 +47,83 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState } from 'vuex'
+import { Message } from 'element-ui'
+import axios from '../utils/axios'
 import PopupWindow from '../views/PopupWindow.vue'
 
 export default {
   name: 'Blog',
   data: () => ({
-    activeIndex: 0,
+    blogs: [],
+    blogsLoading: false,
+    currentBlogIndex: 0,
     listCardActiveIndex: [],
+    infiniteScrollLoading: false,
+    noMore: false,
+    blogsNextPage: 2,
   }),
   components: {
     PopupWindow,
   },
   computed: {
-    ...mapState(['blogs']),
-    ...mapGetters(['blogsLoading']),
+    ...mapState(['errorMsg']),
     currentBlog() {
       // 未取得数据时返回临时对象
-      return this.blogs.length !== 0 ? this.blogs[this.activeIndex] : { title: '', content: '' }
+      return this.blogs.length !== 0
+        ? this.blogs[this.currentBlogIndex]
+        : { title: '', content: '' }
+    },
+    infiniteScrollDisable() {
+      return this.infiniteScrollLoading || this.noMore
     },
   },
   methods: {
-    ...mapActions(['getData']),
+    async getBlogs() {
+      this.blogsLoading = true
+      try {
+        this.blogs = await (await axios.get('/blogs?_sort=date&_order=desc&_page=1')).data
+        this.initListCardActiveIndex(this.blogs.length)
+      } catch (e) {
+        Message.error(this.errorMsg[0])
+      }
+      this.blogsLoading = false
+    },
+    initListCardActiveIndex(length) {
+      this.listCardActiveIndex.length = length
+      this.listCardActiveIndex.fill(false)
+      this.listCardActiveIndex[0] = true
+    },
     changeActiveIndex(val) {
-      this.activeIndex = val
+      this.currentBlogIndex = val
       for (let i = 0; i < this.listCardActiveIndex.length; i++) {
         this.listCardActiveIndex[i] = false
       }
       this.listCardActiveIndex[val] = true
     },
-  },
-  watch: {
-    'blogs.length': {
-      handler(val) {
-        this.listCardActiveIndex.length = val
-        this.listCardActiveIndex.fill(false)
-        this.listCardActiveIndex[0] = true
-      },
-      immediate: true,
+    async loadBlogs() {
+      this.infiniteScrollLoading = true
+      try {
+        const { data } = await axios.get(
+          // eslint-disable-next-line comma-dangle
+          `/blogs?_sort=date&_order=desc&_page=${this.blogsNextPage}`
+        )
+        if (!data.length) {
+          this.noMore = true
+          this.infiniteScrollLoading = false
+          return
+        }
+        this.blogs = this.blogs.concat(data)
+        this.initListCardActiveIndex(this.blogs.length)
+        this.blogsNextPage += 1
+      } catch (e) {
+        Message.error(this.errorMsg[0])
+      }
+      this.infiniteScrollLoading = false
     },
   },
-  created() {
-    this.getData('blogs')
+  mounted() {
+    this.getBlogs()
   },
 }
 </script>
@@ -150,5 +195,13 @@ export default {
 .list-card-date {
   opacity: 0.5;
   font-size: small;
+}
+
+.infinite-scroll-loading {
+  height: 70px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

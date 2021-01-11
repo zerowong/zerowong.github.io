@@ -35,11 +35,14 @@
           class="friends-inner"
           v-loading="friendsLoading"
           element-loading-background="var(--blog-bgcolor)"
+          v-infinite-scroll="loadFriends"
+          infinite-scroll-immediate="false"
+          infinite-scroll-disabled="infiniteScrollDisbale"
         >
-          <a v-for="friend in friends" :key="friend.id" :href="friend.link" target="_blank">
+          <a v-for="(friend, index) in friends" :key="index" :href="friend.link" target="_blank">
             <el-card class="friend-card" shadow="hover">
               <div class="friend-card-inner">
-                <el-image class="friend-avatar" :src="friend.avatar" lazy>
+                <el-image class="friend-avatar" :src="friend.avatar">
                   <div slot="error">
                     <i class="el-icon-picture-outline icon-error"></i>
                   </div>
@@ -51,6 +54,11 @@
               </div>
             </el-card>
           </a>
+          <div
+            class="infinite-scroll-loading"
+            v-loading="infiniteScrollLoading"
+            element-loading-background="var(--blog-bgcolor)"
+          ></div>
         </div>
       </popup-window>
     </div>
@@ -58,27 +66,60 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState } from 'vuex'
+import { Message } from 'element-ui'
 import PopupWindow from '../views/PopupWindow.vue'
 import { avatar } from '../utils/img-urls'
+import axios from '../utils/axios'
 
 export default {
   name: 'About',
   data: () => ({
     avatar,
+    friends: [],
+    friendsLoading: false,
+    infiniteScrollLoading: false,
+    friendsNextPage: 2,
+    noMore: false,
   }),
+  computed: {
+    ...mapState(['errorMsg']),
+    infiniteScrollDisbale() {
+      return this.infiniteScrollLoading || this.noMore
+    },
+  },
   components: {
     PopupWindow,
   },
-  computed: {
-    ...mapState(['friends']),
-    ...mapGetters(['friendsLoading']),
-  },
   methods: {
-    ...mapActions(['getData']),
+    async getFriends() {
+      this.friendsLoading = true
+      try {
+        this.friends = await (await axios.get('/friends?_page=1')).data
+      } catch (e) {
+        Message.error(this.errorMsg[0])
+      }
+      this.friendsLoading = false
+    },
+    async loadFriends() {
+      this.infiniteScrollLoading = true
+      try {
+        const { data } = await axios.get(`/friends?_page=${this.friendsNextPage}`)
+        if (!data.length) {
+          this.noMore = true
+          this.infiniteScrollLoading = false
+          return
+        }
+        this.friends = this.friends.concat(data)
+        this.friendsNextPage += 1
+      } catch (e) {
+        Message.error(this.errorMsg[0])
+      }
+      this.infiniteScrollLoading = false
+    },
   },
-  created() {
-    this.getData('friends')
+  mounted() {
+    this.getFriends()
   },
 }
 </script>
@@ -165,12 +206,10 @@ export default {
   height: 100%;
   background-color: var(--blog-bgcolor);
   padding: 0 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
 }
 
 .friends-inner > a {
+  display: block;
   width: 100%;
   margin: 5px 0;
   text-decoration: none;
@@ -210,5 +249,9 @@ export default {
   font-size: small;
   max-height: 2rem;
   overflow-y: hidden;
+}
+
+.infinite-scroll-loading {
+  height: 50px;
 }
 </style>

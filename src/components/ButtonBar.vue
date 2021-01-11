@@ -1,7 +1,6 @@
 <template>
   <div class="btn-bar">
     <message-btn :config="tooltipConfig" @open-message-window="openWindow('message')"></message-btn>
-    <feedback-btn :config="tooltipConfig"></feedback-btn>
     <booklist-btn :config="tooltipConfig"></booklist-btn>
     <transition name="el-zoom-in-center">
       <popup-window
@@ -20,7 +19,6 @@
 
 <script>
 import MessageBtn from './MessageBtn.vue'
-import FeedbackBtn from './FeedbackBtn.vue'
 import BooklistBtn from './BooklistBtn.vue'
 import PopupWindow from '../views/PopupWindow.vue'
 import MessageInterface from './MessageInterface.vue'
@@ -48,7 +46,6 @@ export default {
   },
   components: {
     MessageBtn,
-    FeedbackBtn,
     BooklistBtn,
     PopupWindow,
     MessageInterface,

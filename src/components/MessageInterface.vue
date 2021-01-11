@@ -61,7 +61,7 @@ export default {
   components: { Popover },
   data: () => ({
     message: [],
-    messageLoading: true,
+    messageLoading: false,
     input: '',
     inputEmpty: false,
     currentPage: 1,
@@ -72,9 +72,7 @@ export default {
   },
   methods: {
     async getMessage(index = 1) {
-      if (!this.messageLoading) {
-        this.messageLoading = true
-      }
+      this.messageLoading = true
       try {
         const { data } = await axios.get(`/message?_sort=date&_order=desc&_page=${index}`)
         this.message[index - 1] = data

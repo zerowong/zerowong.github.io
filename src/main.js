@@ -14,6 +14,7 @@ import {
   Avatar,
   Input,
   Pagination,
+  InfiniteScroll,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
@@ -39,6 +40,7 @@ const elementComponents = [
   Avatar,
   Input,
   Pagination,
+  InfiniteScroll,
 ]
 
 elementComponents.forEach((component) => {
