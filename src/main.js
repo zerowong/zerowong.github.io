@@ -15,6 +15,8 @@ import {
   Input,
   Pagination,
   InfiniteScroll,
+  Form,
+  FormItem,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
@@ -41,6 +43,8 @@ const elementComponents = [
   Input,
   Pagination,
   InfiniteScroll,
+  Form,
+  FormItem,
 ]
 
 elementComponents.forEach((component) => {

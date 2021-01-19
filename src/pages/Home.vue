@@ -5,7 +5,6 @@
       <button-bar></button-bar>
       <div class="footer-info">
         <div class="footer-info-inner">
-          <running-time></running-time>
           <el-link class="beian" :href="beian[0]" :underline="false">{{ beian[1] }}</el-link>
         </div>
       </div>
@@ -16,7 +15,6 @@
 <script>
 import TypedText from '../components/TypedText.vue'
 import ButtonBar from '../components/ButtonBar.vue'
-import RunningTime from '../components/RunningTime.vue'
 
 export default {
   name: 'Home',
@@ -26,7 +24,6 @@ export default {
   components: {
     TypedText,
     ButtonBar,
-    RunningTime,
   },
 }
 </script>

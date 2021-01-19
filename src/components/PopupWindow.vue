@@ -2,7 +2,7 @@
   <div :class="['pw-container', { 'pw-container-moveable': moveable }]">
     <div class="pw-header" @mousedown.self.left="mouseDown" @mouseup="mouseUp">
       <span class="pw-title">{{ title }}</span>
-      <el-button class="pw-header-btn" type="text" v-if="showClose" @click="close">
+      <el-button class="pw-header-btn" type="text" v-if="moveable" @click="close">
         <i class="el-icon-circle-close"></i>
       </el-button>
     </div>
@@ -20,13 +20,13 @@ export default {
       type: String,
       default: '',
     },
-    showClose: {
-      type: Boolean,
-      default: false,
-    },
     moveable: {
       type: Boolean,
       default: false,
+    },
+    windowName: {
+      type: String,
+      required: true,
     },
   },
   data: () => ({
@@ -57,7 +57,7 @@ export default {
       this.isMove = false
     },
     close() {
-      this.$emit('close-popup-window')
+      this.$store.commit('updateWindow', { name: this.windowName, val: false })
     },
     // 配置初始化
     init() {

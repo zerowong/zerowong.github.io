@@ -40,11 +40,12 @@
 </template>
 
 <script>
-import { backgroundImage } from '../utils/img-urls'
-import settingMixin from '../utils/settingMixin'
+import { backgroundImage } from '../../utils/img-urls'
+import settingMixin from '../../utils/settingMixin'
 
 export default {
   name: 'Setting',
+  mixins: [settingMixin],
   data: () => ({
     backgroundImage,
   }),
@@ -54,7 +55,6 @@ export default {
       required: true,
     },
   },
-  mixins: [settingMixin],
   methods: {
     showColor(color) {
       return { backgroundColor: color }

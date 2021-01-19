@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 const backgroundImage = [
   'https://cdn.apasser.xyz/blog/conurbation.jpg',
   'https://cdn.apasser.xyz/blog/escape.jpg',

@@ -53,11 +53,11 @@
 <script>
 import { mapState } from 'vuex'
 import { Message } from 'element-ui'
-import axios from '../utils/axios'
-import Popover from './Popover.vue'
+import axios from '../../utils/axios'
+import Popover from '../Popover.vue'
 
 export default {
-  name: 'MessageInterface',
+  name: 'Messages',
   components: { Popover },
   data: () => ({
     message: [],
@@ -194,7 +194,7 @@ export default {
 <style>
 .el-textarea__inner,
 .el-textarea .el-input__count {
-  background-color: inherit;
+  background-color: var(--input-bgcolor);
   color: inherit;
 }
 
@@ -202,8 +202,10 @@ export default {
   border: 2px solid rgba(64, 158, 255, 0.5);
 }
 
-.el-textarea__inner:hover {
+.el-textarea__inner:hover,
+.el-textarea__inner:focus {
   border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(4, 120, 190, 0.1);
 }
 
 .pagination,

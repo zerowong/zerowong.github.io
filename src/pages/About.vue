@@ -68,7 +68,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Message } from 'element-ui'
-import PopupWindow from '../views/PopupWindow.vue'
+import PopupWindow from '../components/PopupWindow.vue'
 import { avatar } from '../utils/img-urls'
 import axios from '../utils/axios'
 

@@ -50,7 +50,7 @@
 import { mapState } from 'vuex'
 import { Message } from 'element-ui'
 import axios from '../utils/axios'
-import PopupWindow from '../views/PopupWindow.vue'
+import PopupWindow from '../components/PopupWindow.vue'
 
 export default {
   name: 'Blog',

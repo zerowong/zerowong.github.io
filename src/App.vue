@@ -14,12 +14,27 @@
 </template>
 
 <script>
-import NavMenu from './views/NavMenu.vue'
+import axios from './utils/axios'
+import NavMenu from './components/NavMenu.vue'
 
 export default {
   name: 'App',
   components: {
     NavMenu,
+  },
+  methods: {
+    async auth() {
+      try {
+        const result = await axios.get('/login')
+        this.$store.commit('updateUser', result.data)
+      } catch (e) {
+        this.$store.commit('updateUser', null)
+        // todo: 删除cookie
+      }
+    },
+  },
+  mounted() {
+    this.auth()
   },
 }
 </script>
