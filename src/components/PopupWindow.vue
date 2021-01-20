@@ -24,10 +24,7 @@ export default {
       type: Boolean,
       default: false,
     },
-    windowName: {
-      type: String,
-      required: true,
-    },
+    windowName: String,
   },
   data: () => ({
     isMove: false,

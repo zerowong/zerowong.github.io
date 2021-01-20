@@ -97,11 +97,11 @@ export default {
 
 .operation {
   position: absolute;
-  right: 10px;
+  right: 30px;
   display: flex;
   flex-direction: row;
   align-items: center;
-  column-gap: 10px;
+  column-gap: 15px;
 }
 
 .route {

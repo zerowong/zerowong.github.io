@@ -1,7 +1,7 @@
 <template>
   <el-tooltip :content="tip" :placement="config.placement" :transition="config.transition">
     <el-button class="btn" type="text">
-      <i class="iconfont icon-xiaoshuo"></i>
+      <i class="iconfont icon-booklist"></i>
     </el-button>
   </el-tooltip>
 </template>

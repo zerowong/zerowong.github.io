@@ -1,7 +1,7 @@
 <template>
   <el-tooltip content="设置" placement="bottom" transition="el-zoom-in-top">
     <el-button class="btn" type="text" @click="open">
-      <i class="iconfont icon-shezhi"></i>
+      <i class="iconfont icon-setting"></i>
     </el-button>
   </el-tooltip>
 </template>

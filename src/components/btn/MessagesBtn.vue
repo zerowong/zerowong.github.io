@@ -1,7 +1,7 @@
 <template>
   <el-tooltip content="留言" :placement="config.placement" :transition="config.transition">
     <el-button class="btn" type="text" @click="open">
-      <i class="iconfont icon-shequ"></i>
+      <i class="iconfont icon-messages"></i>
     </el-button>
   </el-tooltip>
 </template>
