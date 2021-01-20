@@ -23,6 +23,7 @@
 
 <script>
 import { Message } from 'element-ui'
+import { mapState } from 'vuex'
 import axios from '../../utils/axios'
 
 export default {
@@ -38,6 +39,9 @@ export default {
     },
     loginLoading: false,
   }),
+  computed: {
+    ...mapState(['errorMsg']),
+  },
   methods: {
     onSubmit() {
       this.$refs.login.validate((valid) => {
@@ -50,16 +54,24 @@ export default {
     async handleLogin() {
       this.loginLoading = true
       try {
-        const result = await axios.post('/login', this.login)
-        if (result.status === 205) {
-          Message.info('用户不存在')
-        } else {
-          this.$store.commit('updateUser', result.data)
-          this.$store.commit('updateWindow', { name: 'lr', val: false })
-          Message.success('登录成功')
+        const { status } = await axios.post('/login', this.login)
+        switch (status) {
+          case 200:
+            this.$store.commit('updateUserId')
+            this.$store.commit('updateWindow', { name: 'lr', val: false })
+            Message.success(this.errorMsg.loginSuccess)
+            break
+          case 400:
+            Message.info(this.errorMsg.userNotExits)
+            break
+          case 401:
+            Message.info(this.errorMsg.badPass)
+            break
+          default:
+            break
         }
       } catch (e) {
-        Message.error('密码错误')
+        Message.error(this.errorMsg.server)
       }
       this.loginLoading = false
     },

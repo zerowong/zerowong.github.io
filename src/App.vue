@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import axios from './utils/axios'
 import NavMenu from './components/NavMenu.vue'
 
 export default {
@@ -22,19 +21,8 @@ export default {
   components: {
     NavMenu,
   },
-  methods: {
-    async auth() {
-      try {
-        const result = await axios.get('/login')
-        this.$store.commit('updateUser', result.data)
-      } catch (e) {
-        this.$store.commit('updateUser', null)
-        // todo: 删除cookie
-      }
-    },
-  },
   mounted() {
-    this.auth()
+    this.$store.commit('updateUserId')
   },
 }
 </script>

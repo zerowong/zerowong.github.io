@@ -1,4 +1,3 @@
-/* eslint-disable object-curly-newline */
 import Vue from 'vue'
 import {
   Container,
@@ -17,6 +16,9 @@ import {
   InfiniteScroll,
   Form,
   FormItem,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
@@ -45,6 +47,9 @@ const elementComponents = [
   InfiniteScroll,
   Form,
   FormItem,
+  Dropdown,
+  DropdownMenu,
+  DropdownItem,
 ]
 
 elementComponents.forEach((component) => {

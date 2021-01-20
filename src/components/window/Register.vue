@@ -26,6 +26,7 @@
 
 <script>
 import { Message } from 'element-ui'
+import { mapState } from 'vuex'
 import axios from '../../utils/axios'
 
 export default {
@@ -61,6 +62,9 @@ export default {
       registerLodaing: false,
     }
   },
+  computed: {
+    ...mapState(['errorMsg']),
+  },
   methods: {
     onSubmit() {
       this.$refs.register.validate((valid) => {
@@ -73,16 +77,21 @@ export default {
     async handleRegister() {
       this.registerLodaing = true
       try {
-        const result = await axios.post('/register', this.register)
-        if (result.status === 205) {
-          Message.info('用户已存在')
-        } else {
-          this.$store.commit('updateUser', result.data)
-          this.$store.commit('updateWindow', { name: 'lr', val: false })
-          Message.success('注册成功')
+        const { status } = await axios.post('/register', this.register)
+        switch (status) {
+          case 200:
+            this.$store.commit('updateUserId')
+            this.$store.commit('updateWindow', { name: 'lr', val: false })
+            Message.success(this.errorMsg.registerSuccess)
+            break
+          case 400:
+            Message.info(this.errorMsg.userExits)
+            break
+          default:
+            break
         }
       } catch (e) {
-        Message.error('注册失败，请稍后再试')
+        Message.error(this.errorMsg.server)
       }
       this.registerLodaing = false
     },
