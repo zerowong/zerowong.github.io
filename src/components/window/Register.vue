@@ -25,8 +25,8 @@
 </template>
 
 <script>
+import { mapState, mapActions } from 'vuex'
 import { Message } from 'element-ui'
-import { mapState } from 'vuex'
 import axios from '../../utils/axios'
 
 export default {
@@ -66,6 +66,7 @@ export default {
     ...mapState(['errorMsg']),
   },
   methods: {
+    ...mapActions(['getUser']),
     onSubmit() {
       this.$refs.register.validate((valid) => {
         if (!valid) {
@@ -77,10 +78,14 @@ export default {
     async handleRegister() {
       this.registerLodaing = true
       try {
-        const { status } = await axios.post('/register', this.register)
+        const { status } = await axios.post('/register', this.register, {
+          validateStatus(_status) {
+            return _status >= 200 && _status < 500
+          },
+        })
         switch (status) {
           case 200:
-            this.$store.commit('updateUserId')
+            this.getUser()
             this.$store.commit('updateWindow', { name: 'lr', val: false })
             Message.success(this.errorMsg.registerSuccess)
             break

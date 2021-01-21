@@ -3,7 +3,7 @@
     <el-avatar class="avatar" :src="user.avatar" :size="32">{{ user.name[0] }}</el-avatar>
     <el-dropdown-menu slot="dropdown">
       <el-dropdown-item command="user">
-        <i class="iconfont icon-user"></i>个人中心
+        <i class="iconfont icon-user"></i>个人资料
       </el-dropdown-item>
       <el-dropdown-item command="logout">
         <i class="iconfont icon-logout"></i>退出
@@ -13,19 +13,17 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import axios from '../../utils/axios'
 
 export default {
   name: 'UserBtn',
-  data: () => ({
-    user: {
-      name: '',
-      avatar: '',
-    },
-  }),
+  computed: {
+    ...mapState(['user']),
+  },
   methods: {
     logout() {
-      axios.get('/logout').finally(() => this.$store.commit('updateUserId'))
+      axios.get('/logout').finally(() => this.$store.commit('updateUser', {}))
     },
     onCommand(command) {
       switch (command) {
