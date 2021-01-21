@@ -16,6 +16,7 @@ export default new Vuex.Store({
       registerSuccess: '注册成功',
       registerFailure: '注册失败',
       badPass: '密码错误',
+      authExpired: '用户认证已过期，请重新登录',
     },
     userId: -1,
     windowOpen: {
@@ -27,7 +28,7 @@ export default new Vuex.Store({
     },
   }),
   getters: {
-    logined: ({ userId }) => userId !== -1,
+    logined: ({ userId }) => userId >= 0,
   },
   mutations: {
     updateUserId(state) {
