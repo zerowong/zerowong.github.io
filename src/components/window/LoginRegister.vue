@@ -46,8 +46,6 @@ export default {
 <style scoped>
 .container {
   height: 100%;
-  background-color: var(--blog-bgcolor);
-  color: var(--blog-color);
 }
 
 .to-register {

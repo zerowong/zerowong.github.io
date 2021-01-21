@@ -4,11 +4,12 @@
     <booklist-btn :config="tooltipConfig"></booklist-btn>
     <transition name="el-zoom-in-center">
       <popup-window
-        class="messages"
         title="留言"
         :moveable="true"
-        v-if="windowOpen.messages"
         windowName="messages"
+        :width="600"
+        :height="850"
+        v-if="windowOpen.messages"
       >
         <messages></messages>
       </popup-window>
@@ -70,10 +71,5 @@ export default {
 /* 底部按钮栏hover动效 */
 .btn:hover {
   transform: scale(1.5) translateY(-10px);
-}
-
-.messages {
-  width: 600px;
-  height: 850px;
 }
 </style>

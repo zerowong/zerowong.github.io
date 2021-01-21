@@ -1,6 +1,6 @@
 <template>
   <div
-    class="message-interface"
+    class="container"
     v-loading="messageLoading"
     element-loading-background="var(--blog-bgcolor)"
   >
@@ -120,10 +120,8 @@ export default {
 </script>
 
 <style scoped>
-.message-interface {
+.container {
   height: 100%;
-  background-color: var(--blog-bgcolor);
-  color: var(--blog-color);
   display: flex;
   flex-direction: column;
 }

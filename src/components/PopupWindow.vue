@@ -25,6 +25,8 @@ export default {
       default: false,
     },
     windowName: String,
+    width: Number,
+    height: Number,
   },
   data: () => ({
     isMove: false,
@@ -58,10 +60,12 @@ export default {
     },
     // 配置初始化
     init() {
+      // 窗口大小
+      this.$el.style.width = `${this.width}px`
+      this.$el.style.height = `${this.height}px`
       // 居中
-      const { height, width } = window.getComputedStyle(this.$el)
-      this.$el.style.left = `calc(50% - ${parseInt(width, 10) / 2}px)`
-      this.$el.style.top = `calc(50% - ${parseInt(height, 10) / 2}px)`
+      this.$el.style.left = `calc(50% - ${this.width / 2}px)`
+      this.$el.style.top = `calc(50% - ${this.height / 2}px)`
     },
   },
   mounted() {
@@ -98,6 +102,9 @@ export default {
   border-radius: 0 0 18px 18px;
   /* 禁用滚动防止覆盖border-radius样式 */
   overflow: hidden;
+  /* 默认自带主题切换 */
+  background-color: var(--blog-bgcolor);
+  color: var(--blog-color);
 }
 
 .pw-body > * {

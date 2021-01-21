@@ -11,22 +11,36 @@
     </nav>
     <transition name="el-zoom-in-center">
       <popup-window
-        class="setting"
         title="设置"
         :moveable="true"
-        v-if="windowOpen.setting"
         windowName="setting"
+        :width="400"
+        :height="600"
+        v-if="windowOpen.setting"
       >
         <setting :config="config"></setting>
       </popup-window>
     </transition>
     <transition name="el-zoom-in-center">
-      <popup-window class="user" :moveable="true" v-if="windowOpen.user" windowName="user">
+      <popup-window
+        title="个人资料"
+        :moveable="true"
+        windowName="user"
+        :width="500"
+        :height="600"
+        v-if="windowOpen.user"
+      >
         <user></user>
       </popup-window>
     </transition>
     <transition name="el-zoom-in-center">
-      <popup-window class="login-register" :moveable="true" v-if="windowOpen.lr" windowName="lr">
+      <popup-window
+        :moveable="true"
+        windowName="lr"
+        :width="500"
+        :height="620"
+        v-if="windowOpen.lr"
+      >
         <login-register></login-register>
       </popup-window>
     </transition>
@@ -34,6 +48,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import SettingBtn from './btn/SettingBtn.vue'
 import PopupWindow from './PopupWindow.vue'
 import Setting from './window/Setting.vue'
@@ -63,19 +78,17 @@ export default {
     },
   }),
   computed: {
+    ...mapState(['windowOpen']),
     currentBtn() {
       return this.$store.getters.logined
         ? this.$options.components.UserBtn
         : this.$options.components.LoginBtn
     },
-    windowOpen() {
-      return this.$store.state.windowOpen
-    },
   },
   mounted() {
-    const initConfig = window.localStorage.getItem('config')
-    if (initConfig !== null) {
-      this.config = JSON.parse(window.localStorage.getItem('config'))
+    const initConfig = localStorage.getItem('config')
+    if (initConfig) {
+      this.config = JSON.parse(initConfig)
     }
     this.colorPicker(this.config.pwHeaderBgColor)
     this.imagePicker(this.config.backgroundImage)

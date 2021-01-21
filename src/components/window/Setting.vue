@@ -1,5 +1,5 @@
 <template>
-  <div class="setting-interface">
+  <div class="container">
     <div class="item">
       <div class="title">暗黑模式</div>
       <div>
@@ -64,10 +64,8 @@ export default {
 </script>
 
 <style scoped>
-.setting-interface {
+.container {
   height: 100%;
-  background-color: var(--blog-bgcolor);
-  color: var(--blog-color);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

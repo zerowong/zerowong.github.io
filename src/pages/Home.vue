@@ -5,7 +5,9 @@
       <button-bar></button-bar>
       <div class="footer-info">
         <div class="footer-info-inner">
-          <el-link class="beian" :href="beian[0]" :underline="false">{{ beian[1] }}</el-link>
+          <el-link tabindex="-1" class="beian" :href="beian[0]" :underline="false">
+            {{ beian[1] }}
+          </el-link>
         </div>
       </div>
     </div>
