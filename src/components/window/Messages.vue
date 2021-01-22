@@ -10,17 +10,17 @@
         layout="total, ->, prev, pager, next"
         :pager-count="5"
         :current-page="currentPage"
-        :total="messageLength"
+        :total="messagesLength"
         @current-change="handleCurrentChange"
       ></el-pagination>
     </div>
     <div class="body">
-      <div class="message-item" v-for="(item, index) in message[currentPage - 1]" :key="index">
-        <el-avatar class="avatar" :src="item.userAvatar" :size="60">
-          {{ item.userName[0] }}
+      <div class="message-item" v-for="(item, index) in messages[currentPage - 1]" :key="index">
+        <el-avatar class="avatar" :src="item.user.avatar" :size="60">
+          {{ item.user.name[0] }}
         </el-avatar>
         <div>
-          <div class="name">{{ item.userName }}</div>
+          <div class="name">{{ item.user.name }}</div>
           <div class="content">{{ item.content }}</div>
           <div class="operation">
             <span class="date">{{ item.date | dateFromNow }}</span>
@@ -60,61 +60,61 @@ export default {
   name: 'Messages',
   components: { Popover },
   data: () => ({
-    message: [],
+    // 二维数组
+    messages: [],
     messageLoading: false,
     input: '',
     inputEmpty: false,
     currentPage: 1,
-    messageLength: 0,
+    messagesLength: 0,
   }),
   computed: {
     ...mapState(['errorMsg']),
   },
   methods: {
-    async getMessage(index = 1) {
+    async getMessages(index = 1) {
       this.messageLoading = true
       try {
-        const { data } = await axios.get(`/message?_sort=date&_order=desc&_page=${index}`)
-        this.message[index - 1] = data
+        const { data } = await axios.get(`/messages?sort=date&order=desc&page=${index}`)
+        this.messages[index - 1] = data
       } catch (e) {
-        Message.error(this.errorMsg[0])
+        Message.error(this.errorMsg.universal)
       }
       this.messageLoading = false
     },
     async getMessageLength() {
-      this.messageLength = await (await axios.get('length/message')).data.value
+      const { data } = await axios.get('/messages/length')
+      this.messagesLength = data
     },
     async submitMessage() {
       if (this.input) {
         const message = {
-          userId: 1,
-          userName: 'ApassEr',
-          userAvatar: '',
-          thumbsUp: 0,
-          date: new Date().getTime(),
           content: this.input,
         }
         try {
-          await axios.post('/message', message)
+          await axios.post('/messages', message)
           this.input = ''
           this.getMessageLength()
-          this.getMessage(1)
+          this.getMessages(1)
           this.currentPage = 1
         } catch (e) {
-          Message.error('发送失败')
+          Message.error(this.errorMsg.sendFailure)
         }
       } else {
         this.inputEmpty = true
       }
     },
-    handleCurrentChange(currentPage) {
-      this.getMessage(currentPage)
-      this.currentPage = currentPage
+    handleCurrentChange(toPage) {
+      // 请求过的不再请求
+      if (this.messages[toPage - 1] === undefined) {
+        this.getMessages(toPage)
+      }
+      this.currentPage = toPage
     },
   },
   mounted() {
     this.getMessageLength()
-    this.getMessage(1)
+    this.getMessages(1)
   },
 }
 </script>
