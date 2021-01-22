@@ -46,6 +46,7 @@ export default {
   display: block;
   font-size: 2rem;
   cursor: pointer;
+  transition: transform 0.1s;
 }
 
 .avatar:hover {

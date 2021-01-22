@@ -110,9 +110,9 @@ export default {
 
 .operation {
   position: absolute;
+  top: 9px;
   right: 30px;
   display: flex;
-  flex-direction: row;
   align-items: center;
   column-gap: 15px;
 }
@@ -135,15 +135,5 @@ export default {
 
 .route-active {
   background-color: var(--primary-color);
-}
-
-.setting {
-  width: 400px;
-  height: 600px;
-}
-
-.login-register {
-  width: 500px;
-  height: 620px;
 }
 </style>

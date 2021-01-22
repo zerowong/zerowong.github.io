@@ -1,7 +1,7 @@
 <template>
   <div class="btn-bar">
-    <message-btn :config="tooltipConfig"></message-btn>
-    <booklist-btn :config="tooltipConfig"></booklist-btn>
+    <message-btn class="btn"></message-btn>
+    <booklist-btn class="btn"></booklist-btn>
     <transition name="el-zoom-in-center">
       <popup-window
         title="留言"
@@ -31,12 +31,6 @@ export default {
     PopupWindow,
     Messages,
   },
-  data: () => ({
-    tooltipConfig: {
-      placement: 'top',
-      transition: 'el-zoom-in-bottom',
-    },
-  }),
   computed: {
     windowOpen() {
       return this.$store.state.windowOpen
@@ -65,11 +59,28 @@ export default {
 /* 底部按钮栏按钮位置 */
 .btn {
   position: relative;
-  bottom: 15px;
+  bottom: 30px;
+}
+</style>
+
+<style>
+.btn > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-/* 底部按钮栏hover动效 */
-.btn:hover {
+.btn .iconfont {
+  transition: transform 0.1s;
+  font-size: var(--primary-btn-size);
+}
+
+.btn:hover .iconfont {
   transform: scale(1.5) translateY(-10px);
+}
+
+.btn > span > span {
+  color: white;
+  font-size: small;
 }
 </style>

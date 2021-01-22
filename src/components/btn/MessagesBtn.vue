@@ -1,15 +1,13 @@
 <template>
-  <el-tooltip content="留言" :placement="config.placement" :transition="config.transition">
-    <el-button class="btn" type="text" @click="open">
-      <i class="iconfont icon-messages"></i>
-    </el-button>
-  </el-tooltip>
+  <el-button type="text" @click="open">
+    <i class="iconfont icon-messages"></i>
+    <span>留言</span>
+  </el-button>
 </template>
 
 <script>
 export default {
   name: 'MessagesBtn',
-  props: ['config'],
   methods: {
     open() {
       this.$store.commit('updateWindow', { name: 'messages', val: true })
@@ -19,8 +17,7 @@ export default {
 </script>
 
 <style scoped>
-.iconfont {
-  font-size: var(--primary-btn-size);
+.icon-messages {
   color: #3dc3c6;
 }
 </style>

@@ -1,9 +1,7 @@
 <template>
-  <el-tooltip content="设置" placement="bottom" transition="el-zoom-in-top">
-    <el-button class="btn" type="text" @click="open">
-      <i class="iconfont icon-setting"></i>
-    </el-button>
-  </el-tooltip>
+  <el-button class="setting" type="text" @click="open">
+    <i class="iconfont icon-setting"></i>
+  </el-button>
 </template>
 
 <script>
@@ -18,16 +16,18 @@ export default {
 </script>
 
 <style scoped>
-.btn {
+.setting {
   display: block;
+  transition: transform 0.5s;
+  padding: 0;
 }
 
-.btn:hover {
-  transform: scale(1.5);
+.setting:hover {
+  transform: rotate(0.5turn);
 }
 
 .iconfont {
-  font-size: 35px;
+  font-size: 40px;
   color: #7a80fc;
 }
 </style>
