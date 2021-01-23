@@ -39,12 +39,18 @@
         resize="none"
         show-word-limit
       ></el-input>
-      <el-button class="submit-btn" type="primary" @click="submitMessage">发送</el-button>
+      <el-button class="submit-btn" type="primary" @click="onSend">发送</el-button>
       <popover
-        class="input-empty-popover"
+        class="send-message-popover"
         content="你还没有留言!"
         v-if="inputEmpty"
         :visible.sync="inputEmpty"
+      ></popover>
+      <popover
+        class="send-message-popover"
+        content="操作太频繁了"
+        v-if="sendLimitPopover"
+        :visible.sync="sendLimitPopover"
       ></popover>
     </div>
   </div>
@@ -67,6 +73,8 @@ export default {
     inputEmpty: false,
     currentPage: 1,
     messagesLength: 0,
+    sendLimit: false,
+    sendLimitPopover: false,
   }),
   computed: {
     ...mapState(['errorMsg']),
@@ -86,27 +94,36 @@ export default {
       const { data } = await axios.get('/messages/length')
       this.messagesLength = data
     },
-    async submitMessage() {
+    onSend() {
       if (this.input) {
-        const message = {
-          content: this.input,
-        }
-        try {
-          await axios.post('/messages', message)
-          this.input = ''
-          this.getMessageLength()
-          this.getMessages(1)
-          this.currentPage = 1
-        } catch (e) {
-          Message.error(this.errorMsg.sendFailure)
+        // 操作频率限制
+        if (!this.sendLimit) {
+          this.sendMessage()
+          this.sendLimit = true
+          setTimeout(() => {
+            this.sendLimit = false
+          }, 2000)
+        } else {
+          this.sendLimitPopover = true
         }
       } else {
         this.inputEmpty = true
       }
     },
+    async sendMessage() {
+      try {
+        await axios.post('/messages', { content: this.input })
+        this.input = ''
+        this.getMessageLength()
+        this.getMessages(1)
+        this.currentPage = 1
+      } catch (e) {
+        Message.error(this.errorMsg.sendFailure)
+      }
+    },
     handleCurrentChange(toPage) {
       // 请求过的不再请求
-      if (this.messages[toPage - 1] === undefined) {
+      if (!this.messages[toPage - 1]) {
         this.getMessages(toPage)
       }
       this.currentPage = toPage
@@ -183,7 +200,7 @@ export default {
   margin-right: 10px;
 }
 
-.input-empty-popover {
+.send-message-popover {
   right: 0;
   bottom: 87px;
 }
