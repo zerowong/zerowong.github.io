@@ -21,6 +21,7 @@ export default new Vuex.Store({
       badPass: '密码错误',
       authExpired: '用户认证已过期，请重新登录',
       sendFailure: '发送失败',
+      notLogined: '还未登录',
     },
     windowOpen: {
       // login-register

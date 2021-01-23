@@ -15,15 +15,19 @@
       ></el-pagination>
     </div>
     <div class="body">
-      <div class="message-item" v-for="(item, index) in messages[currentPage - 1]" :key="index">
-        <el-avatar class="avatar" :src="item.user.avatar" :size="60">
-          {{ item.user.name[0] }}
+      <div class="message" v-for="(message, index) in messages[currentPage - 1]" :key="index">
+        <el-avatar class="avatar" :src="message.user.avatar" :size="60">
+          {{ message.user.name[0] }}
         </el-avatar>
         <div>
-          <div class="name">{{ item.user.name }}</div>
-          <div class="content">{{ item.content }}</div>
+          <div class="name">{{ message.user.name }}</div>
+          <div class="content">{{ message.content }}</div>
           <div class="operation">
-            <span class="date">{{ item.date | dateFromNow }}</span>
+            <span class="date">{{ message.date | dateFromNow }}</span>
+            <el-button class="thumbsup" type="text" @click="onThumbsUp(message)">
+              <i class="iconfont" :class="checkThumbsUped(message)"></i>
+            </el-button>
+            <span class="thumbsup-text">{{ message.thumbsUpUserList.length }}</span>
           </div>
         </div>
       </div>
@@ -49,8 +53,8 @@
       <popover
         class="send-message-popover"
         content="操作太频繁了"
-        v-if="sendLimitPopover"
-        :visible.sync="sendLimitPopover"
+        v-if="limitPopover"
+        :visible.sync="limitPopover"
       ></popover>
     </div>
   </div>
@@ -59,6 +63,7 @@
 <script>
 import { mapState } from 'vuex'
 import { Message } from 'element-ui'
+import throttle from 'lodash-es/throttle'
 import axios from '../../utils/axios'
 import Popover from '../Popover.vue'
 
@@ -73,18 +78,23 @@ export default {
     inputEmpty: false,
     currentPage: 1,
     messagesLength: 0,
+    // 发留言频率限制
     sendLimit: false,
-    sendLimitPopover: false,
+    // 留言频率限制的popover用户提示
+    limitPopover: false,
+    // 上次点赞的留言id
+    lastThumbsUp: -1,
   }),
   computed: {
-    ...mapState(['errorMsg']),
+    ...mapState(['errorMsg', 'user']),
   },
   methods: {
     async getMessages(index = 1) {
       this.messageLoading = true
       try {
         const { data } = await axios.get(`/messages?sort=date&order=desc&page=${index}`)
-        this.messages[index - 1] = data
+        // 直接赋值没有响应式的变化侦测
+        this.$set(this.messages, index - 1, data)
       } catch (e) {
         Message.error(this.errorMsg.universal)
       }
@@ -95,6 +105,10 @@ export default {
       this.messagesLength = data
     },
     onSend() {
+      if (!this.$store.getters.logined) {
+        Message.error(this.errorMsg.notLogined)
+        return
+      }
       if (this.input) {
         // 操作频率限制
         if (!this.sendLimit) {
@@ -104,7 +118,7 @@ export default {
             this.sendLimit = false
           }, 2000)
         } else {
-          this.sendLimitPopover = true
+          this.limitPopover = true
         }
       } else {
         this.inputEmpty = true
@@ -128,8 +142,40 @@ export default {
       }
       this.currentPage = toPage
     },
+    // 是否已点赞
+    checkThumbsUped(message) {
+      //                                               可能未登录
+      return message.thumbsUpUserList.includes(this.user?._id) ? 'icon-good-fill' : 'icon-good'
+    },
+    onThumbsUp(message) {
+      if (!this.$store.getters.logined) {
+        Message.error(this.errorMsg.notLogined)
+        return
+      }
+      const indexOfUser = message.thumbsUpUserList.indexOf(this.user._id)
+      if (indexOfUser === -1) {
+        message.thumbsUpUserList.push(this.user._id)
+      } else {
+        message.thumbsUpUserList.splice(indexOfUser, 1)
+      }
+      if (message._id === this.lastThumbsUp) {
+        // 反复点击时节流
+        this.postThumbsUpThrottle(message._id)
+      } else {
+        this.postThumbsUp(message._id)
+      }
+      this.lastThumbsUp = message._id
+    },
+    async postThumbsUp(_messageId) {
+      try {
+        await axios.post('/messages/thumbsUp', { messageId: _messageId })
+      } catch (e) {
+        Message.error(this.errorMsg.universal)
+      }
+    },
   },
   mounted() {
+    this.postThumbsUpThrottle = throttle(this.postThumbsUp, 5000, { leading: false })
     this.getMessageLength()
     this.getMessages(1)
   },
@@ -152,7 +198,7 @@ export default {
   overflow-y: scroll;
 }
 
-.message-item {
+.message {
   display: flex;
   margin: 20px 0;
 }
@@ -181,9 +227,31 @@ export default {
   margin-top: 10px;
 }
 
-.date {
+.operation .iconfont {
+  font-size: 25px;
+}
+
+.thumbsup {
+  margin-left: 15px;
+  padding: 0;
+}
+
+.icon-good {
+  color: #99a2aa;
+}
+
+.icon-good:hover {
+  color: var(--primary-color);
+}
+
+.icon-good-fill {
+  color: var(--primary-color);
+}
+
+.date,
+.thumbsup-text {
   font-size: small;
-  opacity: 0.5;
+  color: #99a2aa;
 }
 
 .editor {

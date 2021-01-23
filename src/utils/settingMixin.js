@@ -20,8 +20,8 @@ const settingMixin = {
     darkModeChange(val) {
       this.rootStyle.setProperty('--blog-bgcolor', val ? 'var(--darkmode-bgcolor)' : 'white')
       this.rootStyle.setProperty('--blog-color', val ? 'white' : 'black')
-      //                                                   深灰色       米黄色
-      this.rootStyle.setProperty('--input-bgcolor', val ? '#2f3133' : '#f7eed6')
+      //                                                   深灰色       浅灰色
+      this.rootStyle.setProperty('--input-bgcolor', val ? '#2f3133' : '#f4f5f7')
       this.colorPicker(val ? this.color[5] : this.color[0])
       window.localStorage.setItem('config', JSON.stringify(this.config))
     },
