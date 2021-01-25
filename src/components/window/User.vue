@@ -23,12 +23,8 @@ export default {
       return [
         { name: '邮箱', value: this.user.mail },
         {
-          name: '注册时间',
-          value: filters.date(this.user.registerDate),
-        },
-        {
-          name: '密码',
-          value: `最近修改于 ${filters.date(this.user.passModified)}`,
+          name: '注册于',
+          value: filters.date(this.user.registeredAt),
         },
       ]
     },
@@ -85,7 +81,7 @@ export default {
 </style>
 
 <style>
-.el-card__body {
+.profile-card .el-card__body {
   display: flex;
   justify-content: space-between;
 }

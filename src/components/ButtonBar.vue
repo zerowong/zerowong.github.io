@@ -4,11 +4,12 @@
     <booklist-btn class="btn"></booklist-btn>
     <transition name="el-zoom-in-center">
       <popup-window
+        key="messages"
         title="留言"
         :moveable="true"
         windowName="messages"
-        :width="600"
-        :height="850"
+        :width="700"
+        :height="900"
         v-if="windowOpen.messages"
       >
         <messages></messages>

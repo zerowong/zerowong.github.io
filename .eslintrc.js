@@ -15,6 +15,10 @@ module.exports = {
     'no-plusplus': ['error', { allowForLoopAfterthoughts: true }],
     'no-param-reassign': ['error', { props: false }],
     'no-underscore-dangle': 'off',
+    'comma-dangle': [
+      'error',
+      { arrays: 'always-multiline', objects: 'always-multiline', functions: 'never' },
+    ],
   },
   overrides: [
     {
