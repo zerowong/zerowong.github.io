@@ -4,7 +4,27 @@
       {{ message.user.name[0] }}
     </el-avatar>
     <div class="message-body">
-      <div class="name" style="margin-bottom: 10px">{{ message.user.name }}</div>
+      <el-popover
+        placement="top-start"
+        trigger="hover"
+        :visible-arrow="false"
+        :open-delay="200"
+        :tabindex="-1"
+      >
+        <div class="user-popover">
+          <el-avatar class="avatar" :src="message.user.avatar" :size="60">
+            {{ message.user.name[0] }}
+          </el-avatar>
+          <div class="user-popover-profile">
+            <span class="name">{{ message.user.name }}</span>
+            <i v-if="isOnline(message.user)" class="iconfont icon-online">在线</i>
+            <i v-else class="iconfont icon-offline">
+              {{ message.user.lastActiveAt | dateFromNow }}
+            </i>
+          </div>
+        </div>
+        <span class="name" slot="reference">{{ message.user.name }}</span>
+      </el-popover>
       <div class="content">{{ message.content }}</div>
       <div class="operation">
         <span class="operation-text">{{ message.date | dateFromNow }}</span>
@@ -25,10 +45,50 @@
           </el-avatar>
           <div>
             <div class="content">
-              <span class="name">{{ reply.user.name }}</span>
+              <el-popover
+                placement="top-start"
+                trigger="hover"
+                :visible-arrow="false"
+                :open-delay="200"
+                :tabindex="-1"
+              >
+                <div class="user-popover">
+                  <el-avatar class="avatar" :src="reply.user.avatar" :size="60">
+                    {{ reply.user.name[0] }}
+                  </el-avatar>
+                  <div class="user-popover-profile">
+                    <span class="name">{{ reply.user.name }}</span>
+                    <i v-if="isOnline(reply.user)" class="iconfont icon-online">在线</i>
+                    <i v-else class="iconfont icon-offline">
+                      {{ reply.user.lastActiveAt | dateFromNow }}
+                    </i>
+                  </div>
+                </div>
+                <span class="name" slot="reference">{{ reply.user.name }}</span>
+              </el-popover>
               <template v-if="reply.to">
-                <span>回复 </span>
-                <span class="name">@{{ reply.to.name }}</span>
+                <span>回复</span>
+                <el-popover
+                  placement="top-start"
+                  trigger="hover"
+                  :visible-arrow="false"
+                  :open-delay="200"
+                  :tabindex="-1"
+                >
+                  <div class="user-popover">
+                    <el-avatar class="avatar" :src="reply.to.avatar" :size="60">
+                      {{ reply.to.name[0] }}
+                    </el-avatar>
+                    <div class="user-popover-profile">
+                      <span class="name">{{ reply.to.name }}</span>
+                      <i v-if="isOnline(reply.to)" class="iconfont icon-online">在线</i>
+                      <i v-else class="iconfont icon-offline">
+                        {{ reply.to.lastActiveAt | dateFromNow }}
+                      </i>
+                    </div>
+                  </div>
+                  <span class="name" slot="reference">@{{ reply.to.name }}</span>
+                </el-popover>
                 <span>: </span>
               </template>
               <span>{{ reply.content }}</span>
@@ -41,6 +101,15 @@
             </div>
           </div>
         </div>
+        <el-pagination
+          small
+          class="pagination"
+          layout="total, prev, pager, next"
+          :page-count="5"
+          :current-page="currentPage"
+          :total="message.repliesLength"
+          @current-change="handleCurrentChange"
+        ></el-pagination>
       </template>
       <template v-if="showEditor">
         <reply-editor
@@ -126,6 +195,12 @@ export default {
     refreshCurrentPage() {
       this.$emit('refresh-current-page')
     },
+    handleCurrentChange(toPage) {
+      this.currentPage = toPage
+    },
+    isOnline(user) {
+      return Date.now() - Date.parse(user.lastActiveAt) < 900000
+    },
   },
   created() {
     // 创建节流函数
@@ -159,6 +234,7 @@ export default {
   /* 没有头像或头像加载失败时的头像文字 */
   font-size: 2rem;
   min-width: 60px;
+  cursor: pointer;
 }
 
 /* 留言用户名字文本 */
@@ -167,6 +243,7 @@ export default {
   color: var(--primary-color);
   /* 用于留言回复 */
   margin-right: 10px;
+  cursor: pointer;
 }
 
 /* 留言内容文本 */
@@ -175,7 +252,7 @@ export default {
   word-break: break-all;
   /* https://developer.mozilla.org/zh-CN/docs/Web/CSS/white-space */
   white-space: pre-wrap;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 /* 操作栏 */
@@ -222,5 +299,24 @@ export default {
   margin: 2px 10px 0 0;
   font-size: 1rem;
   min-width: 30px;
+}
+
+.user-popover {
+  display: flex;
+}
+
+.user-popover-profile {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-online {
+  color: green;
+}
+
+.icon-offline {
+  color: red;
 }
 </style>

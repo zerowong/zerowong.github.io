@@ -19,6 +19,7 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Popover,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
@@ -50,6 +51,7 @@ const elementComponents = [
   Dropdown,
   DropdownMenu,
   DropdownItem,
+  Popover,
 ]
 
 elementComponents.forEach((component) => {

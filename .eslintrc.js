@@ -17,7 +17,13 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'comma-dangle': [
       'error',
-      { arrays: 'always-multiline', objects: 'always-multiline', functions: 'never' },
+      {
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        functions: 'never',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+      },
     ],
   },
   overrides: [
