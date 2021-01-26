@@ -41,7 +41,7 @@
 
 <script>
 import { backgroundImage } from '../../utils/img-urls'
-import settingMixin from '../../utils/settingMixin'
+import settingMixin from '../../utils/setting-mixin'
 
 export default {
   name: 'Setting',

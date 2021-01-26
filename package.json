@@ -13,6 +13,7 @@
     "axios": "^0.21.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.14.1",
+    "highlight.js": "^10.5.0",
     "lodash-es": "^4.17.20",
     "moment": "^2.29.1",
     "overlayscrollbars": "^1.13.1",

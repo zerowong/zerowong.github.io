@@ -24,6 +24,7 @@ import {
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
 import 'overlayscrollbars/css/OverlayScrollbars.min.css'
+import 'highlight.js/styles/atom-one-dark.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'

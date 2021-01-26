@@ -138,3 +138,16 @@ export default {
   padding: 0;
 }
 </style>
+
+<style>
+/* .pw-body pre {
+  background-color: var(--code-bgcolor);
+  padding: 15px;
+  overflow: scroll;
+}
+
+.pw-body pre > code {
+  font-family: 'Lucida Sans Typewriter', Consolas;
+  font-size: large;
+} */
+</style>

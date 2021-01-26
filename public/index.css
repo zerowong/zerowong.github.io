@@ -1,4 +1,5 @@
 @import url('//at.alicdn.com/t/font_2218836_jbomfgaf0h.css');
+@import './github-markdown.css';
 
 :root {
   --pw-header-bgcolor: #e2e2e2;
@@ -7,8 +8,8 @@
   --primary-btn-size: 60px;
   --blog-bgcolor: white;
   --blog-color: black;
-  --darkmode-bgcolor: #252d38;
   --input-bgcolor: #f4f5f7;
+  --code-bgcolor: #f8f8f8;
 }
 
 body {
@@ -16,8 +17,8 @@ body {
   background-color: var(--blog-bgcolor);
   margin: 0;
   padding: 0;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    '微软雅黑', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif,
+    Apple Color Emoji, Segoe UI Emoji;
 }
 
 #app {
@@ -26,6 +27,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -39,4 +41,9 @@ body {
 
 ::-webkit-scrollbar-track {
   background-color: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  width: 0;
+  height: 0;
 }

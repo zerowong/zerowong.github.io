@@ -35,7 +35,7 @@
 import { mapState } from 'vuex'
 import { Message } from 'element-ui'
 import axios from '../../utils/axios'
-import MessageItem from './messageItem.vue'
+import MessageItem from './MessageItem.vue'
 import MessagesEditor from './MessagesEditor.vue'
 
 export default {
@@ -55,7 +55,7 @@ export default {
     async getMessages(index = 1) {
       this.messagesLoading = true
       try {
-        const { data } = await axios.get(`/messages?sort=date&order=desc&page=${index}`)
+        const { data } = await axios.get(`/messages?sort=date&page=${index}`)
         // 直接赋值没有响应式的变化侦测
         this.$set(this.messages, index - 1, data)
       } catch (e) {

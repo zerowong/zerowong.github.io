@@ -1,24 +1,25 @@
 <template>
   <div class="blog">
     <div class="list">
-      <popup-window title="blogs">
+      <popup-window title="Posts">
         <div
           class="list-inner"
-          v-loading="blogsLoading"
+          v-loading="postsLoading"
           element-loading-background="var(--blog-bgcolor)"
-          v-infinite-scroll="loadBlogs"
+          v-infinite-scroll="loadPosts"
           infinite-scroll-immediate="false"
           infinite-scroll-disabled="infiniteScrollDisable"
         >
           <el-card
-            :class="['list-card', { 'list-card-active': listCardActiveIndex[index] }]"
-            v-for="(blog, index) in blogs"
+            class="list-card"
+            :class="{ 'list-card-active': listCardActiveIndex[index] }"
+            v-for="(post, index) in posts"
             :key="index"
             @click.native="changeActiveIndex(index)"
             shadow="hover"
           >
-            <h4 class="list-card-title">{{ blog.title }}</h4>
-            <div class="list-card-date">{{ blog.date | date }}</div>
+            <h4 class="list-card-title">{{ post.title }}</h4>
+            <div class="list-card-date">{{ post.date | date }}</div>
           </el-card>
           <div
             class="infinite-scroll-loading"
@@ -31,15 +32,13 @@
       </popup-window>
     </div>
     <div class="content-container">
-      <popup-window :title="currentBlog.title">
+      <popup-window :title="currentPost.title">
         <div
           class="content-container-inner"
-          v-loading="blogsLoading"
+          v-loading="postsLoading"
           element-loading-background="var(--blog-bgcolor)"
         >
-          <div>
-            <div class="content" v-html="currentBlog.content"></div>
-          </div>
+          <div class="markdown-body" v-html="currentPost.content"></div>
         </div>
       </popup-window>
     </div>
@@ -54,24 +53,23 @@ import PopupWindow from '../components/PopupWindow.vue'
 
 export default {
   name: 'Blog',
+  components: { PopupWindow },
   data: () => ({
-    blogs: [],
-    blogsLoading: false,
+    posts: [],
+    postsLoading: false,
     currentBlogIndex: 0,
+    // 动态class信号数组
     listCardActiveIndex: [],
     infiniteScrollLoading: false,
     noMore: false,
-    blogsNextPage: 2,
+    nextPage: 2,
   }),
-  components: {
-    PopupWindow,
-  },
   computed: {
     ...mapState(['errorMsg']),
-    currentBlog() {
+    currentPost() {
       // 未取得数据时返回临时对象
-      return this.blogs.length !== 0
-        ? this.blogs[this.currentBlogIndex]
+      return this.posts.length !== 0
+        ? this.posts[this.currentBlogIndex]
         : { title: '', content: '' }
     },
     infiniteScrollDisable() {
@@ -79,15 +77,16 @@ export default {
     },
   },
   methods: {
-    async getBlogs() {
-      this.blogsLoading = true
+    async getPosts() {
+      this.postsLoading = true
       try {
-        this.blogs = await (await axios.get('/blogs?_sort=date&_order=desc&_page=1')).data
-        this.initListCardActiveIndex(this.blogs.length)
+        const { data } = await axios.get('/posts?sort=date&page=1')
+        this.posts = data
+        this.initListCardActiveIndex(this.posts.length)
       } catch (e) {
-        Message.error(this.errorMsg[0])
+        Message.error(this.errorMsg.universal)
       }
-      this.blogsLoading = false
+      this.postsLoading = false
     },
     initListCardActiveIndex(length) {
       this.listCardActiveIndex.length = length
@@ -101,29 +100,26 @@ export default {
       }
       this.listCardActiveIndex[val] = true
     },
-    async loadBlogs() {
+    async loadPosts() {
       this.infiniteScrollLoading = true
       try {
-        const { data } = await axios.get(
-          // eslint-disable-next-line comma-dangle
-          `/blogs?_sort=date&_order=desc&_page=${this.blogsNextPage}`
-        )
+        const { data } = await axios.get(`/posts?sort=date&page=${this.nextPage}`)
         if (!data.length) {
           this.noMore = true
           this.infiniteScrollLoading = false
           return
         }
-        this.blogs = this.blogs.concat(data)
-        this.initListCardActiveIndex(this.blogs.length)
-        this.blogsNextPage += 1
+        this.posts = this.posts.concat(data)
+        this.initListCardActiveIndex(this.posts.length)
+        this.nextPage += 1
       } catch (e) {
-        Message.error(this.errorMsg[0])
+        Message.error(this.errorMsg.universal)
       }
       this.infiniteScrollLoading = false
     },
   },
   mounted() {
-    this.getBlogs()
+    this.getPosts()
   },
 }
 </script>
@@ -146,19 +142,11 @@ export default {
 
 .list-inner,
 .content-container-inner {
-  background-color: var(--blog-bgcolor);
-  color: var(--blog-color);
   height: 100%;
 }
 
 .list-inner {
   padding: 0 15px;
-}
-
-.content-container-inner > div {
-  width: 80%;
-  margin: 0 auto;
-  padding: 30px 0;
 }
 
 .list-card {
@@ -203,5 +191,13 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 80%;
+  margin: 0 auto;
+  padding: 45px;
 }
 </style>

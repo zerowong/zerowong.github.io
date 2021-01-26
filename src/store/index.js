@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { Message } from 'element-ui'
-import parse from '../utils/cookieParse'
+import parse from '../utils/cookie-parse'
 import axios from '../utils/axios'
 
 Vue.use(Vuex)
@@ -33,7 +33,6 @@ export default new Vuex.Store({
     user: {},
   }),
   getters: {
-    // eslint-disable-next-line no-underscore-dangle
     logined: ({ user }) => user._id !== undefined,
   },
   mutations: {
