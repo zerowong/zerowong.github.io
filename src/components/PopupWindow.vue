@@ -1,5 +1,5 @@
 <template>
-  <div :class="['pw-container', { 'pw-container-moveable': moveable }]">
+  <div class="pw-container" :class="{ 'pw-container-moveable': moveable }">
     <div class="pw-header" @mousedown.self.left="mouseDown" @mouseup="mouseUp">
       <span class="pw-title">{{ title }}</span>
       <el-button class="pw-header-btn" type="text" v-if="moveable" @click="close">
@@ -13,6 +13,8 @@
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex'
+
 export default {
   name: 'PopupWindow',
   props: {
@@ -34,9 +36,14 @@ export default {
     offsetLeft: 0,
     offsetTop: 0,
   }),
+  computed: { ...mapState(['maxZIndex']) },
   methods: {
+    ...mapMutations(['updateMaxZIndex']),
     mouseDown(event) {
       if (!this.moveable) return
+      // 点击窗口时保持最前
+      this.$el.style.zIndex = this.maxZIndex + 1
+      this.updateMaxZIndex()
       // 取得当前组件相对于视口的位置
       const { left, top } = this.$el.getBoundingClientRect()
       // 计算鼠标按下时坐标距组件左上角的偏移量
@@ -66,6 +73,9 @@ export default {
       // 居中
       this.$el.style.left = `calc(50% - ${this.width / 2}px)`
       this.$el.style.top = `calc(50% - ${this.height / 2}px)`
+      // 打开窗口时保持最前
+      this.$el.style.zIndex = this.maxZIndex + 1
+      this.updateMaxZIndex()
     },
   },
   mounted() {
@@ -84,21 +94,20 @@ export default {
 
 <style scoped>
 .pw-container {
-  /* 默认为100%，设置为可拖动时提供确定数值 */
+  /* 默认为100%，设置为可拖动时通过props提供 */
   height: 100%;
+  border-radius: 18px;
+  box-shadow: 0 0 10px 0 black;
 }
 
 .pw-container-moveable {
   /* 限制在可视窗口内，不影响滚动 */
   position: fixed;
-  /* 确保在其它元素之上 */
-  z-index: 10000;
 }
 
 .pw-body {
-  height: calc(100% - 42px);
+  height: calc(100% - 40px);
   width: 100%;
-  border: 1px solid black;
   border-radius: 0 0 18px 18px;
   /* 禁用滚动防止覆盖border-radius样式 */
   overflow: hidden;
@@ -119,8 +128,6 @@ export default {
   width: 100%;
   height: 40px;
   background-color: var(--pw-header-bgcolor);
-  border: 1px solid black;
-  border-bottom: 0;
   border-radius: 18px 18px 0 0;
 }
 
@@ -137,17 +144,4 @@ export default {
   color: red;
   padding: 0;
 }
-</style>
-
-<style>
-/* .pw-body pre {
-  background-color: var(--code-bgcolor);
-  padding: 15px;
-  overflow: scroll;
-}
-
-.pw-body pre > code {
-  font-family: 'Lucida Sans Typewriter', Consolas;
-  font-size: large;
-} */
 </style>

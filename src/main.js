@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import {
-  Container,
-  Header,
-  Main,
   Button,
   Tooltip,
   Link,
@@ -33,9 +30,6 @@ import filters from './utils/filters'
 Vue.config.productionTip = false
 
 const elementComponents = [
-  Container,
-  Header,
-  Main,
   Button,
   Tooltip,
   Link,

@@ -31,6 +31,8 @@ export default new Vuex.Store({
       user: false,
     },
     user: {},
+    // 每次打开或点击窗口都会使其自增1，从而使窗口保持最前，只作用于可拖动窗口
+    maxZIndex: 0,
   }),
   getters: {
     logined: ({ user }) => user._id !== undefined,
@@ -41,6 +43,9 @@ export default new Vuex.Store({
     },
     updateUser(state, user) {
       state.user = user
+    },
+    updateMaxZIndex(state) {
+      state.maxZIndex += 1
     },
   },
   actions: {

@@ -1,28 +1,79 @@
 <template>
   <overlay-scrollbars :options="{ scrollbars: { autoHide: 'scroll' } }">
     <div id="app">
-      <el-container>
-        <el-header>
-          <nav-menu></nav-menu>
-        </el-header>
-        <el-main>
-          <router-view></router-view>
-        </el-main>
-      </el-container>
+      <nav-menu></nav-menu>
+      <main id="main">
+        <router-view></router-view>
+      </main>
+      <div id="popup-window-wrapper">
+        <transition name="el-zoom-in-center">
+          <popup-window
+            title="设置"
+            :moveable="true"
+            windowName="setting"
+            :width="400"
+            :height="600"
+            v-if="windowOpen.setting"
+          >
+            <setting :config="config"></setting>
+          </popup-window>
+        </transition>
+        <transition name="el-zoom-in-center">
+          <popup-window
+            title="个人资料"
+            :moveable="true"
+            windowName="user"
+            :width="500"
+            :height="600"
+            v-if="windowOpen.user"
+          >
+            <user></user>
+          </popup-window>
+        </transition>
+        <transition name="el-zoom-in-center">
+          <popup-window
+            :moveable="true"
+            windowName="lr"
+            :width="500"
+            :height="620"
+            v-if="windowOpen.lr"
+          >
+            <login-register></login-register>
+          </popup-window>
+        </transition>
+      </div>
     </div>
   </overlay-scrollbars>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import NavMenu from './components/NavMenu.vue'
+import { mapActions, mapState } from 'vuex'
 import axios from './utils/axios'
+import settingMixin from './utils/setting-mixin'
+import NavMenu from './components/NavMenu.vue'
+import PopupWindow from './components/PopupWindow.vue'
+import Setting from './components/window/Setting.vue'
+import User from './components/window/User.vue'
+import LoginRegister from './components/window/LoginRegister.vue'
 
 export default {
   name: 'App',
+  mixins: [settingMixin],
   components: {
     NavMenu,
+    PopupWindow,
+    Setting,
+    User,
+    LoginRegister,
   },
+  data: () => ({
+    config: {
+      darkmode: false,
+      pwHeaderBgColor: '#e2e2e2',
+      backgroundImage: 'https://cdn.apasser.xyz/blog/escape.jpg',
+    },
+  }),
+  computed: { ...mapState(['windowOpen']) },
   methods: {
     ...mapActions(['checkExp', 'getUser']),
     polling() {
@@ -30,20 +81,39 @@ export default {
       setTimeout(this.polling, 840000)
     },
   },
-  mounted() {
+  created() {
     this.checkExp()
     this.getUser()
     setTimeout(this.polling, 840000)
+  },
+  mounted() {
+    const initConfig = localStorage.getItem('config')
+    if (initConfig) {
+      this.config = JSON.parse(initConfig)
+    }
+    this.darkModeChange(this.config.darkmode)
+    this.colorPicker(this.config.pwHeaderBgColor)
+    this.imagePicker(this.config.backgroundImage)
   },
 }
 </script>
 
 <style scoped>
-.el-header {
-  background-color: var(--blog-bgcolor);
+#app {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
-.el-container {
-  height: inherit;
+#main {
+  height: calc(100% - 60px);
+  margin-top: 60px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+#popup-window-wrapper {
+  position: absolute;
 }
 </style>
