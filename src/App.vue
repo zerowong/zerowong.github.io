@@ -28,6 +28,7 @@ export default {
   mounted() {
     this.checkExp()
     this.getUser()
+    setInterval(() => this.getUser(), 840000)
   },
 }
 </script>

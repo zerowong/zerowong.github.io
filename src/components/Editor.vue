@@ -27,6 +27,8 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
+import { Message } from 'element-ui'
 import Popover from './Popover.vue'
 
 export default {
@@ -34,6 +36,10 @@ export default {
   components: { Popover },
   props: {
     placeholder: String,
+  },
+  computed: {
+    ...mapState(['errorMsg']),
+    ...mapGetters(['logined']),
   },
   data: () => ({
     input: '',
@@ -44,6 +50,28 @@ export default {
     // 发留言频率限制
     sendLimit: false,
   }),
+  methods: {
+    onSend() {
+      if (!this.logined) {
+        Message.error(this.errorMsg.notLogined)
+        return
+      }
+      if (this.input) {
+        // 操作频率限制
+        if (!this.sendLimit) {
+          this.post().catch(() => Message.error(this.errorMsg.universal))
+          this.sendLimit = true
+          setTimeout(() => {
+            this.sendLimit = false
+          }, 2000)
+        } else {
+          this.limitPopover = true
+        }
+      } else {
+        this.emptyPopover = true
+      }
+    },
+  },
 }
 </script>
 

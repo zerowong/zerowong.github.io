@@ -57,7 +57,7 @@ export default {
   data: () => ({
     posts: [],
     postsLoading: false,
-    currentBlogIndex: 0,
+    currentPostIndex: 0,
     // 动态class信号数组
     listCardActiveIndex: [],
     infiniteScrollLoading: false,
@@ -69,7 +69,7 @@ export default {
     currentPost() {
       // 未取得数据时返回临时对象
       return this.posts.length !== 0
-        ? this.posts[this.currentBlogIndex]
+        ? this.posts[this.currentPostIndex]
         : { title: '', content: '' }
     },
     infiniteScrollDisable() {
@@ -94,10 +94,8 @@ export default {
       this.listCardActiveIndex[0] = true
     },
     changeActiveIndex(val) {
-      this.currentBlogIndex = val
-      for (let i = 0; i < this.listCardActiveIndex.length; i++) {
-        this.listCardActiveIndex[i] = false
-      }
+      this.currentPostIndex = val
+      this.listCardActiveIndex.fill(false)
       this.listCardActiveIndex[val] = true
     },
     async loadPosts() {
