@@ -16,6 +16,7 @@
 <script>
 import { mapActions } from 'vuex'
 import NavMenu from './components/NavMenu.vue'
+import axios from './utils/axios'
 
 export default {
   name: 'App',
@@ -24,11 +25,15 @@ export default {
   },
   methods: {
     ...mapActions(['checkExp', 'getUser']),
+    polling() {
+      axios.patch('/users/polling')
+      setTimeout(this.polling, 840000)
+    },
   },
   mounted() {
     this.checkExp()
     this.getUser()
-    setInterval(() => this.getUser(), 840000)
+    setTimeout(this.polling, 840000)
   },
 }
 </script>

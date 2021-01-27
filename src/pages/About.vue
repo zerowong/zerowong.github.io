@@ -79,7 +79,7 @@ export default {
     friends: [],
     friendsLoading: false,
     infiniteScrollLoading: false,
-    friendsNextPage: 2,
+    nestPage: 2,
     noMore: false,
   }),
   computed: {
@@ -95,25 +95,25 @@ export default {
     async getFriends() {
       this.friendsLoading = true
       try {
-        this.friends = await (await axios.get('/friends?_page=1')).data
+        this.friends = await (await axios.get('/friends?page=1')).data
       } catch (e) {
-        Message.error(this.errorMsg[0])
+        Message.error(this.errorMsg.universal)
       }
       this.friendsLoading = false
     },
     async loadFriends() {
       this.infiniteScrollLoading = true
       try {
-        const { data } = await axios.get(`/friends?_page=${this.friendsNextPage}`)
+        const { data } = await axios.get(`/friends?page=${this.nestPage}`)
         if (!data.length) {
           this.noMore = true
           this.infiniteScrollLoading = false
           return
         }
         this.friends = this.friends.concat(data)
-        this.friendsNextPage += 1
+        this.nestPage += 1
       } catch (e) {
-        Message.error(this.errorMsg[0])
+        Message.error(this.errorMsg.universal)
       }
       this.infiniteScrollLoading = false
     },
