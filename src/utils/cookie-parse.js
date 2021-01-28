@@ -39,7 +39,9 @@ export default function parse(str) {
     if (val[0] === '"') {
       val = val.slice(1, -1)
     }
-    obj[key] = undefined ?? tryDecode(val)
+    if (obj[key] === undefined) {
+      obj[key] = tryDecode(val)
+    }
   }
   return obj
 }

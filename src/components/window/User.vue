@@ -24,7 +24,7 @@ export default {
         { name: '邮箱', value: this.user.mail },
         {
           name: '注册于',
-          value: filters.date(this.user.registeredAt),
+          value: filters.date(this.user.createdAt),
         },
       ]
     },

@@ -77,7 +77,7 @@ export default {
   methods: {
     ...mapActions(['checkExp', 'getUser']),
     polling() {
-      axios.patch('/users/polling')
+      axios.patch('/user/polling')
       setTimeout(this.polling, 840000)
     },
   },

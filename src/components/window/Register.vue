@@ -78,25 +78,12 @@ export default {
     async handleRegister() {
       this.registerLodaing = true
       try {
-        const { status } = await axios.post('/register', this.register, {
-          validateStatus(_status) {
-            return _status >= 200 && _status < 500
-          },
-        })
-        switch (status) {
-          case 200:
-            this.getUser()
-            this.$store.commit('updateWindow', { name: 'lr', val: false })
-            Message.success(this.errorMsg.registerSuccess)
-            break
-          case 400:
-            Message.info(this.errorMsg.userExits)
-            break
-          default:
-            break
-        }
-      } catch (e) {
-        Message.error(this.errorMsg.server)
+        const { data } = await axios.post('/register', this.register)
+        this.getUser()
+        this.$store.commit('updateWindow', { name: 'lr', val: false })
+        Message.success(data.message)
+      } catch (err) {
+        Message.error(err.response?.data ?? this.errorMsg.universal)
       }
       this.registerLodaing = false
     },

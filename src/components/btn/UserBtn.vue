@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     logout() {
-      axios.get('/logout').finally(() => this.$store.commit('updateUser', {}))
+      axios.get('/logout').finally(() => this.$store.commit('updateUser', null))
     },
     onCommand(command) {
       switch (command) {

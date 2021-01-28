@@ -55,28 +55,12 @@ export default {
     async handleLogin() {
       this.loginLoading = true
       try {
-        const { status } = await axios.post('/login', this.login, {
-          validateStatus(_status) {
-            return _status >= 200 && _status < 500
-          },
-        })
-        switch (status) {
-          case 200:
-            this.getUser()
-            this.$store.commit('updateWindow', { name: 'lr', val: false })
-            Message.success(this.errorMsg.loginSuccess)
-            break
-          case 400:
-            Message.info(this.errorMsg.userNotExits)
-            break
-          case 401:
-            Message.info(this.errorMsg.badPass)
-            break
-          default:
-            break
-        }
-      } catch (e) {
-        Message.error(this.errorMsg.server)
+        const { data } = await axios.post('/login', this.login)
+        this.getUser()
+        this.$store.commit('updateWindow', { name: 'lr', val: false })
+        Message.success(data.message)
+      } catch (err) {
+        Message.error(err.response?.data ?? this.errorMsg.universal)
       }
       this.loginLoading = false
     },
