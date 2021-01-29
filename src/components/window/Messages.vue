@@ -55,17 +55,14 @@ export default {
     async getMessages(index = 1) {
       this.messagesLoading = true
       try {
-        const { data } = await axios.get(`/messages?sort=date&page=${index}`)
+        const { data } = await axios.get(`/messages?sort=createdAt&page=${index}`)
+        this.messagesLength = data.length
         // 直接赋值没有响应式的变化侦测
-        this.$set(this.messages, index - 1, data)
-      } catch (e) {
-        Message.error(this.errorMsg.universal)
+        this.$set(this.messages, index - 1, data.messages)
+      } catch (err) {
+        Message.error(err.response?.data ?? this.errorMsg.universal)
       }
       this.messagesLoading = false
-    },
-    async getMessagesLength() {
-      const { data } = await axios.get('/messages/length')
-      this.messagesLength = data
     },
     handleCurrentChange(toPage) {
       // 请求过的不再请求
@@ -75,7 +72,6 @@ export default {
       this.currentPage = toPage
     },
     refreshPageOne() {
-      this.getMessagesLength()
       this.getMessages()
       this.currentPage = 1
     },
@@ -84,7 +80,6 @@ export default {
     },
   },
   mounted() {
-    this.getMessagesLength()
     this.getMessages()
   },
 }

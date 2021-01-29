@@ -6,7 +6,7 @@ export default {
   name: 'ReplyEditor',
   extends: Editor,
   props: {
-    messageId: Number,
+    messageId: String,
     // 是否回复某个用户
     replyTo: Object,
   },

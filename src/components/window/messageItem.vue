@@ -7,7 +7,7 @@
       <user-popover :user="message.user"></user-popover>
       <div class="content">{{ message.content }}</div>
       <div class="operation">
-        <span class="operation-text">{{ message.date | dateFromNow }}</span>
+        <span class="operation-text">{{ message.createdAt | dateFromNow }}</span>
         <el-button class="operation-btn" type="text" @click="onThumbsUp">
           <i class="iconfont" :class="thumbsUped"></i>
           <span class="operation-text">{{ message.thumbsUpUsers.length }}</span>
@@ -34,7 +34,7 @@
               <span> {{ reply.content }}</span>
             </div>
             <div class="operation">
-              <span class="operation-text">{{ reply.date | dateFromNow }}</span>
+              <span class="operation-text">{{ reply.createdAt | dateFromNow }}</span>
               <el-button class="operation-btn" type="text" @click="onSendInnerReply(reply)"
                 >回复</el-button
               >
@@ -69,7 +69,6 @@ import { mapState, mapGetters } from 'vuex'
 import { Message } from 'element-ui'
 import throttle from 'lodash-es/throttle'
 import axios from '../../utils/axios'
-import sortAndPage from '../../utils/sort-and-page'
 import ReplyEditor from './ReplyEditor.vue'
 import UserPopover from './UserPopover.vue'
 
@@ -117,8 +116,8 @@ export default {
       this.thumbsUp()
     },
     thumbsUp() {
-      axios.patch(`/messages/${this.message._id}/thumbsUp`).catch(() => {
-        Message.error(this.errorMsg.universal)
+      axios.patch(`/messages/${this.message._id}/thumbsUp`).catch((err) => {
+        Message.error(err.response?.data ?? this.errorMsg.universal)
         // 回滚
         this.updateThumbsUpUsers()
       })
@@ -143,14 +142,6 @@ export default {
   created() {
     // 创建节流函数
     this.thumbsUp = throttle(this.thumbsUp, 5000, { leading: false })
-  },
-  mounted() {
-    // 排序且分页
-    this.message.replies = sortAndPage(this.message.replies, 'date')
-  },
-  beforeUpdate() {
-    // 每次数据更新时都要执行一次
-    this.message.replies = sortAndPage(this.message.replies, 'date')
   },
 }
 </script>
