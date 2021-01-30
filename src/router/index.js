@@ -19,6 +19,10 @@ const routes = [
     name: 'About',
     component: () => import('@/pages/About.vue'),
   },
+  {
+    path: '*',
+    component: () => import('@/pages/NotFound.vue'),
+  },
 ]
 
 const router = new VueRouter({
