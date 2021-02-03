@@ -96,8 +96,8 @@ export default {
       this.friendsLoading = true
       try {
         this.friends = await (await axios.get('/friends?page=1')).data
-      } catch (e) {
-        Message.error(this.errorMsg.universal)
+      } catch (err) {
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
       }
       this.friendsLoading = false
     },
@@ -112,8 +112,8 @@ export default {
         }
         this.friends = this.friends.concat(data)
         this.nestPage += 1
-      } catch (e) {
-        Message.error(this.errorMsg.universal)
+      } catch (err) {
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
       }
       this.infiniteScrollLoading = false
     },

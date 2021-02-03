@@ -22,7 +22,6 @@
 </template>
 
 <script>
-import { Message } from 'element-ui'
 import { mapState, mapActions } from 'vuex'
 import axios from '../../utils/axios'
 
@@ -58,9 +57,9 @@ export default {
         const { data } = await axios.post('/login', this.login)
         this.getUser()
         this.$store.commit('updateWindow', { name: 'lr', val: false })
-        Message.success(data.message)
+        this.$notification.success(data.message)
       } catch (err) {
-        Message.error(err.response?.data ?? this.errorMsg.universal)
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
       }
       this.loginLoading = false
     },

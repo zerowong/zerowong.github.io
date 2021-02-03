@@ -75,14 +75,13 @@ export default {
   }),
   computed: { ...mapState(['windowOpen']) },
   methods: {
-    ...mapActions(['checkExp', 'getUser']),
+    ...mapActions(['getUser']),
     polling() {
       axios.patch('/user/polling')
       setTimeout(this.polling, 840000)
     },
   },
   created() {
-    this.checkExp()
     this.getUser()
     setTimeout(this.polling, 840000)
   },

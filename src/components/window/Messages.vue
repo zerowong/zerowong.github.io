@@ -60,7 +60,7 @@ export default {
         // 直接赋值没有响应式的变化侦测
         this.$set(this.messages, index - 1, data.messages)
       } catch (err) {
-        Message.error(err.response?.data ?? this.errorMsg.universal)
+        this.$notification.error(err.response?.data ?? this.errorMsg.universal)
       }
       this.messagesLoading = false
     },

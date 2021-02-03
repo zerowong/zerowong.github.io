@@ -81,9 +81,9 @@ export default {
         const { data } = await axios.post('/register', this.register)
         this.getUser()
         this.$store.commit('updateWindow', { name: 'lr', val: false })
-        Message.success(data.message)
+        this.$notification.success(data.message)
       } catch (err) {
-        Message.error(err.response?.data ?? this.errorMsg.universal)
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
       }
       this.registerLodaing = false
     },

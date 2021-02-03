@@ -28,7 +28,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { Message } from 'element-ui'
 import Popover from './Popover.vue'
 
 export default {
@@ -53,13 +52,15 @@ export default {
   methods: {
     onSend() {
       if (!this.logined) {
-        Message.error(this.errorMsg.notLogined)
+        this.$notification.error(this.errorMsg.notLogined)
         return
       }
       if (this.input) {
         // 操作频率限制
         if (!this.sendLimit) {
-          this.post().catch(() => Message.error(this.errorMsg.universal))
+          this.post().catch((err) => {
+            this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+          })
           this.sendLimit = true
           setTimeout(() => {
             this.sendLimit = false

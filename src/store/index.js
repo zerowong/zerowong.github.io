@@ -1,7 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { Message } from 'element-ui'
-import parse from '../utils/cookie-parse'
 import axios from '../utils/axios'
 
 Vue.use(Vuex)
@@ -10,7 +8,7 @@ export default new Vuex.Store({
   strict: process.env.NODE_ENV === 'development',
   state: () => ({
     errorMsg: {
-      universal: '发生了一些错误',
+      networkError: '网络错误',
       sendFailure: '发送失败',
       notLogined: '还未登录',
     },
@@ -40,23 +38,12 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async checkExp({ state: { errorMsg } }) {
-      const { user_exp: exp } = parse(document.cookie)
-      //                                          UTC+8      1 day
-      if (exp && parseInt(exp, 10) - Date.now() - 28800000 < 86400000) {
-        try {
-          await axios.get('/login')
-        } catch (err) {
-          Message.error(err.response?.data ?? errorMsg.universal)
-        }
-      }
-    },
-    async getUser({ commit, state: { errorMsg } }) {
+    async getUser({ commit }) {
       try {
         const { data } = await axios.get('/user/auth')
         commit('updateUser', data)
       } catch (err) {
-        Message.error(err.response?.data ?? errorMsg.universal)
+        // do nothing
       }
     },
   },

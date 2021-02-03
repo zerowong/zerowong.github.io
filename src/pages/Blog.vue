@@ -83,8 +83,8 @@ export default {
         const { data } = await axios.get('/posts?sort=date&page=1')
         this.posts = data
         this.initListCardActiveIndex(this.posts.length)
-      } catch (e) {
-        Message.error(this.errorMsg.universal)
+      } catch (err) {
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
       }
       this.postsLoading = false
     },
@@ -110,8 +110,8 @@ export default {
         this.posts = this.posts.concat(data)
         this.initListCardActiveIndex(this.posts.length)
         this.nextPage += 1
-      } catch (e) {
-        Message.error(this.errorMsg.universal)
+      } catch (err) {
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
       }
       this.infiniteScrollLoading = false
     },

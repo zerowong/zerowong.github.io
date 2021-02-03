@@ -66,7 +66,6 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { Message } from 'element-ui'
 import throttle from 'lodash-es/throttle'
 import axios from '../../utils/axios'
 import ReplyEditor from './ReplyEditor.vue'
@@ -109,7 +108,7 @@ export default {
     },
     onThumbsUp() {
       if (!this.logined) {
-        Message.error(this.errorMsg.notLogined)
+        this.$notification.error(this.errorMsg.notLogined)
         return
       }
       this.updateThumbsUpUsers()
@@ -117,7 +116,7 @@ export default {
     },
     thumbsUp() {
       axios.patch(`/messages/${this.message._id}/thumbsUp`).catch((err) => {
-        Message.error(err.response?.data ?? this.errorMsg.universal)
+        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
         // 回滚
         this.updateThumbsUpUsers()
       })

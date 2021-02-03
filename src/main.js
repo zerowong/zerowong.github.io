@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import {
   Button,
-  Tooltip,
   Link,
   Image,
   Switch,
@@ -17,6 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Popover,
+  Notification,
 } from 'element-ui'
 import VueTypedJs from 'vue-typed-js'
 import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
@@ -29,9 +29,21 @@ import filters from './utils/filters'
 
 Vue.config.productionTip = false
 
+// eslint-disable-next-line semi-style
+;['success', 'warning', 'info', 'error'].forEach((type) => {
+  Notification[type] = (message) => {
+    Notification({
+      type,
+      message,
+      position: 'bottom-right',
+      duration: 2000,
+    })
+  }
+})
+Vue.prototype.$notification = Notification
+
 const elementComponents = [
   Button,
-  Tooltip,
   Link,
   Image,
   Switch,

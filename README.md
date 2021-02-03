@@ -1,29 +1,24 @@
-# blog
+# 博客前端
 
-## Project setup
-```
+> 基于 vue2.x 全家桶
+
+## 安装
+
+```shell
+git clone https://github.com/zerowong/zerowong.github.io.git
 yarn install
-```
-
-### Compiles and hot-reloads for development
-```
 yarn serve
-```
-
-### Compiles and minifies for production
-```
+yarn test:unit
 yarn build
 ```
 
-### Run your unit tests
-```
-yarn test:unit
-```
+## 相关链接
 
-### Lints and fixes files
-```
-yarn lint
-```
+> 博客 <https://apasser.xyz>
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+> 后端 Repo <https://github.com/zerowong/blog-server>
+
+## UI 参考
+
+- [Arthur.O 的个人网站](https://www.vanoc.top/)
+- [YEVPT 的记录](https://www.yevpt.com/)

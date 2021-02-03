@@ -2,7 +2,7 @@ import axios from 'axios'
 
 export default axios.create({
   baseURL:
-    process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://api.apasser.xyz',
+    process.env.NODE_ENV === 'development' ? 'https://localhost:3000' : 'https://api.apasser.xyz',
   timeout: 2000,
   withCredentials: true,
 })
