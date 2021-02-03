@@ -26,7 +26,6 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import { Message } from 'element-ui'
 import axios from '../../utils/axios'
 
 export default {
@@ -51,7 +50,6 @@ export default {
         ],
         name: [
           { required: true, message: '请输入昵称', trigger: 'blur' },
-          // eslint-disable-next-line object-curly-newline
           { min: 1, max: 20, message: '昵称长度须在1到20个字符之间', trigger: 'blur' },
         ],
         pass: [
@@ -62,9 +60,7 @@ export default {
       registerLodaing: false,
     }
   },
-  computed: {
-    ...mapState(['errorMsg']),
-  },
+  computed: { ...mapState(['errorMsg']) },
   methods: {
     ...mapActions(['getUser']),
     onSubmit() {
@@ -72,20 +68,30 @@ export default {
         if (!valid) {
           return false
         }
-        return this.handleRegister()
+        return this.onCaptcha()
       })
     },
     async handleRegister() {
-      this.registerLodaing = true
-      try {
-        const { data } = await axios.post('/register', this.register)
-        this.getUser()
-        this.$store.commit('updateWindow', { name: 'lr', val: false })
-        this.$notification.success(data.message)
-      } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
-      }
-      this.registerLodaing = false
+      const { data } = await axios.post('/register', this.register)
+      this.getUser()
+      this.$store.commit('updateWindow', { name: 'lr', val: false })
+      this.$notification.success(data.message)
+    },
+    onCaptcha() {
+      // eslint-disable-next-line no-undef
+      const captcha = new TencentCaptcha('2054543757', async (res) => {
+        if (res.ret === 0) {
+          this.registerLodaing = true
+          try {
+            await axios.post('/captcha', { Ticket: res.ticket, Randstr: res.randstr })
+            this.handleRegister()
+          } catch (err) {
+            this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+          }
+          this.registerLodaing = false
+        }
+      })
+      captcha.show()
     },
   },
 }

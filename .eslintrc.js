@@ -25,6 +25,7 @@ module.exports = {
         exports: 'always-multiline',
       },
     ],
+    'object-curly-newline': ['error', { multiline: true }],
   },
   overrides: [
     {
