@@ -15,6 +15,19 @@
         <messages></messages>
       </popup-window>
     </transition>
+    <transition name="el-zoom-in-center">
+      <popup-window
+        key="booklist"
+        title="书单"
+        :moveable="true"
+        windowName="booklist"
+        :width="700"
+        :height="900"
+        v-if="windowOpen.booklist"
+      >
+        <booklist></booklist>
+      </popup-window>
+    </transition>
   </div>
 </template>
 
@@ -23,6 +36,7 @@ import MessageBtn from './btn/MessagesBtn.vue'
 import BooklistBtn from './btn/BooklistBtn.vue'
 import PopupWindow from './PopupWindow.vue'
 import Messages from './window/Messages.vue'
+import Booklist from './window/Booklist.vue'
 
 export default {
   name: 'ButtonBar',
@@ -31,6 +45,7 @@ export default {
     BooklistBtn,
     PopupWindow,
     Messages,
+    Booklist,
   },
   computed: {
     windowOpen() {

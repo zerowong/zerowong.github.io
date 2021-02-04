@@ -36,7 +36,6 @@ Vue.config.productionTip = false
       type,
       message,
       position: 'bottom-right',
-      duration: 2000,
     })
   }
 })

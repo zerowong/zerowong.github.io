@@ -4,6 +4,9 @@
       <router-link class="route" exact-active-class="route-active" to="/">HOME</router-link>
       <router-link class="route" exact-active-class="route-active" to="/blog">BLOG</router-link>
       <router-link class="route" exact-active-class="route-active" to="/about">ABOUT</router-link>
+      <router-link class="route" exact-active-class="route-active" to="/manager" v-if="isAdmin"
+        >后台管理</router-link
+      >
       <div class="operation">
         <component :is="currentBtn"></component>
         <setting-btn></setting-btn>
@@ -29,6 +32,9 @@ export default {
       return this.$store.getters.logined
         ? this.$options.components.UserBtn
         : this.$options.components.LoginBtn
+    },
+    isAdmin() {
+      return this.$store.state.user?.role === 'admin' ?? false
     },
   },
 }

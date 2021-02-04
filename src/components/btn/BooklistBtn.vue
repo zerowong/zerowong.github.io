@@ -1,5 +1,5 @@
 <template>
-  <el-button type="text">
+  <el-button type="text" @click="open">
     <i class="iconfont icon-booklist"></i>
     <span>书单</span>
   </el-button>
@@ -8,6 +8,11 @@
 <script>
 export default {
   name: 'BooklistBtn',
+  methods: {
+    open() {
+      this.$store.commit('updateWindow', { name: 'booklist', val: true })
+    },
+  },
 }
 </script>
 

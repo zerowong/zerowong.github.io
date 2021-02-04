@@ -18,14 +18,13 @@ export default new Vuex.Store({
       messages: false,
       setting: false,
       user: false,
+      booklist: false,
     },
     user: null,
     // 每次打开或点击窗口都会使其自增1，从而使窗口保持最前，只作用于可拖动窗口
     maxZIndex: 0,
   }),
-  getters: {
-    logined: ({ user }) => user !== null,
-  },
+  getters: { logined: ({ user }) => user !== null },
   mutations: {
     updateWindow(state, { name, val }) {
       state.windowOpen[name] = val

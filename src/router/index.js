@@ -20,6 +20,10 @@ const routes = [
     component: () => import('@/pages/About.vue'),
   },
   {
+    path: '/manager',
+    component: () => import('@/pages/Manager.vue'),
+  },
+  {
     path: '*',
     component: () => import('@/pages/NotFound.vue'),
   },
