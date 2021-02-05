@@ -71,20 +71,20 @@ export default {
         return this.onCaptcha()
       })
     },
-    async handleRegister() {
-      const { data } = await axios.post('/register', this.register)
-      this.getUser()
-      this.$store.commit('updateWindow', { name: 'lr', val: false })
-      this.$notification.success(data.message)
-    },
     onCaptcha() {
       // eslint-disable-next-line no-undef
       const captcha = new TencentCaptcha('2054543757', async (res) => {
         if (res.ret === 0) {
           this.registerLodaing = true
           try {
-            await axios.post('/captcha', { Ticket: res.ticket, Randstr: res.randstr })
-            this.handleRegister()
+            const { data } = await axios.post('/register', {
+              Ticket: res.ticket,
+              Randstr: res.randstr,
+              register: this.register,
+            })
+            this.getUser()
+            this.$store.commit('updateWindow', { name: 'lr', val: false })
+            this.$notification.success(data.message)
           } catch (err) {
             this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
           }
