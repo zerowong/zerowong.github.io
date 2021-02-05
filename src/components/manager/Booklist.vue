@@ -1,26 +1,20 @@
 <template>
   <div class="booklist">
     <main>
-      <div v-for="book in bookExisted.read" :key="book.isbn" v-text="book.title"></div>
-      <div v-for="book in books.read" :key="book.isbn">
-        <img :src="book.coverUrl" />
-        <a :href="book.url" target="_blank"><h4 v-text="book.title"></h4></a>
-        <i v-text="book.isbn"></i>
-        <p v-text="book.abstract"></p>
+      <span v-for="book in bookExisted.read" :key="book.isbn" v-text="book.title"></span>
+      <span v-for="book in books.read" :key="book.isbn">
+        <span v-text="book.title"></span>
         <i class="el-icon-delete" @click="remove(book, true)"></i>
-      </div>
+      </span>
       <input type="text" v-model="inputRead" placeholder="isbn" />
       <button @click="add(true)">新增已读</button>
     </main>
     <main>
-      <div v-for="book in bookExisted.unread" :key="book.isbn" v-text="book.title"></div>
-      <div v-for="book in books.unread" :key="book.isbn">
-        <img :src="book.coverUrl" />
-        <a :href="book.url" target="_blank"><h4 v-text="book.title"></h4></a>
-        <i v-text="book.isbn"></i>
-        <p v-text="book.abstract"></p>
+      <span v-for="book in bookExisted.unread" :key="book.isbn" v-text="book.title"></span>
+      <span v-for="book in books.unread" :key="book.isbn">
+        <span v-text="book.title"></span>
         <i class="el-icon-delete" @click="remove(book, false)"></i>
-      </div>
+      </span>
       <input type="text" v-model="inputUnread" placeholder="isbn" />
       <button @click="add(false)">新增未读</button>
     </main>
@@ -89,6 +83,10 @@ export default {
       }
     },
     async save() {
+      if (this.books.read.length === 0 && this.books.unread.length === 0) {
+        this.$notification.info('没有新增')
+        return
+      }
       for (let i = 0; i < this.books.read.length; i++) {
         const { coverUrl } = this.books.read[i]
         const index = coverUrl.lastIndexOf('/')
