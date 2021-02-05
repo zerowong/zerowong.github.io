@@ -35,6 +35,7 @@ export default {
     // 移动时计算的原点为左上角
     offsetLeft: 0,
     offsetTop: 0,
+    closeClicked: false,
   }),
   computed: { ...mapState(['maxZIndex']) },
   methods: {
@@ -63,6 +64,7 @@ export default {
       this.isMove = false
     },
     close() {
+      this.closeClicked = true
       this.$store.commit('updateWindow', { name: this.windowName, val: false })
     },
     // 配置初始化
@@ -87,6 +89,10 @@ export default {
   destroyed() {
     if (this.moveable) {
       window.removeEventListener('mousemove', this.mouseMove)
+      // 没有主动关闭且切换了路由时自动更新信号量，避免路由切回时自动打开
+      if (!this.closeClicked) {
+        this.$store.commit('updateWindow', { name: this.windowName, val: false })
+      }
     }
   },
 }
