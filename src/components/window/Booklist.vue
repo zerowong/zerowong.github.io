@@ -5,15 +5,13 @@
       <span :class="{ 'active-item': unreadActive }" @click="switchGroup">未读</span>
     </nav>
     <main>
-      <div v-for="(book, index) in books[cursor]" :key="index">
-        <h3>{{ book.title }}</h3>
-        <div class="book-info">
-          <img :src="book.coverUrl" :alt="book.title" loading="lazy" />
-          <div>
-            <p>ISBN：{{ book.isbn }}</p>
-            <p>摘要：{{ book.abstract }}</p>
-            <a :href="book.url" target="_blank">前往豆瓣查看</a>
-          </div>
+      <div class="book-info" v-for="(book, index) in books[cursor]" :key="index">
+        <img :src="book.coverUrl" :alt="book.title" loading="lazy" />
+        <div>
+          <h3>{{ book.title }}</h3>
+          <p>ISBN：{{ book.isbn }}</p>
+          <p>摘要：{{ book.abstract }}</p>
+          <a :href="book.url" target="_blank">前往豆瓣查看</a>
         </div>
       </div>
     </main>
@@ -100,6 +98,7 @@ main {
 .book-info {
   display: flex;
   column-gap: 20px;
+  margin-bottom: 20px;
 }
 
 img {

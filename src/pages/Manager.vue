@@ -58,7 +58,6 @@ export default {
   width: calc(100% - 10% - 10px);
   background-color: var(--blog-bgcolor);
   color: var(--blog-color);
-  overflow: auto;
 }
 
 button {

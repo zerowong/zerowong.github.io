@@ -1,28 +1,44 @@
 <template>
-  <div class="booklist">
+  <div class="container">
     <main>
-      <span v-for="book in bookExisted.read" :key="book.isbn" v-text="book.title"></span>
-      <span v-for="book in books.read" :key="book.isbn">
-        <span v-text="book.title"></span>
-        <i class="el-icon-delete" @click="remove(book, true)"></i>
-      </span>
-      <input type="text" v-model="inputRead" placeholder="isbn" />
-      <button @click="add(true)">新增已读</button>
+      <div class="list">
+        <span v-for="book in savedBooks.read" :key="book.isbn">
+          <span v-text="book.title"></span>
+          <i class="el-icon-delete" @click="remove(book)"></i>
+        </span>
+        <span v-for="book in newBooks.read" :key="book.isbn">
+          <span v-text="book.title"></span>
+          <i class="el-icon-delete" @click="remove(book)"></i>
+        </span>
+      </div>
+      <div class="list-operation">
+        <input type="text" v-model="inputRead" placeholder="isbn" />
+        <button @click="add(true)">新增已读<i class="el-icon-loading" v-if="fetching"></i></button>
+      </div>
     </main>
     <main>
-      <span v-for="book in bookExisted.unread" :key="book.isbn" v-text="book.title"></span>
-      <span v-for="book in books.unread" :key="book.isbn">
-        <span v-text="book.title"></span>
-        <i class="el-icon-delete" @click="remove(book, false)"></i>
-      </span>
-      <input type="text" v-model="inputUnread" placeholder="isbn" />
-      <button @click="add(false)">新增未读</button>
+      <div class="list">
+        <span v-for="book in savedBooks.unread" :key="book.isbn">
+          <span v-text="book.title"></span>
+          <i class="el-icon-delete" @click="remove(book)"></i>
+          <i @click="changeStatus(book)">已读</i>
+        </span>
+        <span v-for="book in newBooks.unread" :key="book.isbn">
+          <span v-text="book.title"></span>
+          <i class="el-icon-delete" @click="remove(book)"></i>
+          <i @click="changeStatus(book)">已读</i>
+        </span>
+      </div>
+      <div class="list-operation">
+        <input type="text" v-model="inputUnread" placeholder="isbn" />
+        <button @click="add(false)">新增未读<i class="el-icon-loading" v-if="fetching"></i></button>
+      </div>
     </main>
     <nav class="operation">
       <button @click="save">保存</button>
-      <button @click="restore">恢复</button>
+      <button @click="restore">恢复新增</button>
       <button @click="clear">清除缓存</button>
-      <button @click="getBooks">刷新</button>
+      <button @click="refresh">刷新</button>
     </nav>
   </div>
 </template>
@@ -31,11 +47,11 @@
 export default {
   name: 'BooklistManager',
   data: () => ({
-    books: {
+    newBooks: {
       read: [],
       unread: [],
     },
-    bookExisted: {
+    savedBooks: {
       read: [],
       unread: [],
     },
@@ -43,18 +59,23 @@ export default {
     inputUnread: '',
     baseUrl:
       process.env.NODE_ENV === 'development' ? 'https://localhost:3000' : 'https://api.apasser.xyz',
+    modified: {
+      update: [],
+      delete: [],
+    },
+    fetching: false,
   }),
   methods: {
     async add(isRead) {
+      this.fetching = true
       try {
+        const input = isRead ? this.inputRead : this.inputUnread
         // https://github.com/qiaohaoforever/DoubanBook
-        const response = await fetch(
-          `https://book.feelyou.top/isbn/${isRead ? this.inputRead : this.inputUnread}`
-        )
+        const response = await fetch(`https://book.feelyou.top/isbn/${input}`)
         if (response.ok) {
           const data = await response.json()
-          data.cover_url = data.cover_url.replace('/l', '/s')
-          data.cover_url = data.cover_url.replace('/m', '/s')
+          const index = data.cover_url.lastIndexOf('/')
+          data.cover_url = `https://cdn.apasser.xyz/blog/books${data.cover_url.substring(index)}`
           const book = {
             isbn: data.isbn,
             title: data.title,
@@ -64,8 +85,8 @@ export default {
             isRead,
           }
           const arrName = isRead ? 'read' : 'unread'
-          this.books[arrName].push(book)
-          sessionStorage.setItem(`${arrName}_books`, JSON.stringify(this.books[arrName]))
+          this.newBooks[arrName].push(book)
+          sessionStorage.setItem(`${arrName}_books`, JSON.stringify(this.newBooks[arrName]))
           this.inputRead = ''
           this.inputUnread = ''
         } else {
@@ -74,49 +95,36 @@ export default {
       } catch (err) {
         this.$notification.error(err)
       }
+      this.fetching = false
     },
-    remove(book, isRead) {
-      const arrName = isRead ? 'read' : 'unread'
-      const index = this.books[arrName].indexOf(book)
+    remove(book) {
+      const books = book._id ? this.savedBooks : this.newBooks
+      const arrName = book.isRead ? 'read' : 'unread'
+      const index = books[arrName].indexOf(book)
       if (index !== -1) {
-        this.books[arrName].splice(index, 1)
+        books[arrName].splice(index, 1)
+        if (book._id) {
+          this.modified.delete.push(book._id)
+        }
       }
     },
     async save() {
-      if (this.books.read.length === 0 && this.books.unread.length === 0) {
-        this.$notification.info('没有新增')
-        return
-      }
-      for (let i = 0; i < this.books.read.length; i++) {
-        const { coverUrl } = this.books.read[i]
-        const index = coverUrl.lastIndexOf('/')
-        this.books.read[i].coverUrl = `https://cdn.apasser.xyz/blog/books${coverUrl.substring(
-          index
-        )}`
-      }
-      for (let i = 0; i < this.books.unread.length; i++) {
-        const { coverUrl } = this.books.unread[i]
-        const index = coverUrl.lastIndexOf('/')
-        this.books.unread[i].coverUrl = `https://cdn.apasser.xyz/blog/books${coverUrl.substring(
-          index
-        )}`
-      }
       const response = await fetch(`${this.baseUrl}/books`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json;charset=utf-8' },
-        body: JSON.stringify(this.books),
+        body: JSON.stringify({ newBooks: this.newBooks, modified: this.modified }),
         credentials: 'include',
-        keepalive: true,
       })
       if (response.ok) {
         this.$notification.success('保存成功')
+        this.modified = { update: [], delete: [] }
       } else {
         this.$notification.error('保存失败')
       }
     },
     restore() {
-      this.books.read = JSON.parse(sessionStorage.getItem('read_books')) || []
-      this.books.unread = JSON.parse(sessionStorage.getItem('unread_books')) || []
+      this.newBooks.read = JSON.parse(sessionStorage.getItem('read_books')) || []
+      this.newBooks.unread = JSON.parse(sessionStorage.getItem('unread_books')) || []
     },
     clear() {
       sessionStorage.clear()
@@ -126,14 +134,29 @@ export default {
         const response = await fetch(`${this.baseUrl}/books`)
         if (response.ok) {
           const data = await response.json()
-          this.bookExisted.read = data.read
-          this.bookExisted.unread = data.unread
+          this.savedBooks = data
         } else {
           throw new Error(response.statusText)
         }
       } catch (err) {
         this.$notification.error(err)
       }
+    },
+    changeStatus(book) {
+      const books = book._id ? this.savedBooks : this.newBooks
+      const index = books.unread.indexOf(book)
+      if (index !== -1) {
+        book.isRead = true
+        books.unread.splice(index, 1)
+        books.read.push(book)
+        if (book._id) {
+          this.modified.update.push(book._id)
+        }
+      }
+    },
+    refresh() {
+      this.getBooks()
+      this.modified = { delete: [], update: [] }
     },
   },
   mounted() {
@@ -143,31 +166,40 @@ export default {
 </script>
 
 <style scoped>
-.booklist {
+.container {
   display: flex;
   padding: 20px;
+  height: 100%;
+  box-sizing: border-box;
+  justify-content: space-around;
 }
 
-.booklist > main {
-  width: 45%;
+.list {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
   row-gap: 10px;
+  height: 95%;
+  overflow-y: scroll;
 }
 
-.el-icon-delete {
+.list-operation {
+  display: flex;
+  justify-content: center;
+}
+
+i {
   margin-left: 10px;
   cursor: pointer;
+  font-style: normal;
+  color: gray;
 }
 
-.el-icon-delete:hover {
+i:hover {
   color: var(--primary-color);
 }
 
 .operation {
-  width: 10%;
   display: flex;
   flex-direction: column;
 }
