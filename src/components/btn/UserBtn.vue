@@ -18,9 +18,7 @@ import axios from '../../utils/axios'
 
 export default {
   name: 'UserBtn',
-  computed: {
-    ...mapState(['user']),
-  },
+  computed: { ...mapState(['user']) },
   methods: {
     logout() {
       axios.get('/logout').finally(() => this.$store.commit('updateUser', null))

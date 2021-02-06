@@ -1,13 +1,14 @@
 <template>
   <div>
-    <typed-text></typed-text>
     <div class="footer">
       <button-bar></button-bar>
       <div class="footer-info">
         <div class="footer-info-inner">
-          <el-link tabindex="-1" class="beian" :href="beian[0]" :underline="false">
-            {{ beian[1] }}
-          </el-link>
+          <span
+            >© 2021 All <a :href="self[0]" class="link" tabindex="-1">{{ self[1] }}</a> Rights
+            Reserved.</span
+          >
+          <a :href="beian[0]" class="link" tabindex="-1">{{ beian[1] }}</a>
         </div>
       </div>
     </div>
@@ -15,18 +16,15 @@
 </template>
 
 <script>
-import TypedText from '../components/TypedText.vue'
 import ButtonBar from '../components/ButtonBar.vue'
 
 export default {
   name: 'Home',
+  components: { ButtonBar },
   data: () => ({
     beian: ['http://beian.miit.gov.cn', '湘ICP备2020022697号-1'],
+    self: ['https://apasser.xyz', 'apasser.xyz'],
   }),
-  components: {
-    TypedText,
-    ButtonBar,
-  },
 }
 </script>
 
@@ -54,9 +52,17 @@ export default {
 .footer-info-inner {
   color: var(--blog-color);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
 }
 
-.beian {
+.link {
   color: var(--blog-color);
+  text-decoration: none;
+}
+
+.link:hover {
+  color: var(--primary-color);
 }
 </style>

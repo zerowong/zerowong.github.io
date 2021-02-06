@@ -21,9 +21,7 @@
 <script>
 export default {
   name: 'UserPopover',
-  props: {
-    user: Object,
-  },
+  props: { user: Object },
   computed: {
     isOnline() {
       return Date.now() - Date.parse(this.user.lastActiveAt) <= 900000

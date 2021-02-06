@@ -46,9 +46,7 @@ import settingMixin from '../../utils/setting-mixin'
 export default {
   name: 'Setting',
   mixins: [settingMixin],
-  data: () => ({
-    backgroundImage,
-  }),
+  data: () => ({ backgroundImage }),
   props: {
     config: {
       type: Object,

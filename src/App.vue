@@ -1,49 +1,47 @@
 <template>
-  <overlay-scrollbars :options="{ scrollbars: { autoHide: 'scroll' } }">
-    <div id="app">
-      <nav-menu></nav-menu>
-      <main id="main">
-        <router-view></router-view>
-      </main>
-      <div id="popup-window-wrapper">
-        <transition name="el-zoom-in-center">
-          <popup-window
-            title="设置"
-            :moveable="true"
-            windowName="setting"
-            :width="400"
-            :height="600"
-            v-if="windowOpen.setting"
-          >
-            <setting :config="config"></setting>
-          </popup-window>
-        </transition>
-        <transition name="el-zoom-in-center">
-          <popup-window
-            title="个人资料"
-            :moveable="true"
-            windowName="user"
-            :width="500"
-            :height="600"
-            v-if="windowOpen.user"
-          >
-            <user></user>
-          </popup-window>
-        </transition>
-        <transition name="el-zoom-in-center">
-          <popup-window
-            :moveable="true"
-            windowName="lr"
-            :width="500"
-            :height="620"
-            v-if="windowOpen.lr"
-          >
-            <login-register></login-register>
-          </popup-window>
-        </transition>
-      </div>
+  <div id="app">
+    <nav-menu></nav-menu>
+    <main id="main">
+      <router-view></router-view>
+    </main>
+    <div id="popup-window-wrapper">
+      <transition name="el-zoom-in-center">
+        <popup-window
+          title="设置"
+          :moveable="true"
+          windowName="setting"
+          :width="400"
+          :height="600"
+          v-if="windowOpen.setting"
+        >
+          <setting :config="config"></setting>
+        </popup-window>
+      </transition>
+      <transition name="el-zoom-in-center">
+        <popup-window
+          title="个人资料"
+          :moveable="true"
+          windowName="user"
+          :width="500"
+          :height="600"
+          v-if="windowOpen.user"
+        >
+          <user></user>
+        </popup-window>
+      </transition>
+      <transition name="el-zoom-in-center">
+        <popup-window
+          :moveable="true"
+          windowName="lr"
+          :width="500"
+          :height="620"
+          v-if="windowOpen.lr"
+        >
+          <login-register></login-register>
+        </popup-window>
+      </transition>
     </div>
-  </overlay-scrollbars>
+  </div>
 </template>
 
 <script>
@@ -68,7 +66,7 @@ export default {
   },
   data: () => ({
     config: {
-      darkmode: false,
+      darkmode: true,
       pwHeaderBgColor: '#e2e2e2',
       backgroundImage: 'https://cdn.apasser.xyz/blog/escape.jpg',
     },

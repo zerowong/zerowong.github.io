@@ -1,8 +1,6 @@
 import Vue from 'vue'
 import {
   Button,
-  Link,
-  Image,
   Switch,
   Loading,
   Card,
@@ -18,10 +16,7 @@ import {
   Popover,
   Notification,
 } from 'element-ui'
-import VueTypedJs from 'vue-typed-js'
-import { OverlayScrollbarsPlugin } from 'overlayscrollbars-vue'
-import 'overlayscrollbars/css/OverlayScrollbars.min.css'
-import 'highlight.js/styles/atom-one-dark.css'
+import './styles/index.css'
 import App from './App.vue'
 import router from './router'
 import store from './store'
@@ -43,8 +38,6 @@ Vue.prototype.$notification = Notification
 
 const elementComponents = [
   Button,
-  Link,
-  Image,
   Switch,
   Loading,
   Card,
@@ -63,9 +56,6 @@ const elementComponents = [
 elementComponents.forEach((component) => {
   Vue.use(component)
 })
-
-Vue.use(VueTypedJs)
-Vue.use(OverlayScrollbarsPlugin)
 
 Object.keys(filters).forEach((key) => {
   Vue.filter(key, filters[key])

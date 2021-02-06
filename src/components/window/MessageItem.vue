@@ -74,9 +74,7 @@ import UserPopover from './UserPopover.vue'
 export default {
   name: 'MessageItem',
   components: { ReplyEditor, UserPopover },
-  props: {
-    message: Object,
-  },
+  props: { message: Object },
   data: () => ({
     replyContent: '',
     showReplies: false,

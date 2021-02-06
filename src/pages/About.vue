@@ -4,11 +4,7 @@
       <popup-window title="Me">
         <div class="me-inner">
           <div class="avatar">
-            <el-image class="me-inner-img" :src="avatar">
-              <div slot="error">
-                <i class="el-icon-picture-outline icon-error"></i>
-              </div>
-            </el-image>
+            <img class="me-inner-img" :src="avatar" alt="blogger's avatar" loading="lazy" />
           </div>
           <div class="social">
             <a target="_blank" href="https://www.zhihu.com/people/wongzero">
@@ -42,11 +38,12 @@
           <a v-for="(friend, index) in friends" :key="index" :href="friend.link" target="_blank">
             <el-card class="friend-card" shadow="hover">
               <div class="friend-card-inner">
-                <el-image class="friend-avatar" :src="friend.avatar">
-                  <div slot="error">
-                    <i class="el-icon-picture-outline icon-error"></i>
-                  </div>
-                </el-image>
+                <img
+                  class="friend-avatar"
+                  :src="friend.avatar"
+                  :alt="`${friend.name}'s avatar`"
+                  loading="lazy"
+                />
                 <div>
                   <div class="friend-name">{{ friend.name }}</div>
                   <div class="friend-desc">{{ friend.desc }}</div>
@@ -67,7 +64,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Message } from 'element-ui'
 import PopupWindow from '../components/PopupWindow.vue'
 import { avatar } from '../utils/img-urls'
 import axios from '../utils/axios'
@@ -88,9 +84,7 @@ export default {
       return this.infiniteScrollLoading || this.noMore
     },
   },
-  components: {
-    PopupWindow,
-  },
+  components: { PopupWindow },
   methods: {
     async getFriends() {
       this.friendsLoading = true

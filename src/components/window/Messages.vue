@@ -33,7 +33,6 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Message } from 'element-ui'
 import axios from '../../utils/axios'
 import MessageItem from './MessageItem.vue'
 import MessagesEditor from './MessagesEditor.vue'
@@ -48,9 +47,7 @@ export default {
     currentPage: 1,
     messagesLength: 0,
   }),
-  computed: {
-    ...mapState(['errorMsg']),
-  },
+  computed: { ...mapState(['errorMsg']) },
   methods: {
     async getMessages(index = 1) {
       this.messagesLoading = true

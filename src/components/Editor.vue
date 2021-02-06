@@ -33,9 +33,7 @@ import Popover from './Popover.vue'
 export default {
   name: 'Editor',
   components: { Popover },
-  props: {
-    placeholder: String,
-  },
+  props: { placeholder: String },
   computed: {
     ...mapState(['errorMsg']),
     ...mapGetters(['logined']),

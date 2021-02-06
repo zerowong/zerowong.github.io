@@ -38,9 +38,7 @@ export default {
     },
     loginLoading: false,
   }),
-  computed: {
-    ...mapState(['errorMsg']),
-  },
+  computed: { ...mapState(['errorMsg']) },
   methods: {
     ...mapActions(['getUser']),
     onSubmit() {

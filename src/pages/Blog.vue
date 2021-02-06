@@ -47,9 +47,10 @@
 
 <script>
 import { mapState } from 'vuex'
-import { Message } from 'element-ui'
 import axios from '../utils/axios'
 import PopupWindow from '../components/PopupWindow.vue'
+import '../styles/github-markdown.css'
+import 'highlight.js/styles/atom-one-dark.css'
 
 export default {
   name: 'Blog',

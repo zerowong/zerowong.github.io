@@ -27,9 +27,7 @@ export default {
     Login,
     Register,
   },
-  data: () => ({
-    isLogin: true,
-  }),
+  data: () => ({ isLogin: true }),
   computed: {
     currentComponent() {
       return this.isLogin ? this.$options.components.Login : this.$options.components.Register

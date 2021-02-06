@@ -29,9 +29,7 @@ export default {
       ]
     },
   },
-  methods: {
-    ...mapActions(['getUser']),
-  },
+  methods: { ...mapActions(['getUser']) },
   mounted() {
     this.getUser()
   },
