@@ -13,7 +13,7 @@
 
 <script>
 import { mapState, mapActions } from 'vuex'
-import filters from '../../utils/filters'
+import { date } from '../../utils/filters'
 
 export default {
   name: 'User',
@@ -24,7 +24,7 @@ export default {
         { name: '邮箱', value: this.user.mail },
         {
           name: '注册于',
-          value: filters.date(this.user.createdAt),
+          value: date(this.user.createdAt),
         },
       ]
     },
