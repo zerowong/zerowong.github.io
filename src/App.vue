@@ -107,7 +107,6 @@ export default {
   height: calc(100% - 60px);
   margin-top: 60px;
   box-sizing: border-box;
-  padding: 20px;
 }
 
 #popup-window-wrapper {

@@ -119,7 +119,8 @@ export default {
 <style scoped>
 .about {
   display: flex;
-  padding: 0 40px;
+  padding: 20px 40px;
+  box-sizing: border-box;
   height: 100%;
 }
 

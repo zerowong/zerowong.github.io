@@ -1,18 +1,16 @@
 <template>
-  <div class="nav-menu">
-    <nav class="routes">
-      <router-link class="route" exact-active-class="route-active" to="/">HOME</router-link>
-      <router-link class="route" exact-active-class="route-active" to="/blog">BLOG</router-link>
-      <router-link class="route" exact-active-class="route-active" to="/about">ABOUT</router-link>
-      <router-link class="route" exact-active-class="route-active" to="/manager" v-if="isAdmin"
-        >后台管理</router-link
-      >
-      <div class="operation">
-        <component :is="currentBtn"></component>
-        <setting-btn></setting-btn>
-      </div>
-    </nav>
-  </div>
+  <nav class="nav-menu-root">
+    <router-link class="route" exact-active-class="route-active" to="/">HOME</router-link>
+    <router-link class="route" exact-active-class="route-active" to="/blog">BLOG</router-link>
+    <router-link class="route" exact-active-class="route-active" to="/about">ABOUT</router-link>
+    <router-link class="route" exact-active-class="route-active" to="/manager" v-if="isAdmin"
+      >后台管理</router-link
+    >
+    <div class="operation">
+      <component :is="currentBtn"></component>
+      <setting-btn></setting-btn>
+    </div>
+  </nav>
 </template>
 
 <script>
@@ -40,18 +38,16 @@ export default {
 </script>
 
 <style scoped>
-.nav-menu {
+.nav-menu-root {
   position: fixed;
   top: 0;
   height: 60px;
   width: 100%;
-  background-color: var(--blog-bgcolor);
-}
-
-.routes {
+  /* background-color: var(--blog-bgcolor); */
+  background-color: transparent;
+  box-shadow: 0 0 5px 0 black;
   display: flex;
   justify-content: center;
-  height: 100%;
 }
 
 .operation {
@@ -71,14 +67,10 @@ export default {
   height: 100%;
   text-decoration: none;
   color: var(--blog-color);
+  transition: 0.3s;
 }
 
-.route:hover {
-  background-color: var(--primary-color);
-  opacity: 0.7;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.7, 1);
-}
-
+.route:hover,
 .route-active {
   background-color: var(--primary-color);
 }

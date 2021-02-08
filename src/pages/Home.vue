@@ -1,17 +1,13 @@
 <template>
-  <div>
+  <div class="home-root">
     <div class="footer">
-      <button-bar></button-bar>
-      <div class="footer-info">
-        <div class="footer-info-inner">
-          <span
-            >© 2021 All <a :href="self[0]" class="link" tabindex="-1">{{ self[1] }}</a> Rights
-            Reserved.</span
-          >
-          <a :href="beian[0]" class="link" tabindex="-1">{{ beian[1] }}</a>
-        </div>
-      </div>
+      <span
+        >© 2021 All <a class="link" :href="self[0]" tabindex="-1">{{ self[1] }}</a> Rights
+        Reserved.</span
+      >
+      <a class="link" :href="beian[0]" tabindex="-1">{{ beian[1] }}</a>
     </div>
+    <button-bar></button-bar>
   </div>
 </template>
 
@@ -29,36 +25,27 @@ export default {
 </script>
 
 <style scoped>
-.footer {
-  /* 固定在页面底部 */
-  position: absolute;
-  bottom: 10px;
-  left: 0px;
-  width: 100%;
-  height: 60px;
-  padding: 1px 0;
+.home-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
 }
 
-.footer-info {
+.footer {
+  width: 100%;
+  height: 80px;
+  color: var(--blog-color);
+  background-color: var(--blog-bgcolor);
   display: flex;
+  text-align: center;
   flex-direction: column;
   justify-content: center;
-  height: 100px;
-  width: 100%;
-  margin-top: 10px;
-  background-color: var(--blog-bgcolor);
-}
-
-.footer-info-inner {
-  color: var(--blog-color);
-  text-align: center;
-  display: flex;
-  flex-direction: column;
   row-gap: 5px;
 }
 
 .link {
-  color: var(--blog-color);
+  color: inherit;
   text-decoration: none;
 }
 

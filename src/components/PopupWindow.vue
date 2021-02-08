@@ -115,7 +115,7 @@ export default {
   height: calc(100% - 40px);
   width: 100%;
   border-radius: 0 0 18px 18px;
-  /* 禁用滚动防止覆盖border-radius样式 */
+  /* 禁用滚动防止插槽内的滚动条出现在边框上层 */
   overflow: hidden;
   /* 默认自带主题切换 */
   background-color: var(--blog-bgcolor);
@@ -123,7 +123,6 @@ export default {
 }
 
 .pw-body > * {
-  border-radius: inherit;
   overflow-y: auto;
 }
 

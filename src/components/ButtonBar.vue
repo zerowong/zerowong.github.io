@@ -57,19 +57,14 @@ export default {
 
 <style scoped>
 .btn-bar {
-  /* 内含元素居中 */
   display: flex;
   justify-content: center;
-
-  /* 自身居中 */
-  width: 80%;
-  height: 100%;
-  margin: 0 auto;
-
+  width: 50%;
+  height: 55px;
+  margin-bottom: 10px;
   background-color: rgba(0, 0, 0, 0.45);
-  border: 1px solid black;
   border-radius: 15px;
-  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 6px 0 black;
 }
 
 /* 底部按钮栏按钮位置 */

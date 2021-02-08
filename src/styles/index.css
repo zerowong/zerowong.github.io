@@ -21,10 +21,6 @@ body {
     Apple Color Emoji, Segoe UI Emoji;
 }
 
-body::-webkit-scrollbar {
-  width: 0px;
-}
-
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;
