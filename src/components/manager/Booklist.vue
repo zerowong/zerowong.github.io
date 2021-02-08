@@ -13,7 +13,9 @@
       </div>
       <div class="list-operation">
         <input type="text" v-model="inputRead" placeholder="isbn" />
-        <button @click="add(true)">新增已读<i class="el-icon-loading" v-if="fetching"></i></button>
+        <button class="btn" @click="add(true)">
+          新增已读<i class="el-icon-loading" v-if="fetching"></i>
+        </button>
       </div>
     </main>
     <main>
@@ -21,24 +23,26 @@
         <span v-for="book in savedBooks.unread" :key="book.isbn">
           <span v-text="book.title"></span>
           <i class="el-icon-delete" @click="remove(book)"></i>
-          <i @click="changeStatus(book)">已读</i>
+          <i class="text-btn" @click="changeStatus(book)">已读</i>
         </span>
         <span v-for="book in newBooks.unread" :key="book.isbn">
           <span v-text="book.title"></span>
           <i class="el-icon-delete" @click="remove(book)"></i>
-          <i @click="changeStatus(book)">已读</i>
+          <i class="text-btn" @click="changeStatus(book)">已读</i>
         </span>
       </div>
       <div class="list-operation">
         <input type="text" v-model="inputUnread" placeholder="isbn" />
-        <button @click="add(false)">新增未读<i class="el-icon-loading" v-if="fetching"></i></button>
+        <button class="btn" @click="add(false)">
+          新增未读<i class="el-icon-loading" v-if="fetching"></i>
+        </button>
       </div>
     </main>
     <nav class="operation">
-      <button @click="save">保存</button>
-      <button @click="restore">恢复新增</button>
-      <button @click="clear">清除缓存</button>
-      <button @click="refresh">刷新</button>
+      <button class="btn" @click="save">保存</button>
+      <button class="btn" @click="restore">恢复新增</button>
+      <button class="btn" @click="clear">清除缓存</button>
+      <button class="btn" @click="refresh">刷新</button>
     </nav>
   </div>
 </template>
@@ -188,14 +192,16 @@ export default {
   justify-content: center;
 }
 
-i {
+.el-icon-delete,
+.text-btn {
   margin-left: 10px;
   cursor: pointer;
   font-style: normal;
   color: gray;
 }
 
-i:hover {
+.el-icon-delete:hover,
+.text-btn:hover {
   color: var(--primary-color);
 }
 
@@ -204,7 +210,7 @@ i:hover {
   flex-direction: column;
 }
 
-button {
+.btn {
   cursor: pointer;
   width: 100px;
   height: 30px;

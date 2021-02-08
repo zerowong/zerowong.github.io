@@ -2,6 +2,7 @@
   <div class="manager">
     <div class="menu">
       <button
+        class="menu-item"
         type="text"
         v-for="(item, index) in menu"
         :key="index"
@@ -60,7 +61,7 @@ export default {
   color: var(--blog-color);
 }
 
-button {
+.menu-item {
   cursor: pointer;
 }
 </style>

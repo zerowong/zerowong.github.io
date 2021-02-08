@@ -1,17 +1,21 @@
 <template>
   <div class="booklist-root">
-    <nav>
-      <span :class="{ 'active-item': cursor === 'read' }" @click="switchGroup">已读</span>
-      <span :class="{ 'active-item': cursor === 'unread' }" @click="switchGroup">未读</span>
+    <nav class="nav">
+      <span class="nav-item" :class="{ 'active-item': cursor === 'read' }" @click="switchGroup"
+        >已读</span
+      >
+      <span class="nav-item" :class="{ 'active-item': cursor === 'unread' }" @click="switchGroup"
+        >未读</span
+      >
     </nav>
-    <main>
+    <main class="main">
       <div class="book-info" v-for="(book, index) in books[cursor]" :key="index">
-        <img :src="book.coverUrl" :alt="book.title" loading="lazy" />
+        <img class="book-cover" :src="book.coverUrl" :alt="book.title" loading="lazy" />
         <div>
           <h3>{{ book.title }}</h3>
           <p>ISBN：{{ book.isbn }}</p>
           <p>摘要：{{ book.abstract }}</p>
-          <a :href="book.url" target="_blank">前往豆瓣查看</a>
+          <a class="to-douban" :href="book.url" target="_blank">前往豆瓣查看</a>
         </div>
       </div>
     </main>
@@ -52,7 +56,7 @@ export default {
   height: 100%;
 }
 
-nav {
+.nav {
   height: 60px;
   width: 700px;
   box-sizing: border-box;
@@ -63,7 +67,7 @@ nav {
   background-color: var(--blog-bgcolor);
 }
 
-nav > span {
+.nav-item {
   height: 100%;
   width: 50%;
   display: flex;
@@ -74,7 +78,7 @@ nav > span {
   border-bottom: 2px solid transparent;
 }
 
-nav > span:hover {
+.nav-item:hover {
   background-color: rgba(64, 158, 255, 0.5);
 }
 
@@ -82,7 +86,7 @@ nav > span:hover {
   border-bottom-color: var(--primary-color);
 }
 
-main {
+.main {
   margin-top: 60px;
   padding: 30px;
 }
@@ -93,19 +97,19 @@ main {
   margin-bottom: 20px;
 }
 
-img {
+.book-cover {
   min-width: 150px;
   max-width: 150px;
 }
 
-a {
+.to-douban {
   color: #606266;
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
 }
 
-a:hover {
+.to-douban:hover {
   color: var(--primary-color);
   text-decoration: underline;
 }

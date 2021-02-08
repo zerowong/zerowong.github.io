@@ -74,7 +74,7 @@ export default {
   margin-top: 50px;
 }
 
-.submit button {
+.submit .el-button {
   width: 100%;
 }
 
