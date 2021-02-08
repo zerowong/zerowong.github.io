@@ -22,8 +22,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import axios from '../../utils/axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Login',
@@ -38,7 +37,6 @@ export default {
     },
     loginLoading: false,
   }),
-  computed: { ...mapState(['errorMsg']) },
   methods: {
     ...mapActions(['getUser']),
     onSubmit() {
@@ -52,12 +50,12 @@ export default {
     async handleLogin() {
       this.loginLoading = true
       try {
-        const { data } = await axios.post('/login', this.login)
+        const { data } = await this.$axios.post('/login', this.login)
         this.getUser()
         this.$store.commit('updateWindow', { name: 'lr', val: false })
         this.$notification.success(data.message)
       } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+        this.$throw(err)
       }
       this.loginLoading = false
     },

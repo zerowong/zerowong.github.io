@@ -40,13 +40,13 @@
 </template>
 
 <script>
-import { backgroundImage } from '../../utils/img-urls'
 import settingMixin from '../../utils/setting-mixin'
+import { SITE_URL_BACKGROUND_IMAGES } from '../../utils/constants'
 
 export default {
   name: 'Setting',
   mixins: [settingMixin],
-  data: () => ({ backgroundImage }),
+  data: () => ({ backgroundImage: SITE_URL_BACKGROUND_IMAGES }),
   props: {
     config: {
       type: Object,

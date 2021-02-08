@@ -1,6 +1,5 @@
 <script>
 import Editor from '../Editor.vue'
-import axios from '../../utils/axios'
 
 export default {
   name: 'ReplyEditor',
@@ -12,11 +11,10 @@ export default {
   },
   methods: {
     async post() {
-      const reply = { content: this.input }
-      if (this.replyTo) {
-        reply.to = this.replyTo._id
-      }
-      await axios.post(`/messages/${this.messageId}/replies`, reply)
+      await this.$axios.post(`/messages/${this.messageId}/replies`, {
+        content: this.input,
+        to: this.replyTo?._id,
+      })
       this.input = ''
       this.$emit('refresh-current-page')
     },

@@ -25,8 +25,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
-import axios from '../../utils/axios'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'Register',
@@ -60,7 +59,6 @@ export default {
       registerLodaing: false,
     }
   },
-  computed: { ...mapState(['errorMsg']) },
   methods: {
     ...mapActions(['getUser']),
     onSubmit() {
@@ -77,7 +75,7 @@ export default {
         if (res.ret === 0) {
           this.registerLodaing = true
           try {
-            const { data } = await axios.post('/register', {
+            const { data } = await this.$axios.post('/register', {
               Ticket: res.ticket,
               Randstr: res.randstr,
               register: this.register,
@@ -86,7 +84,7 @@ export default {
             this.$store.commit('updateWindow', { name: 'lr', val: false })
             this.$notification.success(data.message)
           } catch (err) {
-            this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+            this.$throw(err)
           }
           this.registerLodaing = false
         }

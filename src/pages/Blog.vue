@@ -46,8 +46,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import axios from '../utils/axios'
 import PopupWindow from '../components/PopupWindow.vue'
 import '../styles/github-markdown.css'
 import 'highlight.js/styles/atom-one-dark.css'
@@ -66,7 +64,6 @@ export default {
     nextPage: 2,
   }),
   computed: {
-    ...mapState(['errorMsg']),
     currentPost() {
       // 未取得数据时返回临时对象
       return this.posts.length !== 0
@@ -81,18 +78,14 @@ export default {
     async getPosts() {
       this.postsLoading = true
       try {
-        const { data } = await axios.get('/posts?sort=date&page=1')
-        this.posts = data
-        this.initListCardActiveIndex(this.posts.length)
+        const { data } = await this.$axios.get('/posts?sort=date&page=1')
+        this.posts.push(...data)
+        this.listCardActiveIndex.push(...new Array(data.length).fill(false))
+        this.listCardActiveIndex[0] = true
       } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+        this.$throw(err)
       }
       this.postsLoading = false
-    },
-    initListCardActiveIndex(length) {
-      this.listCardActiveIndex.length = length
-      this.listCardActiveIndex.fill(false)
-      this.listCardActiveIndex[0] = true
     },
     changeActiveIndex(val) {
       this.currentPostIndex = val
@@ -102,17 +95,17 @@ export default {
     async loadPosts() {
       this.infiniteScrollLoading = true
       try {
-        const { data } = await axios.get(`/posts?sort=date&page=${this.nextPage}`)
+        const { data } = await this.$axios.get(`/posts?sort=date&page=${this.nextPage}`)
         if (!data.length) {
           this.noMore = true
           this.infiniteScrollLoading = false
           return
         }
-        this.posts = this.posts.concat(data)
-        this.initListCardActiveIndex(this.posts.length)
+        this.posts.push(...data)
+        this.listCardActiveIndex.push(...new Array(data.length).fill(false))
         this.nextPage += 1
       } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+        this.$throw(err)
       }
       this.infiniteScrollLoading = false
     },

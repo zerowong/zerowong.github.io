@@ -14,22 +14,18 @@
 
 <script>
 import { mapState } from 'vuex'
-import axios from '../../utils/axios'
 
 export default {
   name: 'UserBtn',
   computed: { ...mapState(['user']) },
   methods: {
-    logout() {
-      axios.get('/logout').finally(() => this.$store.commit('updateUser', null))
-    },
     onCommand(command) {
       switch (command) {
         case 'user':
           this.$store.commit('updateWindow', { name: 'user', val: true })
           break
         case 'logout':
-          this.logout()
+          this.$axios.get('/logout').finally(() => this.$store.commit('updateUser', null))
           break
         default:
           break

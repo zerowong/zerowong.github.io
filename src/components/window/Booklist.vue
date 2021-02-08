@@ -1,8 +1,8 @@
 <template>
   <div class="booklist-root">
     <nav>
-      <span :class="{ 'active-item': readActive }" @click="switchGroup">已读</span>
-      <span :class="{ 'active-item': unreadActive }" @click="switchGroup">未读</span>
+      <span :class="{ 'active-item': cursor === 'read' }" @click="switchGroup">已读</span>
+      <span :class="{ 'active-item': cursor === 'unread' }" @click="switchGroup">未读</span>
     </nav>
     <main>
       <div class="book-info" v-for="(book, index) in books[cursor]" :key="index">
@@ -19,9 +19,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import axios from '../../utils/axios'
-
 export default {
   name: 'Booklist',
   data: () => ({
@@ -29,23 +26,18 @@ export default {
       read: [],
       unread: [],
     },
-    readActive: true,
-    unreadActive: false,
     cursor: 'read',
   }),
-  computed: { ...mapState(['errorMsg']) },
   methods: {
     switchGroup() {
-      // eslint-disable-next-line no-extra-semi
-      ;[this.readActive, this.unreadActive] = [this.unreadActive, this.readActive]
       this.cursor = this.cursor === 'read' ? 'unread' : 'read'
     },
     async getBooks() {
       try {
-        const { data } = await axios.get('/books')
+        const { data } = await this.$axios.get('/books')
         this.books = data
       } catch (err) {
-        this.$notification.err(err.response?.data ?? this.errorMsg.networkError)
+        this.$throw(err)
       }
     },
   },

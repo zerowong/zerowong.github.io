@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
-import axios from '../../utils/axios'
 import MessageItem from './MessageItem.vue'
 import MessagesEditor from './MessagesEditor.vue'
 
@@ -47,17 +45,16 @@ export default {
     currentPage: 1,
     messagesLength: 0,
   }),
-  computed: { ...mapState(['errorMsg']) },
   methods: {
     async getMessages(index = 1) {
       this.messagesLoading = true
       try {
-        const { data } = await axios.get(`/messages?sort=createdAt&page=${index}`)
+        const { data } = await this.$axios.get(`/messages?sort=createdAt&page=${index}`)
         this.messagesLength = data.length
         // 直接赋值没有响应式的变化侦测
         this.$set(this.messages, index - 1, data.messages)
       } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.universal)
+        this.$throw(err)
       }
       this.messagesLoading = false
     },

@@ -21,8 +21,17 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import * as filters from './utils/filters'
+import axios from './utils/axios'
 
 Vue.config.productionTip = false
+
+Vue.config.errorHandler = function(err) {
+  if (process.env.NODE_ENV === 'production') {
+    axios.post('/client/error', { err: err.stack }).catch(() => {})
+  } else {
+    console.error(err)
+  }
+}
 
 // eslint-disable-next-line semi-style
 ;['success', 'warning', 'info', 'error'].forEach((type) => {
@@ -35,6 +44,24 @@ Vue.config.productionTip = false
   }
 })
 Vue.prototype.$notification = Notification
+
+Vue.prototype.$axios = axios
+
+Vue.prototype.$throw = function(err) {
+  if (err.isAxiosError) {
+    if (err.response) {
+      Notification.error(err.response.data)
+    } else if (err.code === 'ECONNABORTED') {
+      Notification.error('连接超时')
+    } else if (err.message === 'Network Error') {
+      Notification.error('网络错误')
+    } else {
+      console.error(err)
+    }
+  } else {
+    Vue.config.errorHandler(err)
+  }
+}
 
 const elementComponents = [
   Button,

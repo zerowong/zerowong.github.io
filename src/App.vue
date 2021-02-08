@@ -46,7 +46,6 @@
 
 <script>
 import { mapActions, mapState } from 'vuex'
-import axios from './utils/axios'
 import settingMixin from './utils/setting-mixin'
 import NavMenu from './components/NavMenu.vue'
 import PopupWindow from './components/PopupWindow.vue'
@@ -75,12 +74,13 @@ export default {
   methods: {
     ...mapActions(['getUser']),
     polling() {
-      axios.patch('/user/polling').catch(() => {})
+      this.$axios.patch('/user/polling').catch(() => {})
       setTimeout(this.polling, 840000)
     },
   },
   created() {
     this.getUser()
+    this.$axios.get('/client').catch(() => {})
     setTimeout(this.polling, 840000)
   },
   mounted() {

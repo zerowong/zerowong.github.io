@@ -25,22 +25,19 @@ const router = new VueRouter({
       path: '/manager',
       component: () => import('@/pages/Manager.vue'),
       beforeEnter(to, from, next) {
-        if (store.state.user?.role === 'admin') {
+        if (store.getters.isAdmin) {
           next()
         } else {
-          next(new Error('你没有权限'))
+          Notification.error('你没有权限')
+          next(false)
         }
       },
     },
     {
       path: '*',
-      component: () => import('@/pages/NotFound.vue'),
+      redirect: '/',
     },
   ],
-})
-
-router.onError((err) => {
-  Notification({ type: 'error', message: err.message, position: 'bottom-right' })
 })
 
 export default router

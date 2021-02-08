@@ -16,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import SettingBtn from './btn/SettingBtn.vue'
 import LoginBtn from './btn/LoginBtn.vue'
 import UserBtn from './btn/UserBtn.vue'
@@ -28,13 +29,11 @@ export default {
     UserBtn,
   },
   computed: {
+    ...mapGetters(['isAdmin']),
     currentBtn() {
       return this.$store.getters.logined
         ? this.$options.components.UserBtn
         : this.$options.components.LoginBtn
-    },
-    isAdmin() {
-      return this.$store.state.user?.role === 'admin' ?? false
     },
   },
 }

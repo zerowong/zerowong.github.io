@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState } from 'vuex'
 import { date } from '../../utils/filters'
 
 export default {
@@ -28,10 +28,6 @@ export default {
         },
       ]
     },
-  },
-  methods: { ...mapActions(['getUser']) },
-  mounted() {
-    this.getUser()
   },
 }
 </script>

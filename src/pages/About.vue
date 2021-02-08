@@ -63,15 +63,13 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import PopupWindow from '../components/PopupWindow.vue'
-import { avatar } from '../utils/img-urls'
-import axios from '../utils/axios'
+import { SITE_URL_MY_AVATAR } from '../utils/constants'
 
 export default {
   name: 'About',
   data: () => ({
-    avatar,
+    avatar: SITE_URL_MY_AVATAR,
     friends: [],
     friendsLoading: false,
     infiniteScrollLoading: false,
@@ -79,7 +77,6 @@ export default {
     noMore: false,
   }),
   computed: {
-    ...mapState(['errorMsg']),
     infiniteScrollDisbale() {
       return this.infiniteScrollLoading || this.noMore
     },
@@ -89,25 +86,26 @@ export default {
     async getFriends() {
       this.friendsLoading = true
       try {
-        this.friends = await (await axios.get('/friends?page=1')).data
+        const { data } = await this.$axios.get('/friends/?page=1')
+        this.friends.push(...data)
       } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+        this.$throw(err)
       }
       this.friendsLoading = false
     },
     async loadFriends() {
       this.infiniteScrollLoading = true
       try {
-        const { data } = await axios.get(`/friends?page=${this.nestPage}`)
+        const { data } = await this.$axios.get(`/friends?page=${this.nestPage}`)
         if (!data.length) {
           this.noMore = true
           this.infiniteScrollLoading = false
           return
         }
-        this.friends = this.friends.concat(data)
+        this.friends.push(...data)
         this.nestPage += 1
       } catch (err) {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+        this.$throw(err)
       }
       this.infiniteScrollLoading = false
     },

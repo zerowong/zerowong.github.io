@@ -1,4 +1,4 @@
-const settingMixin = {
+export default {
   data: () => ({
     color: ['#e2e2e2', '#4456a7', '#44a75e', '#a74444', '#474747', '#282c35', '#008080'],
     rootStyle: document.documentElement.style,
@@ -29,5 +29,3 @@ const settingMixin = {
     },
   },
 }
-
-export default settingMixin

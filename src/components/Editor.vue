@@ -29,15 +29,13 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import Popover from './Popover.vue'
+import { ERROR_MSG_NOT_LOGINED } from '../utils/constants'
 
 export default {
   name: 'Editor',
   components: { Popover },
   props: { placeholder: String },
-  computed: {
-    ...mapState(['errorMsg']),
-    ...mapGetters(['logined']),
-  },
+  computed: { ...mapGetters(['logined']) },
   data: () => ({
     input: '',
     // 留言为空时的popover用户提示
@@ -50,15 +48,13 @@ export default {
   methods: {
     onSend() {
       if (!this.logined) {
-        this.$notification.error(this.errorMsg.notLogined)
+        this.$notification.error(ERROR_MSG_NOT_LOGINED)
         return
       }
       if (this.input) {
         // 操作频率限制
         if (!this.sendLimit) {
-          this.post().catch((err) => {
-            this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
-          })
+          this.post().catch(this.$throw)
           this.sendLimit = true
           setTimeout(() => {
             this.sendLimit = false

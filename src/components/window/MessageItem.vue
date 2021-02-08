@@ -67,9 +67,9 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import throttle from 'lodash-es/throttle'
-import axios from '../../utils/axios'
 import ReplyEditor from './ReplyEditor.vue'
 import UserPopover from './UserPopover.vue'
+import { ERROR_MSG_NOT_LOGINED } from '../../utils/constants'
 
 export default {
   name: 'MessageItem',
@@ -84,7 +84,7 @@ export default {
     currentPage: 1,
   }),
   computed: {
-    ...mapState(['errorMsg', 'user']),
+    ...mapState(['user']),
     ...mapGetters(['logined']),
     // 是否已点赞
     thumbsUped() {
@@ -106,15 +106,15 @@ export default {
     },
     onThumbsUp() {
       if (!this.logined) {
-        this.$notification.error(this.errorMsg.notLogined)
+        this.$notification.error(ERROR_MSG_NOT_LOGINED)
         return
       }
       this.updateThumbsUpUsers()
       this.thumbsUp()
     },
     thumbsUp() {
-      axios.patch(`/messages/${this.message._id}/thumbsUp`).catch((err) => {
-        this.$notification.error(err.response?.data ?? this.errorMsg.networkError)
+      this.$axios.patch(`/messages/${this.message._id}/thumbsUp`).catch((err) => {
+        this.$throw(err)
         // 回滚
         this.updateThumbsUpUsers()
       })
