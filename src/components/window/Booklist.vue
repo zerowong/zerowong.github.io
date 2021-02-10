@@ -8,8 +8,8 @@
         >未读</span
       >
     </nav>
-    <main class="main">
-      <div class="book-info" v-for="(book, index) in books[cursor]" :key="index">
+    <transition-group class="main" name="flipInX" tag="main" css>
+      <div class="book-info" v-for="book in books[cursor]" :key="book.isbn">
         <img class="book-cover" :src="book.coverUrl" :alt="book.title" loading="lazy" />
         <div>
           <h3>{{ book.title }}</h3>
@@ -18,7 +18,7 @@
           <a class="to-douban" :href="book.url" target="_blank">前往豆瓣查看</a>
         </div>
       </div>
-    </main>
+    </transition-group>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
 <style scoped>
 .booklist-root {
   height: 100%;
+  overflow-x: hidden;
 }
 
 .nav {
@@ -76,14 +77,31 @@ export default {
   text-align: center;
   font-size: large;
   border-bottom: 2px solid transparent;
+  display: inline-block;
+  position: relative;
 }
 
-.nav-item:hover {
-  background-color: rgba(64, 158, 255, 0.5);
+.nav-item::before {
+  content: '';
+  position: absolute;
+  left: 51%;
+  right: 51%;
+  bottom: 0;
+  background: var(--primary-color);
+  height: 2px;
+  transition-property: left, right;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
 }
 
-.active-item {
-  border-bottom-color: var(--primary-color);
+.nav-item:hover::before {
+  left: 0;
+  right: 0;
+}
+
+.active-item::before {
+  left: 0;
+  right: 0;
 }
 
 .main {
@@ -103,14 +121,36 @@ export default {
 }
 
 .to-douban {
-  color: #606266;
+  color: var(--dark-gray);
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.to-douban::before {
+  pointer-events: none;
+  content: '→';
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  transform: translateX(-1.5em);
+  transition-property: transform, opacity;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
 }
 
 .to-douban:hover {
   color: var(--primary-color);
   text-decoration: underline;
+  transform: translateX(1em);
+}
+
+.to-douban:hover::before {
+  transform: translateX(-1em);
+  opacity: 1;
 }
 </style>

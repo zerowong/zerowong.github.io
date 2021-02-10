@@ -10,23 +10,25 @@
           infinite-scroll-immediate="false"
           infinite-scroll-disabled="infiniteScrollDisable"
         >
-          <el-card
-            class="list-card"
-            :class="{ 'list-card-active': listCardActiveIndex[index] }"
-            v-for="(post, index) in posts"
-            :key="index"
-            @click.native="changeActiveIndex(index)"
-            shadow="hover"
-          >
-            <h4 class="list-card-title">{{ post.title }}</h4>
-            <div class="list-card-date">{{ post.date | date }}</div>
-          </el-card>
+          <transition-group name="MTBFB" tag="div" css>
+            <el-card
+              class="list-card"
+              :class="{ 'list-card-active': listCardActiveIndex[index] }"
+              v-for="(post, index) in posts"
+              :key="post.title"
+              @click.native="changeActiveIndex(index)"
+              shadow="hover"
+            >
+              <h4 class="list-card-title">{{ post.title }}</h4>
+              <div class="list-card-date">{{ post.date | date }}</div>
+            </el-card>
+          </transition-group>
           <div
             class="infinite-scroll-loading"
             v-loading="infiniteScrollLoading"
             element-loading-background="var(--blog-bgcolor)"
           >
-            <span v-if="noMore">没有更多了</span>
+            <span class="no-more" v-if="noMore">没有更多了</span>
           </div>
         </div>
       </popup-window>
@@ -192,5 +194,9 @@ export default {
   max-width: 80%;
   margin: 0 auto;
   padding: 45px;
+}
+
+.no-more {
+  color: var(--dark-gray);
 }
 </style>

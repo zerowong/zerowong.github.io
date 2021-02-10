@@ -1,15 +1,16 @@
 <template>
   <nav class="nav-menu-root">
-    <router-link class="route" exact-active-class="route-active" to="/">HOME</router-link>
-    <router-link class="route" exact-active-class="route-active" to="/blog">BLOG</router-link>
-    <router-link class="route" exact-active-class="route-active" to="/about">ABOUT</router-link>
+    <router-link class="route" exact-active-class="route-active" to="/">首页</router-link>
+    <router-link class="route" exact-active-class="route-active" to="/blog">文章</router-link>
+    <router-link class="route" exact-active-class="route-active" to="/about">关于</router-link>
     <router-link class="route" exact-active-class="route-active" to="/manager" v-if="isAdmin"
-      >后台管理</router-link
+      >后台</router-link
     >
     <div class="operation">
       <component :is="currentBtn"></component>
       <setting-btn></setting-btn>
     </div>
+    <header-text></header-text>
   </nav>
 </template>
 
@@ -18,6 +19,7 @@ import { mapGetters } from 'vuex'
 import SettingBtn from './btn/SettingBtn.vue'
 import LoginBtn from './btn/LoginBtn.vue'
 import UserBtn from './btn/UserBtn.vue'
+import HeaderText from './HeaderText.vue'
 
 export default {
   name: 'NavMenu',
@@ -25,6 +27,7 @@ export default {
     SettingBtn,
     LoginBtn,
     UserBtn,
+    HeaderText,
   },
   computed: {
     ...mapGetters(['isAdmin']),
@@ -48,6 +51,7 @@ export default {
   box-shadow: 0 0 5px 0 black;
   display: flex;
   justify-content: center;
+  column-gap: 10px;
 }
 
 .operation {
@@ -60,18 +64,36 @@ export default {
 }
 
 .route {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90px;
+  display: inline-block;
+  text-align: center;
+  padding: 1em;
+  box-sizing: border-box;
+  transition: 0.3s;
+  position: relative;
+  overflow: hidden;
+  width: 80px;
   height: 100%;
   text-decoration: none;
   color: var(--blog-color);
-  transition: 0.3s;
+  font-weight: bold;
 }
 
-.route:hover,
-.route-active {
+.route::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   background-color: var(--primary-color);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease-out;
+}
+
+.route-active::before,
+.route:hover::before {
+  transform: scale(2);
 }
 </style>

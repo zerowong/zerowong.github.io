@@ -19,28 +19,30 @@
         <el-button class="operation-btn" type="text" @click="onSendReply">回复</el-button>
       </div>
       <template v-if="showReplies">
-        <div class="reply" v-for="(reply, index) in message.replies[currentPage - 1]" :key="index">
-          <el-avatar class="reply-avatar" :src="reply.user.avatar" :size="30">
-            {{ reply.user.name[0] }}
-          </el-avatar>
-          <div>
-            <div class="content">
-              <user-popover :user="reply.user"></user-popover>
-              <template v-if="reply.to">
-                <span> 回复 </span>
-                <user-popover :user="reply.to"></user-popover>
-                <span> :</span>
-              </template>
-              <span> {{ reply.content }}</span>
-            </div>
-            <div class="operation">
-              <span class="operation-text">{{ reply.createdAt | dateFromNow }}</span>
-              <el-button class="operation-btn" type="text" @click="onSendInnerReply(reply)"
-                >回复</el-button
-              >
+        <transition-group name="moveFromLeft" tag="div" css appear>
+          <div class="reply" v-for="reply in message.replies[currentPage - 1]" :key="reply._id">
+            <el-avatar class="reply-avatar" :src="reply.user.avatar" :size="30">
+              {{ reply.user.name[0] }}
+            </el-avatar>
+            <div>
+              <div class="content">
+                <user-popover :user="reply.user"></user-popover>
+                <template v-if="reply.to">
+                  <span> 回复 </span>
+                  <user-popover :user="reply.to"></user-popover>
+                  <span> :</span>
+                </template>
+                <span> {{ reply.content }}</span>
+              </div>
+              <div class="operation">
+                <span class="operation-text">{{ reply.createdAt | dateFromNow }}</span>
+                <el-button class="operation-btn" type="text" @click="onSendInnerReply(reply)"
+                  >回复</el-button
+                >
+              </div>
             </div>
           </div>
-        </div>
+        </transition-group>
         <el-pagination
           small
           class="pagination"
@@ -51,15 +53,14 @@
           @current-change="handleCurrentChange"
         ></el-pagination>
       </template>
-      <template v-if="showEditor">
-        <reply-editor
-          class="reply-editor"
-          :messageId="message._id"
-          :replyTo="replyTo"
-          :placeholder="replyPlaceholder"
-          @refresh-current-page="refreshCurrentPage"
-        ></reply-editor>
-      </template>
+      <reply-editor
+        v-if="showEditor"
+        class="reply-editor"
+        :messageId="message._id"
+        :replyTo="replyTo"
+        :placeholder="replyPlaceholder"
+        @refresh-current-page="refreshCurrentPage"
+      ></reply-editor>
     </div>
   </div>
 </template>
@@ -186,7 +187,7 @@ export default {
 }
 
 .operation-btn {
-  color: #99a2aa;
+  color: var(--light-gray);
   padding: 0;
 }
 
@@ -195,10 +196,19 @@ export default {
   color: var(--primary-color);
 }
 
+.icon-good {
+  display: inline-block;
+  transition: transform 0.3s cubic-bezier(0.47, 2.02, 0.31, -0.36);
+}
+
+.icon-good:hover {
+  transform: scale(1.5);
+}
+
 /* 操作栏文本：时间，点赞数，回复数 */
 .operation-text {
   font-size: small;
-  color: #99a2aa;
+  color: var(--light-gray);
 }
 
 .reply-editor {

@@ -7,14 +7,14 @@
             <img class="me-inner-img" :src="avatar" alt="blogger's avatar" loading="lazy" />
           </div>
           <div class="social">
-            <a target="_blank" href="https://www.zhihu.com/people/wongzero">
-              <i class="iconfont icon-zhihu"></i>
-            </a>
-            <a target="_blank" href="https://github.com/zerowong">
-              <i class="iconfont icon-github"></i>
-            </a>
-            <a target="_blank" href="https://space.bilibili.com/8380727">
-              <i class="iconfont icon-bilibili"></i>
+            <a
+              class="social-link"
+              target="_blank"
+              v-for="(item, index) in social"
+              :key="index"
+              :href="item.href"
+            >
+              <i class="iconfont" :class="item.icon"></i>
             </a>
           </div>
         </div>
@@ -22,7 +22,21 @@
     </div>
     <div class="show">
       <popup-window title="Show">
-        <div class="show-inner">TODO...</div>
+        <div class="show-inner">
+          <h1>交换友链</h1>
+          <div>
+            <p>
+              按以下格式到发送到
+              <a style="color: var(--primary-color);" href="mailto:wongzero@foxmail.com"
+                >wongzero@foxmail.com</a
+              >，留言也行
+            </p>
+            <p>名字：ApassEr</p>
+            <p>简介：黄种亚裔汉族农村普通家庭不会做题家普但信郭楠</p>
+            <p>地址：https://apasser.xyz</p>
+            <p>头像：https://cdn.apasser.xyz/blog/avatar.jpg</p>
+          </div>
+        </div>
       </popup-window>
     </div>
     <div class="friends">
@@ -35,27 +49,37 @@
           infinite-scroll-immediate="false"
           infinite-scroll-disabled="infiniteScrollDisbale"
         >
-          <a v-for="(friend, index) in friends" :key="index" :href="friend.link" target="_blank">
-            <el-card class="friend-card" shadow="hover">
-              <div class="friend-card-inner">
-                <img
-                  class="friend-avatar"
-                  :src="friend.avatar"
-                  :alt="`${friend.name}'s avatar`"
-                  loading="lazy"
-                />
-                <div>
-                  <div class="friend-name">{{ friend.name }}</div>
-                  <div class="friend-desc">{{ friend.desc }}</div>
+          <transition-group name="MTBFB" tag="div" css>
+            <a
+              class="friend-link"
+              v-for="friend in friends"
+              :key="friend._id"
+              :href="friend.link"
+              target="_blank"
+            >
+              <el-card class="friend-card" shadow="hover">
+                <div class="friend-card-inner">
+                  <img
+                    class="friend-avatar"
+                    :src="friend.avatar"
+                    :alt="`${friend.name}'s avatar`"
+                    loading="lazy"
+                  />
+                  <div>
+                    <div class="friend-name">{{ friend.name }}</div>
+                    <div class="friend-desc">{{ friend.desc }}</div>
+                  </div>
                 </div>
-              </div>
-            </el-card>
-          </a>
+              </el-card>
+            </a>
+          </transition-group>
           <div
             class="infinite-scroll-loading"
             v-loading="infiniteScrollLoading"
             element-loading-background="var(--blog-bgcolor)"
-          ></div>
+          >
+            <span class="no-more" v-if="noMore">没有更多了</span>
+          </div>
         </div>
       </popup-window>
     </div>
@@ -75,6 +99,11 @@ export default {
     infiniteScrollLoading: false,
     nestPage: 2,
     noMore: false,
+    social: [
+      { href: 'https://www.zhihu.com/people/wongzero', icon: 'icon-zhihu' },
+      { href: 'https://github.com/zerowong', icon: 'icon-github' },
+      { href: 'https://space.bilibili.com/8380727', icon: 'icon-bilibili' },
+    ],
   }),
   computed: {
     infiniteScrollDisbale() {
@@ -137,7 +166,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  background-color: var(--blog-bgcolor);
 }
 
 .me-inner-img {
@@ -156,7 +184,7 @@ export default {
   font-size: 40px;
 }
 
-.social a {
+.social-link {
   text-decoration: none;
   margin: 0 5px;
 }
@@ -184,11 +212,9 @@ export default {
 
 .show-inner {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   height: 100%;
-  background-color: var(--blog-bgcolor);
-  color: var(--blog-color);
 }
 
 .friends {
@@ -197,11 +223,10 @@ export default {
 
 .friends-inner {
   height: 100%;
-  background-color: var(--blog-bgcolor);
   padding: 0 30px;
 }
 
-.friends-inner > a {
+.friend-link {
   display: block;
   width: 100%;
   margin: 5px 0;
@@ -245,6 +270,14 @@ export default {
 }
 
 .infinite-scroll-loading {
-  height: 50px;
+  height: 70px;
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-more {
+  color: var(--dark-gray);
 }
 </style>

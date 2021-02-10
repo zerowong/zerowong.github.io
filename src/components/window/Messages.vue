@@ -4,7 +4,7 @@
     v-loading="messagesLoading"
     element-loading-background="var(--blog-bgcolor)"
   >
-    <div class="messages-nav">
+    <nav class="messages-nav">
       <el-pagination
         class="pagination"
         layout="total, ->, prev, pager, next"
@@ -13,21 +13,21 @@
         :total="messagesLength"
         @current-change="handleCurrentChange"
       ></el-pagination>
-    </div>
-    <div class="messages-body">
+    </nav>
+    <transition-group class="messages-body" name="moveFromLeft" tag="main" css>
       <message-item
-        v-for="(message, index) in messages[currentPage - 1]"
-        :key="index"
+        v-for="message in messages[currentPage - 1]"
+        :key="message._id"
         :message="message"
         @refresh-current-page="refreshCurrentPage"
       ></message-item>
-    </div>
-    <div class="messages-editor">
+    </transition-group>
+    <footer class="messages-editor">
       <messages-editor
         placeholder="正能量留言"
         @refresh-page-one="refreshPageOne"
       ></messages-editor>
-    </div>
+    </footer>
   </div>
 </template>
 

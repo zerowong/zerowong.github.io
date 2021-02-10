@@ -1,15 +1,17 @@
 <template>
-  <div class="pw-container" :class="{ 'pw-container-moveable': moveable }">
-    <div class="pw-header" @mousedown.self.left="mouseDown" @mouseup="mouseUp">
-      <span class="pw-title">{{ title }}</span>
-      <el-button class="pw-header-btn" type="text" v-if="moveable" @click="close">
-        <i class="el-icon-circle-close"></i>
-      </el-button>
+  <transition :name="transitionName" appear>
+    <div class="pw-container" :class="{ 'pw-container-moveable': moveable }">
+      <div class="pw-header" @mousedown.self.left="mouseDown" @mouseup="mouseUp">
+        <span class="pw-title">{{ title }}</span>
+        <el-button class="pw-header-btn" type="text" v-if="moveable" @click="close">
+          <i class="el-icon-circle-close"></i>
+        </el-button>
+      </div>
+      <div class="pw-body">
+        <slot></slot>
+      </div>
     </div>
-    <div class="pw-body">
-      <slot></slot>
-    </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -37,7 +39,12 @@ export default {
     offsetTop: 0,
     closeClicked: false,
   }),
-  computed: { ...mapState(['maxZIndex']) },
+  computed: {
+    ...mapState(['maxZIndex']),
+    transitionName() {
+      return this.moveable ? 'zoom' : ''
+    },
+  },
   methods: {
     ...mapMutations(['updateMaxZIndex']),
     mouseDown(event) {
@@ -122,10 +129,6 @@ export default {
   color: var(--blog-color);
 }
 
-.pw-body > * {
-  overflow-y: auto;
-}
-
 .pw-header {
   display: flex;
   justify-content: center;
@@ -134,11 +137,17 @@ export default {
   height: 40px;
   background-color: var(--pw-header-bgcolor);
   border-radius: 18px 18px 0 0;
+  cursor: grab;
+}
+
+.pw-header:active {
+  cursor: grabbing;
 }
 
 .pw-title {
   color: var(--pw-title-color);
   font-size: larger;
+  cursor: text;
 }
 
 .pw-header-btn {
@@ -148,5 +157,11 @@ export default {
   font-size: xx-large;
   color: red;
   padding: 0;
+}
+</style>
+
+<style>
+.pw-body > * {
+  overflow: auto;
 }
 </style>

@@ -17,8 +17,8 @@
       <div class="color-picker">
         <div
           class="color-picker-item"
-          v-for="(item, index) in color"
-          :key="index"
+          v-for="item in color"
+          :key="item"
           :style="showColor(item)"
           @click="colorPicker(item)"
         ></div>
@@ -27,13 +27,14 @@
     <div class="item">
       <div class="title">桌面壁纸</div>
       <div class="image-picker">
-        <img
+        <div
           class="image-picker-item"
-          v-for="(item, index) in backgroundImage"
-          :key="index"
-          :src="item"
+          v-for="item in backgroundImage"
+          :key="item"
           @click="imagePicker(item)"
-        />
+        >
+          <img class="image-picker-item-img" :src="item" loading="lazy" />
+        </div>
       </div>
     </div>
   </div>
@@ -83,7 +84,7 @@ export default {
   flex-direction: row;
 }
 
-.color-picker:hover > div {
+.color-picker:hover > .color-picker-item {
   opacity: 0.5;
 }
 
@@ -93,30 +94,55 @@ export default {
   border-radius: 50%;
   margin: 10px 6px;
   cursor: pointer;
+  transition: transform 0.3s;
 }
 
 .color-picker > .color-picker-item:hover {
   opacity: 1;
-  transform: scale(1.1);
+  transform: scale(1.2);
 }
 
 .image-picker {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px 0;
+  row-gap: 20px;
+  box-sizing: border-box;
 }
 
 .image-picker-item {
   width: 90%;
   height: 100px;
-  padding: 2px;
-  margin: 2px;
-  border: 2px solid transparent;
   cursor: pointer;
+  display: inline-block;
+  position: relative;
 }
 
-.image-picker-item:hover {
+.image-picker-item-img {
+  width: 100%;
+  height: 100%;
+}
+
+.image-picker-item::before {
+  content: '';
+  position: absolute;
   border: 2px solid var(--primary-color);
+  top: -16px;
+  right: -16px;
+  bottom: -16px;
+  left: -16px;
+  opacity: 0;
+  transition-property: top, right, bottom, left;
+  transition-duration: 0.3s;
+}
+
+.image-picker-item:hover::before {
+  top: -8px;
+  right: -8px;
+  bottom: -8px;
+  left: -8px;
+  opacity: 1;
 }
 
 .el-switch {

@@ -2,44 +2,43 @@
   <div id="app">
     <nav-menu></nav-menu>
     <main id="main">
-      <router-view></router-view>
+      <transition :name="routeTransitionName" mode="out-in">
+        <router-view></router-view>
+      </transition>
     </main>
     <div id="popup-window-wrapper">
-      <transition name="el-zoom-in-center">
-        <popup-window
-          title="设置"
-          :moveable="true"
-          windowName="setting"
-          :width="400"
-          :height="600"
-          v-if="windowOpen.setting"
-        >
-          <setting :config="config"></setting>
-        </popup-window>
-      </transition>
-      <transition name="el-zoom-in-center">
-        <popup-window
-          title="个人资料"
-          :moveable="true"
-          windowName="user"
-          :width="500"
-          :height="600"
-          v-if="windowOpen.user"
-        >
-          <user></user>
-        </popup-window>
-      </transition>
-      <transition name="el-zoom-in-center">
-        <popup-window
-          :moveable="true"
-          windowName="lr"
-          :width="500"
-          :height="620"
-          v-if="windowOpen.lr"
-        >
-          <login-register></login-register>
-        </popup-window>
-      </transition>
+      <popup-window
+        title="设置"
+        key="setting"
+        :moveable="true"
+        windowName="setting"
+        :width="400"
+        :height="600"
+        v-show="windowOpen.setting"
+      >
+        <setting :config="config"></setting>
+      </popup-window>
+      <popup-window
+        title="个人资料"
+        key="profile"
+        :moveable="true"
+        windowName="user"
+        :width="500"
+        :height="600"
+        v-if="windowOpen.user"
+      >
+        <user></user>
+      </popup-window>
+      <popup-window
+        key="login-register"
+        :moveable="true"
+        windowName="lr"
+        :width="500"
+        :height="620"
+        v-if="windowOpen.lr"
+      >
+        <login-register></login-register>
+      </popup-window>
     </div>
   </div>
 </template>
@@ -67,10 +66,20 @@ export default {
     config: {
       darkmode: true,
       pwHeaderBgColor: '#e2e2e2',
-      backgroundImage: 'https://cdn.apasser.xyz/blog/escape.jpg',
+      backgroundImage: 'https://cdn.apasser.xyz/blog/october_rain.jpg',
     },
+    routeTransitionName: 'MTLFR',
   }),
   computed: { ...mapState(['windowOpen']) },
+  watch: {
+    $route(to, from) {
+      if (to.path === '/' || from.path === '/') {
+        this.routeTransitionName = 'MTBFB'
+      } else {
+        this.routeTransitionName = 'MTLFR'
+      }
+    },
+  },
   methods: {
     ...mapActions(['getUser']),
     polling() {
@@ -101,6 +110,7 @@ export default {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 #main {

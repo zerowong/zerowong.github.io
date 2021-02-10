@@ -1,5 +1,7 @@
 <template>
-  <div class="popover">{{ content }}</div>
+  <transition name="fadeInUp" appear>
+    <div class="popover">{{ content }}</div>
+  </transition>
 </template>
 
 <script>

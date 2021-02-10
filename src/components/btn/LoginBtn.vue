@@ -1,5 +1,5 @@
 <template>
-  <el-button type="primary" size="medium" @click="open">登录</el-button>
+  <el-button class="shadowPulse" type="primary" size="medium" @click="open">登录</el-button>
 </template>
 
 <script>

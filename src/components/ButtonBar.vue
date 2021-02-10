@@ -2,32 +2,28 @@
   <div class="btn-bar">
     <message-btn class="btn"></message-btn>
     <booklist-btn class="btn"></booklist-btn>
-    <transition name="el-zoom-in-center">
-      <popup-window
-        key="messages"
-        title="留言"
-        :moveable="true"
-        windowName="messages"
-        :width="700"
-        :height="900"
-        v-if="windowOpen.messages"
-      >
-        <messages></messages>
-      </popup-window>
-    </transition>
-    <transition name="el-zoom-in-center">
-      <popup-window
-        key="booklist"
-        title="书单"
-        :moveable="true"
-        windowName="booklist"
-        :width="700"
-        :height="900"
-        v-if="windowOpen.booklist"
-      >
-        <booklist></booklist>
-      </popup-window>
-    </transition>
+    <popup-window
+      key="messages"
+      title="留言"
+      :moveable="true"
+      windowName="messages"
+      :width="700"
+      :height="900"
+      v-if="windowOpen.messages"
+    >
+      <messages></messages>
+    </popup-window>
+    <popup-window
+      key="booklist"
+      title="书单"
+      :moveable="true"
+      windowName="booklist"
+      :width="700"
+      :height="900"
+      v-if="windowOpen.booklist"
+    >
+      <booklist></booklist>
+    </popup-window>
   </div>
 </template>
 

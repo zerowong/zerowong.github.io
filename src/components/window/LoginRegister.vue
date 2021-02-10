@@ -12,7 +12,9 @@
       >登录</el-button
     >
     <div class="form">
-      <component :is="currentComponent"></component>
+      <transition name="fade" mode="out-in">
+        <component :is="loginOrRegister"></component>
+      </transition>
     </div>
   </div>
 </template>
@@ -29,7 +31,7 @@ export default {
   },
   data: () => ({ isLogin: true }),
   computed: {
-    currentComponent() {
+    loginOrRegister() {
       return this.isLogin ? this.$options.components.Login : this.$options.components.Register
     },
   },
@@ -44,6 +46,7 @@ export default {
 <style scoped>
 .container {
   height: 100%;
+  overflow-x: hidden;
 }
 
 .to-register {
