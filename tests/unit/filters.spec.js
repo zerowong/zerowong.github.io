@@ -31,6 +31,13 @@ describe('filters.dateFromNow', () => {
     expect(() => dateFromNow(time)).toThrow()
   })
 
+  it('-1 < time < 1', () => {
+    const time0 = Date.now() - 1
+    expect(dateFromNow(time0)).toBe('刚刚')
+    const time1 = Date.now() + 999
+    expect(dateFromNow(time1)).toBe('即将')
+  })
+
   it('秒', () => {
     const time0 = Date.now() - 1000
     expect(dateFromNow(time0)).toBe('1秒钟前')

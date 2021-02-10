@@ -29,6 +29,9 @@ const base = [
  */
 export function dateFromNow(value) {
   const time = new Date(value)
+  if (Number.isNaN(time.getTime())) {
+    throw new Error('invalid Date')
+  }
   let isAfter = false
   let duration = (new Date() - time) / 1000
   if (duration < 0) {
@@ -36,7 +39,7 @@ export function dateFromNow(value) {
     isAfter = true
   }
   // -1 < time < 1
-  let key = 'second'
+  let key = null
   for (let i = 0; i < base.length - 1; i++) {
     const prev = base[i]
     const next = base[i + 1]
@@ -45,6 +48,9 @@ export function dateFromNow(value) {
       key = prev[0]
       break
     }
+  }
+  if (!key) {
+    return isAfter ? '即将' : '刚刚'
   }
   if (isAfter) {
     return rtf.format(duration, key)
