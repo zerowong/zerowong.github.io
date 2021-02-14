@@ -1,10 +1,16 @@
 <template>
   <div class="booklist-root">
     <nav class="nav">
-      <span class="nav-item" :class="{ 'active-item': cursor === 'read' }" @click="switchGroup"
+      <span
+        class="nav-item"
+        :class="{ 'active-item': cursor === 'read' }"
+        @click="switchGroup('read')"
         >已读</span
       >
-      <span class="nav-item" :class="{ 'active-item': cursor === 'unread' }" @click="switchGroup"
+      <span
+        class="nav-item"
+        :class="{ 'active-item': cursor === 'unread' }"
+        @click="switchGroup('unread')"
         >未读</span
       >
     </nav>
@@ -33,8 +39,12 @@ export default {
     cursor: 'read',
   }),
   methods: {
-    switchGroup() {
-      this.cursor = this.cursor === 'read' ? 'unread' : 'read'
+    switchGroup(to) {
+      if (to === this.cursor) {
+        return
+      } else {
+        this.cursor = to
+      }
     },
     async getBooks() {
       try {
@@ -66,6 +76,7 @@ export default {
   padding: 10px;
   cursor: pointer;
   background-color: var(--blog-bgcolor);
+  z-index: 1;
 }
 
 .nav-item {

@@ -32,7 +32,7 @@
               >，留言也行
             </p>
             <p>名字：ApassEr</p>
-            <p>简介：黄种亚裔汉族农村普通家庭不会做题家普但信郭楠</p>
+            <p>简介：This is an accelerated world</p>
             <p>地址：https://apasser.xyz</p>
             <p>头像：https://cdn.apasser.xyz/blog/avatar.jpg</p>
           </div>
