@@ -2,16 +2,12 @@
   <div class="booklist-root">
     <nav class="nav">
       <span
+        v-for="item in navItem"
+        :key="item.key"
         class="nav-item"
-        :class="{ 'active-item': cursor === 'read' }"
-        @click="switchGroup('read')"
-        >已读</span
-      >
-      <span
-        class="nav-item"
-        :class="{ 'active-item': cursor === 'unread' }"
-        @click="switchGroup('unread')"
-        >未读</span
+        :class="{ 'active-item': cursor === item.key }"
+        @click="switchGroup(item.key)"
+        >{{ item.text }}</span
       >
     </nav>
     <transition-group class="main" name="flipInX" tag="main" css>
@@ -32,6 +28,10 @@
 export default {
   name: 'Booklist',
   data: () => ({
+    navItem: [
+      { key: 'read', text: '已读' },
+      { key: 'unread', text: '未读' },
+    ],
     books: {
       read: [],
       unread: [],
@@ -64,26 +64,21 @@ export default {
 <style scoped>
 .booklist-root {
   height: 100%;
-  overflow-x: hidden;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 .nav {
-  height: 60px;
-  width: 700px;
-  box-sizing: border-box;
-  position: fixed;
   display: flex;
   padding: 10px;
-  cursor: pointer;
   background-color: var(--blog-bgcolor);
-  z-index: 1;
 }
 
 .nav-item {
+  cursor: pointer;
   height: 100%;
   width: 50%;
-  display: flex;
-  flex-direction: column-reverse;
   padding-bottom: 5px;
   text-align: center;
   font-size: large;
@@ -98,7 +93,7 @@ export default {
   left: 51%;
   right: 51%;
   bottom: 0;
-  background: var(--primary-color);
+  background-color: var(--primary-color);
   height: 2px;
   transition-property: left, right;
   transition-duration: 0.3s;
@@ -116,7 +111,7 @@ export default {
 }
 
 .main {
-  margin-top: 60px;
+  overflow: hidden scroll;
   padding: 30px;
 }
 
@@ -127,8 +122,7 @@ export default {
 }
 
 .book-cover {
-  min-width: 150px;
-  max-width: 150px;
+  width: 150px;
 }
 
 .to-douban {
@@ -163,5 +157,15 @@ export default {
 .to-douban:hover::before {
   transform: translateX(-1em);
   opacity: 1;
+}
+
+@media (max-width: 1024px) {
+  .book-cover {
+    width: 100px;
+  }
+
+  .book-info {
+    font-size: small;
+  }
 }
 </style>

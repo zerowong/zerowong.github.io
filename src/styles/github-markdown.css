@@ -410,3 +410,13 @@
 .markdown-body img[align='left'] {
   padding-right: 20px;
 }
+
+@media (max-width: 1024px) {
+  .markdown-body {
+    font-size: small;
+  }
+
+  .markdown-body code {
+    font-size: small;
+  }
+}

@@ -4,7 +4,7 @@
     v-loading="messagesLoading"
     element-loading-background="var(--blog-bgcolor)"
   >
-    <nav class="messages-nav">
+    <nav>
       <el-pagination
         class="pagination"
         layout="total, ->, prev, pager, next"
@@ -85,11 +85,8 @@ export default {
   height: 100%;
   display: flex;
   flex-direction: column;
-}
-
-/* 导航栏容器 */
-.messages-nav {
-  height: 5%;
+  /* 兼容移动端 */
+  overflow-y: hidden;
 }
 
 /* 留言列表容器 */
@@ -101,8 +98,13 @@ export default {
 
 /* 留言编辑器容器 */
 .messages-editor {
-  height: 10%;
   padding: 10px 10px 2px 10px;
+}
+
+@media (max-width: 1024px) {
+  .messages-body {
+    font-size: small;
+  }
 }
 </style>
 

@@ -92,6 +92,9 @@ new Vue({
   router,
   store,
   render: (h) => h(App),
+  provide: {
+    isMobile: /Mobile/i.test(navigator.appVersion),
+  },
 }).$mount('#app')
 
 console.log(`

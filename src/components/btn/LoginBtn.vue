@@ -5,8 +5,12 @@
 <script>
 export default {
   name: 'LoginBtn',
+  inject: ['isMobile'],
   methods: {
     open() {
+      if (this.isMobile) {
+        this.$store.commit('updateDrawer', false)
+      }
       this.$store.commit('updateWindow', { name: 'lr', val: true })
     },
   },

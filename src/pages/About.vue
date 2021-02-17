@@ -1,88 +1,82 @@
 <template>
   <div class="about">
-    <div class="me">
-      <popup-window title="Me">
-        <div class="me-inner">
-          <div class="avatar">
-            <img class="me-inner-img" :src="avatar" alt="blogger's avatar" loading="lazy" />
-          </div>
-          <div class="social">
-            <a
-              class="social-link"
-              target="_blank"
-              v-for="(item, index) in social"
-              :key="index"
-              :href="item.href"
-            >
-              <i class="iconfont" :class="item.icon"></i>
-            </a>
-          </div>
+    <popup-window class="me" title="Me">
+      <div class="me-inner">
+        <div class="avatar">
+          <img class="me-inner-img" :src="avatar" alt="blogger's avatar" loading="lazy" />
         </div>
-      </popup-window>
-    </div>
-    <div class="show">
-      <popup-window title="Show">
-        <div class="show-inner">
-          <h1>交换友链</h1>
-          <div>
-            <p>
-              按以下格式到发送到
-              <a style="color: var(--primary-color);" href="mailto:wongzero@foxmail.com"
-                >wongzero@foxmail.com</a
-              >，留言也行
-            </p>
-            <p>名字：ApassEr</p>
-            <p>简介：This is an accelerated world</p>
-            <p>地址：https://apasser.xyz</p>
-            <p>头像：https://cdn.apasser.xyz/blog/avatar.jpg</p>
-          </div>
-        </div>
-      </popup-window>
-    </div>
-    <div class="friends">
-      <popup-window title="Friends">
-        <div
-          class="friends-inner"
-          v-loading="friendsLoading"
-          element-loading-background="var(--blog-bgcolor)"
-          v-infinite-scroll="loadFriends"
-          infinite-scroll-immediate="false"
-          infinite-scroll-disabled="infiniteScrollDisbale"
-        >
-          <transition-group name="MTBFB" tag="div" css>
-            <a
-              class="friend-link"
-              v-for="friend in friends"
-              :key="friend._id"
-              :href="friend.link"
-              target="_blank"
-            >
-              <el-card class="friend-card" shadow="hover">
-                <div class="friend-card-inner">
-                  <img
-                    class="friend-avatar"
-                    :src="friend.avatar"
-                    :alt="`${friend.name}'s avatar`"
-                    loading="lazy"
-                  />
-                  <div>
-                    <div class="friend-name">{{ friend.name }}</div>
-                    <div class="friend-desc">{{ friend.desc }}</div>
-                  </div>
-                </div>
-              </el-card>
-            </a>
-          </transition-group>
-          <div
-            class="infinite-scroll-loading"
-            v-loading="infiniteScrollLoading"
-            element-loading-background="var(--blog-bgcolor)"
+        <div class="social">
+          <a
+            class="social-link"
+            target="_blank"
+            v-for="(item, index) in social"
+            :key="index"
+            :href="item.href"
           >
-            <span class="no-more" v-if="noMore">没有更多了</span>
-          </div>
+            <i class="iconfont" :class="item.icon"></i>
+          </a>
         </div>
-      </popup-window>
-    </div>
+      </div>
+    </popup-window>
+    <popup-window class="show" title="Show">
+      <div class="show-inner">
+        <h1>交换友链</h1>
+        <div>
+          <p>
+            按以下格式到发送到
+            <a style="color: var(--primary-color);" href="mailto:wongzero@foxmail.com"
+              >wongzero@foxmail.com</a
+            >，留言也行
+          </p>
+          <p>名字：ApassEr</p>
+          <p>简介：This is an accelerated world</p>
+          <p>地址：https://apasser.xyz</p>
+          <p>头像：https://cdn.apasser.xyz/blog/avatar.jpg</p>
+        </div>
+      </div>
+    </popup-window>
+    <popup-window class="friends" title="Friends">
+      <div
+        class="friends-inner"
+        v-loading="friendsLoading"
+        element-loading-background="var(--blog-bgcolor)"
+        v-infinite-scroll="loadFriends"
+        infinite-scroll-immediate="false"
+        infinite-scroll-disabled="infiniteScrollDisbale"
+      >
+        <transition-group name="MTBFB" tag="div" css>
+          <a
+            class="friend-link"
+            v-for="friend in friends"
+            :key="friend._id"
+            :href="friend.link"
+            target="_blank"
+          >
+            <el-card class="friend-card" shadow="hover">
+              <div class="friend-card-inner">
+                <img
+                  class="friend-avatar"
+                  :src="friend.avatar"
+                  :alt="`${friend.name}'s avatar`"
+                  loading="lazy"
+                />
+                <div>
+                  <div class="friend-name">{{ friend.name }}</div>
+                  <div class="friend-desc">{{ friend.desc }}</div>
+                </div>
+              </div>
+            </el-card>
+          </a>
+        </transition-group>
+        <div
+          class="infinite-scroll-loading"
+          v-loading="infiniteScrollLoading"
+          element-loading-background="var(--blog-bgcolor)"
+        >
+          <span class="no-more" v-if="noMore">没有更多了</span>
+        </div>
+      </div>
+    </popup-window>
   </div>
 </template>
 
@@ -151,13 +145,12 @@ export default {
   padding: 20px 40px;
   box-sizing: border-box;
   height: 100%;
+  column-gap: 15px;
 }
 
-.me {
+.me,
+.friends {
   width: 25%;
-  display: flex;
-  flex-direction: column;
-  margin-right: 15px;
 }
 
 .me-inner {
@@ -206,8 +199,7 @@ export default {
 }
 
 .show {
-  width: calc(100% - 50% - 30px);
-  margin-right: 15px;
+  width: calc(50% - 30px);
 }
 
 .show-inner {
@@ -215,10 +207,6 @@ export default {
   flex-direction: column;
   align-items: center;
   height: 100%;
-}
-
-.friends {
-  width: 25%;
 }
 
 .friends-inner {
@@ -279,5 +267,30 @@ export default {
 
 .no-more {
   color: var(--dark-gray);
+}
+
+@media (max-width: 1024px) {
+  .about {
+    overflow-y: scroll;
+    flex-direction: column;
+    row-gap: 15px;
+    align-items: center;
+  }
+
+  .me,
+  .show,
+  .friends {
+    width: 90vw;
+    box-sizing: border-box;
+  }
+
+  .me-inner {
+    padding-bottom: 30px;
+  }
+
+  .show-inner {
+    padding: 10px;
+    font-size: small;
+  }
 }
 </style>

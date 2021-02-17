@@ -71,4 +71,12 @@ export default {
   top: 0;
   left: 0;
 }
+
+@media (max-width: 1024px) {
+  .header-text {
+    width: 220px;
+    height: 40px;
+    top: 10px;
+  }
+}
 </style>

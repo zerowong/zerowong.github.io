@@ -97,6 +97,13 @@ export default {
   transition: transform 0.3s;
 }
 
+@media (max-width: 1024px) {
+  .color-picker-item {
+    width: 30px;
+    height: 30px;
+  }
+}
+
 .color-picker > .color-picker-item:hover {
   opacity: 1;
   transform: scale(1.2);

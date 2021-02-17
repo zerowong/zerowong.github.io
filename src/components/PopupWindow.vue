@@ -19,6 +19,7 @@ import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'PopupWindow',
+  inject: ['isMobile'],
   props: {
     title: {
       type: String,
@@ -76,12 +77,19 @@ export default {
     },
     // 配置初始化
     init() {
-      // 窗口大小
-      this.$el.style.width = `${this.width}px`
-      this.$el.style.height = `${this.height}px`
-      // 居中
-      this.$el.style.left = `calc(50% - ${this.width / 2}px)`
-      this.$el.style.top = `calc(50% - ${this.height / 2}px)`
+      if (this.isMobile) {
+        this.$el.style.width = '90vw'
+        this.$el.style.height = '90vh'
+        this.$el.style.top = '5vh'
+        this.$el.style.left = '5vw'
+      } else {
+        // 窗口大小
+        this.$el.style.width = `${this.width}px`
+        this.$el.style.height = `${this.height}px`
+        // 居中
+        this.$el.style.left = `calc(50% - ${this.width / 2}px)`
+        this.$el.style.top = `calc(50% - ${this.height / 2}px)`
+      }
       // 打开窗口时保持最前
       this.$el.style.zIndex = this.maxZIndex + 1
       this.updateMaxZIndex()
@@ -90,7 +98,9 @@ export default {
   mounted() {
     if (this.moveable) {
       this.init()
-      window.addEventListener('mousemove', this.mouseMove)
+      if (!this.isMobile) {
+        window.addEventListener('mousemove', this.mouseMove)
+      }
     }
   },
   destroyed() {
@@ -137,10 +147,13 @@ export default {
   height: 40px;
   background-color: var(--pw-header-bgcolor);
   border-radius: 18px 18px 0 0;
+}
+
+.pw-container-moveable > .pw-header {
   cursor: grab;
 }
 
-.pw-header:active {
+.pw-container-moveable > .pw-header:active {
   cursor: grabbing;
 }
 

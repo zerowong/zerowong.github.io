@@ -40,20 +40,28 @@
         <login-register></login-register>
       </popup-window>
     </div>
+    <transition name="moveLeft" css>
+      <aside v-if="drawer" id="drawer">
+        <routes-menu></routes-menu>
+      </aside>
+    </transition>
+    <div class="drawer-mask" v-if="drawer" @click="updateDrawer(false)"></div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapMutations } from 'vuex'
 import settingMixin from './utils/setting-mixin'
 import NavMenu from './components/NavMenu.vue'
 import PopupWindow from './components/PopupWindow.vue'
 import Setting from './components/window/Setting.vue'
 import User from './components/window/User.vue'
 import LoginRegister from './components/window/LoginRegister.vue'
+import RoutesMenu from './components/RoutesMenu.vue'
 
 export default {
   name: 'App',
+  // inject: ['isMobile'],
   mixins: [settingMixin],
   components: {
     NavMenu,
@@ -61,6 +69,7 @@ export default {
     Setting,
     User,
     LoginRegister,
+    RoutesMenu,
   },
   data: () => ({
     config: {
@@ -70,9 +79,12 @@ export default {
     },
     routeTransitionName: 'MTLFR',
   }),
-  computed: { ...mapState(['windowOpen']) },
+  computed: { ...mapState(['windowOpen', 'drawer']) },
   watch: {
     $route(to, from) {
+      if (this.drawer) {
+        this.$store.commit('updateDrawer', false)
+      }
       if (to.path === '/' || from.path === '/') {
         this.routeTransitionName = 'MTBFB'
       } else {
@@ -81,6 +93,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(['updateDrawer']),
     ...mapActions(['getUser']),
     polling() {
       this.$axios.patch('/user/polling').catch(() => {})
@@ -100,6 +113,19 @@ export default {
     this.darkModeChange(this.config.darkmode)
     this.colorPicker(this.config.pwHeaderBgColor)
     this.imagePicker(this.config.backgroundImage)
+
+    // 使用原生样式
+    // if (this.isMobile) {
+    //   for (let i = 0; i < document.styleSheets.length; i++) {
+    //     const cssStyleSheet = document.styleSheets[i]
+    //     const cssRules = cssStyleSheet.cssRules
+    //     for (let j = 0; j < cssRules.length; j++) {
+    //       if (cssRules[j]?.selectorText === '::-webkit-scrollbar') {
+    //         cssStyleSheet.deleteRule(j)
+    //       }
+    //     }
+    //   }
+    // }
   },
 }
 </script>
@@ -111,6 +137,7 @@ export default {
   flex-direction: column;
   box-sizing: border-box;
   overflow: hidden;
+  background-color: unset;
 }
 
 #main {
@@ -121,5 +148,25 @@ export default {
 
 #popup-window-wrapper {
   position: absolute;
+}
+
+#drawer {
+  position: absolute;
+  width: 60vw;
+  height: 100vh;
+  background-color: var(--blog-bgcolor);
+  box-shadow: 10px 0 20px 20px rgba(0, 0, 0, 0.2);
+  border-radius: 0 18px 18px 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+}
+
+.drawer-mask {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9998;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 </style>

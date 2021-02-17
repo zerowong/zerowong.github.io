@@ -7,8 +7,12 @@
 <script>
 export default {
   name: 'SettingBtn',
+  inject: ['isMobile'],
   methods: {
     open() {
+      if (this.isMobile) {
+        this.$store.commit('updateDrawer', false)
+      }
       this.$store.commit('updateWindow', { name: 'setting', val: true })
     },
   },
