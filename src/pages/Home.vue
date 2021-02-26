@@ -52,4 +52,10 @@ export default {
 .link:hover {
   color: var(--primary-color);
 }
+
+@media (max-width: 1024px) {
+  .footer {
+    font-size: small;
+  }
+}
 </style>

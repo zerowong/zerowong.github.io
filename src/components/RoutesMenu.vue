@@ -70,10 +70,14 @@ export default {
       this.$axios.get('/logout').finally(() => this.$store.commit('updateUser', null))
     },
   },
-  mounted() {
-    if (this.isAdmin) {
-      this.routes.push({ to: '/manager', name: '后台' })
-    }
+  watch: {
+    isAdmin(newVal) {
+      if (newVal) {
+        this.routes.push({ to: '/manager', name: '后台' })
+      } else {
+        this.routes.pop()
+      }
+    },
   },
 }
 </script>
@@ -107,11 +111,10 @@ export default {
 }
 
 .operation-mobile {
-  position: absolute;
-  top: 5vh;
   display: flex;
   flex-direction: column;
   row-gap: 20px;
+  margin-bottom: 30px;
 }
 
 [class*='route-'] {
@@ -141,6 +144,7 @@ export default {
   background-color: var(--primary-color);
 }
 
+.route-mobile::before,
 .route-pc::before {
   content: '';
   position: absolute;
@@ -158,5 +162,9 @@ export default {
 .route-active::before,
 .route-pc:hover::before {
   transform: scale(2);
+}
+
+.route-mobile:hover::before {
+  transform: scaleY(2);
 }
 </style>
