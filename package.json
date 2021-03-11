@@ -1,0 +1,41 @@
+{
+  "name": "apasser-blog",
+  "version": "1.0.0",
+  "description": "ApassEr's Blog",
+  "private": true,
+  "author": {
+    "name": "zerowong",
+    "email": "wongzero@foxmail.com"
+  },
+  "license": "MIT",
+  "bugs": "https://github.com/zerowong/zerowong.github.io/issues",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zerowong/zerowong.github.io.git"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "animejs": "^3.2.1",
+    "axios": "^0.21.1",
+    "element-plus": "^1.0.2-beta.32",
+    "lodash-es": "^4.17.21",
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.4",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/animejs": "^3.1.2",
+    "@types/lodash-es": "^4.17.4",
+    "@typescript-eslint/eslint-plugin": "^4.15.2",
+    "@typescript-eslint/parser": "^4.15.2",
+    "@vitejs/plugin-vue": "^1.1.4",
+    "@vue/compiler-sfc": "^3.0.5",
+    "eslint": "^7.21.0",
+    "typescript": "^4.1.3",
+    "vite": "^2.0.1"
+  }
+}

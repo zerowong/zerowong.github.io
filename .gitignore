@@ -1,0 +1,10 @@
+# defaults
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+
+# the project
+/.vscode
+/todo.md
