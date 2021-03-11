@@ -1,7 +1,6 @@
 <template>
   <div class="editor">
     <el-input
-      class="editor-textarea"
       type="textarea"
       :rows="3"
       :placeholder="placeholder"
@@ -10,95 +9,101 @@
       resize="none"
       show-word-limit
     ></el-input>
-    <el-button type="primary" @click="onSend">发送</el-button>
-    <popover
-      class="popover"
-      content="你还没有留言!"
-      v-if="emptyPopover"
-      :visible.sync="emptyPopover"
-    ></popover>
-    <popover
-      class="popover"
-      content="操作太频繁了!"
-      v-if="limitPopover"
-      :visible.sync="limitPopover"
-    ></popover>
+    <el-popover
+      trigger="manual"
+      :visible="popoverVisible"
+      :content="popoverContent"
+      :show-arrow="false"
+      popper-class="popper"
+    >
+      <template #reference>
+        <el-button type="primary" @click="send">发送</el-button>
+      </template>
+    </el-popover>
   </div>
 </template>
 
-<script>
-import { mapState, mapGetters } from 'vuex'
-import Popover from './Popover.vue'
-import { ERROR_MSG_NOT_LOGINED } from '../utils/constants'
+<script lang="ts" setup>
+import { defineProps, defineEmit, computed } from 'vue'
+import { useStore } from '../store'
+import type { User } from './popup/messages'
+import { axios, error } from '../utils'
 
-export default {
-  name: 'Editor',
-  components: { Popover },
-  props: { placeholder: String },
-  computed: { ...mapGetters(['logined']) },
-  data: () => ({
-    input: '',
-    // 留言为空时的popover用户提示
-    emptyPopover: false,
-    // 留言频率限制的popover用户提示
-    limitPopover: false,
-    // 发留言频率限制
-    sendLimit: false,
-  }),
-  methods: {
-    onSend() {
-      if (!this.logined) {
-        this.$notification.error(ERROR_MSG_NOT_LOGINED)
-        return
-      }
-      if (this.input) {
-        // 操作频率限制
-        if (!this.sendLimit) {
-          this.post().catch(this.$throw)
-          this.sendLimit = true
-          setTimeout(() => {
-            this.sendLimit = false
-          }, 2000)
-        } else {
-          this.limitPopover = true
-        }
-      } else {
-        this.emptyPopover = true
-      }
-    },
-  },
+const store = useStore()
+const props = defineProps<{
+  placeholder?: string
+  reply?: {
+    messageId: string
+    to: User | null
+  }
+}>()
+const emit = defineEmit(['refresh-page-one', 'refresh-current-page'])
+
+ref: noLodined = computed(() => store.state.user === null)
+ref: input = ''
+ref: popoverContent = ''
+ref: popoverVisible = false
+
+function showPopover(content: string) {
+  popoverContent = content
+  popoverVisible = true
+  setTimeout(() => (popoverVisible = false), 1000)
+}
+
+function send() {
+  if (noLodined) {
+    showPopover('还未登录')
+    return
+  }
+  if (!input) {
+    showPopover('你还没有留言')
+    return
+  }
+  const data: {
+    content: string
+    to?: string
+  } = { content: input }
+  let url = '/messages'
+  let event: 'refresh-page-one' | 'refresh-current-page' = 'refresh-page-one'
+  if (props.reply) {
+    if (props.reply.to) {
+      data.to = props.reply.to._id
+    }
+    url = `/messages/${props.reply.messageId}/replies`
+    event = 'refresh-current-page'
+  }
+  axios.post(url, data).then(() => {
+    input = ''
+    emit(event)
+  }, error)
 }
 </script>
 
 <style scoped>
 .editor {
   display: flex;
+  column-gap: 10px;
 }
 
-.editor-textarea {
-  margin-right: 10px;
+:global(.popper) {
+  border: unset !important;
+  background-color: red !important;
+  color: white !important;
+  text-align: center !important;
 }
 
-/* 发送留言时的用户提示 */
-.popover {
-  right: 0;
-  bottom: 87px;
-}
-</style>
-
-<style>
-.editor .el-textarea__inner,
-.editor .el-textarea .el-input__count {
+:deep(.el-textarea__inner),
+:deep(.el-textarea .el-input__count) {
   background-color: var(--input-bgcolor);
-  color: inherit;
 }
 
-.editor .el-textarea__inner {
+:deep(.el-textarea__inner) {
   border: 2px solid rgba(64, 158, 255, 0.5);
+  color: var(--global-color);
 }
 
-.editor .el-textarea__inner:hover,
-.editor .el-textarea__inner:focus {
+:deep(.el-textarea__inner:hover),
+:deep(.el-textarea__inner:focus) {
   border-color: var(--primary-color);
   box-shadow: 0 0 0 4px rgba(4, 120, 190, 0.1);
 }

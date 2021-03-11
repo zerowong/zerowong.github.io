@@ -1,21 +1,23 @@
-@import url('//at.alicdn.com/t/font_2218836_j05ssjb9nb.css');
+@import url('//at.alicdn.com/t/font_2218836_e9toau8nw0c.css');
 
 :root {
-  --pw-header-bgcolor: #e2e2e2;
-  --pw-title-color: black;
+  --popup-header-bgcolor: #e2e2e2;
+  --popup-title-color: black;
   --primary-color: #409eff;
   --primary-btn-size: 60px;
-  --blog-bgcolor: white;
-  --blog-color: black;
+  --global-bgcolor: white;
+  --global-color: black;
   --input-bgcolor: #f4f5f7;
-  --code-bgcolor: #f8f8f8;
+  --pre-bgcolor: #f8f8f8;
+  --code-bgcolor: #3d404c;
   --dark-gray: #606266;
   --light-gray: #99a2aa;
+  --nav-bar-bgcolor: #e2e2e2;
 }
 
 body {
   background-size: cover;
-  background-color: var(--blog-bgcolor);
+  background-color: var(--global-bgcolor);
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -30,7 +32,11 @@ body {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 3px;
-  background-color: var(--dark-gray);
+  background-color: rgba(144, 147, 153, 0.5);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--primary-color);
 }
 
 ::-webkit-scrollbar-corner {
@@ -42,10 +48,6 @@ body {
   ::-webkit-scrollbar {
     width: 3px;
     height: 3px;
-  }
-
-  * {
-    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -112,20 +114,6 @@ body {
   }
 }
 
-@keyframes zoomIn {
-  from {
-    opacity: 0;
-    transform: scale3d(0.2, 0.2, 0.2);
-  }
-}
-
-@keyframes zoomOut {
-  to {
-    opacity: 0;
-    transform: scale3d(0.2, 0.2, 0.2);
-  }
-}
-
 @keyframes fadeInLeft {
   from {
     opacity: 0;
@@ -142,11 +130,11 @@ body {
 
 @keyframes shadowPulse {
   from {
-    box-shadow: 0 0 0 0px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 0px var(--primary-color);
   }
 
   to {
-    box-shadow: 0 0 0 20px rgba(255, 255, 255, 0);
+    box-shadow: 0 0 0 20px transparent;
   }
 }
 
@@ -185,12 +173,17 @@ body {
 }
 
 /* transitionName: zoom */
-.zoom-enter-active {
-  animation: 0.4s zoomIn;
+.zoom-enter-active,
+.zoom-leave-active {
+  transition-property: transform, opacity;
+  transition-duration: 0.25s;
+  transition-timing-function: ease-in-out;
 }
 
-.zoom-leave-active {
-  animation: 0.4s zoomOut;
+.zoom-enter-from,
+.zoom-leave-to {
+  opacity: 0;
+  transform: scale3d(0.2, 0.2, 0.2);
 }
 
 /* transitionName: fade */
