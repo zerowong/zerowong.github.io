@@ -18,6 +18,7 @@
 <script lang="ts" setup>
 import { toRef, watch, inject, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import ElLoading from 'element-plus/lib/el-loading'
 import { useStore } from './store'
 import { axios } from './utils'
 import NavBar from './components/NavBar.vue'
@@ -48,6 +49,14 @@ function init() {
 }
 
 onMounted(init)
+
+const loading = ElLoading.service({
+  lock: true,
+  spinner: 'iconfont icon-loading',
+  background: 'var(--global-bgcolor)',
+})
+
+window.addEventListener('load', () => loading.close())
 </script>
 
 <style scoped>
@@ -88,5 +97,11 @@ onMounted(init)
   height: 100vh;
   z-index: 9998;
   background-color: rgba(0, 0, 0, 0.6);
+}
+
+:global(.icon-loading) {
+  display: inline-block;
+  font-size: 40px !important;
+  animation: loading 2s linear infinite;
 }
 </style>

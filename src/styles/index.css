@@ -1,4 +1,4 @@
-@import url('//at.alicdn.com/t/font_2218836_e9toau8nw0c.css');
+@import url('//at.alicdn.com/t/font_2218836_5abzj45g94u.css');
 
 :root {
   --popup-header-bgcolor: #e2e2e2;
@@ -135,6 +135,12 @@ body {
 
   to {
     box-shadow: 0 0 0 20px transparent;
+  }
+}
+
+@keyframes loading {
+  to {
+    transform: rotateZ(-1turn);
   }
 }
 
