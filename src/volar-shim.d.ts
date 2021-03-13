@@ -12,7 +12,7 @@ declare global {
       __VLS_slots: {
         default: {
           Component: VNode
-          route: RouteLocationNormalized & { href: string } & { meta: { transition?: string } }
+          route: RouteLocationNormalized & { href: string } & { meta: { transition: string } }
         }
       }
     }

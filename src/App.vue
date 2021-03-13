@@ -5,7 +5,7 @@
   </nav>
   <main id="main">
     <router-view v-slot="{ Component, route }">
-      <transition :name="route.meta.transition ?? 'MTLFR'" mode="out-in">
+      <transition :name="route.meta.transition" mode="out-in">
         <component :is="Component"></component>
       </transition>
     </router-view>
