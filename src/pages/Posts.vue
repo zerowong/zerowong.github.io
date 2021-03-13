@@ -10,7 +10,7 @@
         infinite-scroll-disabled="infiniteScrollDisable"
       >
         <div>
-          <transition-group name="MTBFB">
+          <transition-group name="moveToBottomFromBottom">
             <el-card
               class="list-card"
               :class="{ 'list-card-active': cardsActive[index] }"

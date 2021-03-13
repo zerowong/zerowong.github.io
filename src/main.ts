@@ -20,7 +20,7 @@ import './styles/index.css'
 
 const loading = ElLoading.service({
   lock: true,
-  spinner: 'iconfont icon-loading entry-loading',
+  spinner: 'iconfont icon-loading entryLoading',
   background: 'var(--global-bgcolor)',
 })
 window.addEventListener('load', () => loading.close())

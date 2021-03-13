@@ -22,7 +22,7 @@
               注册<i class="iconfont icon-arrow-right"></i>
             </el-button>
           </div>
-          <transition name="fade" mode="out-in">
+          <transition name="fadeInLeftOutRight" mode="out-in">
             <component class="form" :is="loginOrRegister"></component>
           </transition>
         </div>

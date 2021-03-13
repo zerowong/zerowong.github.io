@@ -51,134 +51,73 @@ body {
   }
 }
 
-@keyframes flipInX {
-  from {
-    transform: perspective(400px) rotate3d(1, 0, 0, 90deg);
-    animation-timing-function: ease-in;
-    opacity: 0;
-  }
-
-  40% {
-    transform: perspective(400px) rotate3d(1, 0, 0, -20deg);
-    animation-timing-function: ease-in;
-  }
-
-  60% {
-    transform: perspective(400px) rotate3d(1, 0, 0, 10deg);
-    opacity: 1;
-  }
-
-  80% {
-    transform: perspective(400px) rotate3d(1, 0, 0, -5deg);
-  }
-
-  to {
-    transform: perspective(400px);
-  }
-}
-
-@keyframes moveToLeft {
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes moveFromLeft {
-  from {
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes moveFromRight {
-  from {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes moveToBottom {
-  to {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes moveFromBottom {
-  from {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30%);
-  }
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-}
-
-@keyframes fadeOutRight {
-  to {
-    opacity: 0;
-    transform: translateX(100%);
-  }
-}
-
-@keyframes shadowPulse {
-  from {
-    box-shadow: 0 0 0 0px var(--primary-color);
-  }
-
-  to {
-    box-shadow: 0 0 0 20px transparent;
-  }
-}
-
-@keyframes loading {
-  to {
-    transform: rotateZ(-1turn);
-  }
-}
-
 /* transitionName: moveFromLeft */
+.moveFromLeft-enter-from {
+  transform: translateX(-100%);
+}
+
 .moveFromLeft-enter-active {
-  animation: 0.4s ease-in-out moveFromLeft;
+  transition: transform 0.4s ease-out;
 }
 
-/* transitionName: flipInX */
-.flipInX-enter-active {
-  backface-visibility: visible;
-  animation: 0.6s ease-in-out flipInX;
+/* transitionName: moveFromRightToLeft */
+.moveFromRightToLeft-enter-from {
+  transform: translateX(100%);
 }
 
-/* transitionName: MTLFR(move to left from right) */
-.MTLFR-enter-active {
-  animation: 0.6s ease-in-out moveFromRight;
+.moveFromRightToLeft-leave-to {
+  transform: translateX(-100%);
 }
 
-.MTLFR-leave-active {
-  animation: 0.6s ease-in-out moveToLeft;
+.moveFromRightToLeft-enter-active,
+.moveFromRightToLeft-leave-active {
+  transition: transform 0.6s ease-in-out;
 }
 
-/* transitionName: MTBFB(move to bottom from bottom) */
-.MTBFB-enter-active {
-  animation: 0.6s ease-in-out moveFromBottom;
+/* transitionName: moveFromLeftToRight */
+.moveFromLeftToRight-enter-from {
+  transform: translateX(-100%);
 }
 
-.MTBFB-leave-active {
-  animation: 0.6s ease-in-out moveToBottom;
+.moveFromLeftToRight-leave-to {
+  transform: translateX(100%);
+}
+
+.moveFromLeftToRight-enter-active,
+.moveFromLeftToRight-leave-active {
+  transition: transform 0.6s ease-in-out;
+}
+
+/* transitionName: moveToBottomFromBottom */
+.moveToBottomFromBottom-enter-from,
+.moveToBottomFromBottom-leave-to {
+  transform: translateY(100%);
+}
+
+.moveToBottomFromBottom-enter-active,
+.moveToBottomFromBottom-leave-active {
+  transition: transform 0.6s ease-in-out;
 }
 
 /* transitionName: fadeInUp */
+.fadeInUp-enter-from {
+  opacity: 0;
+  transform: translateY(30%);
+}
+
 .fadeInUp-enter-active {
-  animation: 0.3s fadeInUp;
+  transition-property: opacity transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
 }
 
 /* transitionName: zoom */
+.zoom-enter-from,
+.zoom-leave-to {
+  opacity: 0;
+  transform: scale3d(0.2, 0.2, 0.2);
+}
+
 .zoom-enter-active,
 .zoom-leave-active {
   transition-property: transform, opacity;
@@ -186,28 +125,33 @@ body {
   transition-timing-function: ease-in-out;
 }
 
-.zoom-enter-from,
-.zoom-leave-to {
+/* transitionName: fadeInLeftOutRight */
+.fadeInLeftOutRight-enter-from {
   opacity: 0;
-  transform: scale3d(0.2, 0.2, 0.2);
+  transform: translateX(-100%);
 }
 
-/* transitionName: fade */
-.fade-enter-active {
-  animation: 0.3s fadeInLeft;
+.fadeInLeftOutRight-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
 }
 
-.fade-leave-active {
-  animation: 0.3s fadeOutRight;
+.fadeInLeftOutRight-enter-active,
+.fadeInLeftOutRight-leave-active {
+  transition-property: opacity transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
 }
 
 /* transitionName: moveLeft */
-.moveLeft-enter-active {
-  animation: 0.3s ease-in-out moveFromLeft;
+.moveLeft-enter-from,
+.moveLeft-leave-to {
+  transform: translateX(-100%);
 }
 
+.moveLeft-enter-active,
 .moveLeft-leave-active {
-  animation: 0.3s ease-in-out moveToLeft;
+  transition: transform 0.3s ease-in-out;
 }
 
 /* transitionName: fadeIn */
@@ -218,16 +162,31 @@ body {
 
 .fadeIn-enter-active,
 .fadeIn-leave-active {
-  transition-property: opacity;
-  transition-duration: 0.25s;
+  transition: opacity 0.25s;
 }
 
 /* animation */
+@keyframes shadowPulse {
+  from {
+    box-shadow: 0 0 0 0px var(--primary-color);
+  }
+
+  to {
+    box-shadow: 0 0 0 20px transparent;
+  }
+}
+
 .shadowPulse {
   animation: 1s infinite shadowPulse;
 }
 
-.entry-loading {
+@keyframes loading {
+  to {
+    transform: rotateZ(-1turn);
+  }
+}
+
+.entryLoading {
   display: inline-block;
   font-size: 40px !important;
   animation: 2s linear infinite loading;
