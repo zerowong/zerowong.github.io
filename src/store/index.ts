@@ -1,8 +1,8 @@
-import type { InjectionKey } from '@vue/runtime-core'
+import { InjectionKey } from '@vue/runtime-core'
 import { createStore, Store, useStore as baseUseStore, createLogger } from 'vuex'
 import { axios } from '../utils'
 
-export interface User {
+interface User {
   _id: string
   name: string
   avatar: string
@@ -11,11 +11,10 @@ export interface User {
   lastActiveAt: string
   role: 'admin' | 'normal'
 }
-
 export interface State {
   user: User | null
   maxZIndex: number
-  drawer: boolean
+  drawerDisplay: boolean
 }
 
 export const key: InjectionKey<Store<State>> = Symbol('vuexStore')
@@ -27,7 +26,7 @@ export const store = createStore<State>({
     user: null,
     // 每次打开或点击窗口都会使其自增1，从而使窗口保持最前，只作用于可拖动窗口
     maxZIndex: 100,
-    drawer: false,
+    drawerDisplay: false,
   }),
   getters: {
     logined: ({ user }) => user !== null,
@@ -40,8 +39,8 @@ export const store = createStore<State>({
     incrMaxZIndex(state) {
       state.maxZIndex += 1
     },
-    updateDrawer(state, val: boolean) {
-      state.drawer = val
+    updateDrawerDisplay(state, val: boolean) {
+      state.drawerDisplay = val
     },
   },
   actions: {

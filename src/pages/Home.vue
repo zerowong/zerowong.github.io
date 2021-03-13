@@ -1,11 +1,11 @@
 <template>
   <div class="home-container">
     <footer class="footer">
-      <span
-        >© 2021 All
-        <a class="link" :href="links[0].url" :tabindex="-1">{{ links[0].name }}</a> Rights
-        Reserved.</span
-      >
+      <span>
+        © 2021 All
+        <a class="link" :href="links[0].url" :tabindex="-1">{{ links[0].name }}</a>
+        Rights Reserved.
+      </span>
       <a class="link" :href="links[1].url" :tabindex="-1">{{ links[1].name }}</a>
     </footer>
     <div class="button-bar">

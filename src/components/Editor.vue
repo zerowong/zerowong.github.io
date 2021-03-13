@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { defineProps, defineEmit, computed } from 'vue'
 import { useStore } from '../store'
-import type { User } from './popup/messages'
+import type { User } from './popup/types'
 import { axios, error } from '../utils'
 
 const store = useStore()

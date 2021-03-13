@@ -69,7 +69,7 @@ import throttle from 'lodash-es/throttle'
 import { useStore } from '../../store'
 import { notify, error, axios } from '../../utils'
 import { dateFromNow } from '../../utils/filters'
-import type { Message, User } from './messages'
+import type { Message, User } from './types'
 import Editor from '../Editor.vue'
 import ProfilePopover from './ProfilePopover.vue'
 

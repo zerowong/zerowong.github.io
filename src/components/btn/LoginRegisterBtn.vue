@@ -4,12 +4,24 @@
     <transition name="zoom">
       <popup :rect="{ width: 500, height: 620 }" v-if="popupOpen" v-model="popupOpen">
         <div class="login-register">
-          <el-button class="btn to-login" type="text" v-show="!isLogin" @click="switchButton">
-            <i class="iconfont icon-arrow-left"></i>登录
-          </el-button>
-          <el-button class="btn to-register" type="text" v-show="isLogin" @click="switchButton">
-            注册<i class="iconfont icon-arrow-right"></i>
-          </el-button>
+          <div class="operation">
+            <el-button
+              class="btn"
+              :class="{ 'btn-hidden': isLogin }"
+              type="text"
+              @click="switchButton"
+            >
+              <i class="iconfont icon-arrow-left"></i>登录
+            </el-button>
+            <el-button
+              class="btn"
+              :class="{ 'btn-hidden': !isLogin }"
+              type="text"
+              @click="switchButton"
+            >
+              注册<i class="iconfont icon-arrow-right"></i>
+            </el-button>
+          </div>
           <transition name="fade" mode="out-in">
             <component class="form" :is="loginOrRegister"></component>
           </transition>
@@ -37,7 +49,7 @@ ref: loginOrRegister = computed(() => {
 
 function open() {
   if (isMobile) {
-    store.commit('updateDrawer', false)
+    store.commit('updateDrawerDisplay', false)
   }
   popupOpen = true
 }
@@ -63,9 +75,9 @@ provide('closePopup', closePopup)
   flex-direction: column;
 }
 
-.btn {
-  position: absolute;
-  top: 40px;
+.operation {
+  display: flex;
+  justify-content: space-between;
 }
 
 .btn,
@@ -73,12 +85,8 @@ provide('closePopup', closePopup)
   font-size: 25px;
 }
 
-.to-login {
-  left: 10px;
-}
-
-.to-register {
-  right: 10px;
+.btn-hidden {
+  visibility: hidden;
 }
 
 .form {

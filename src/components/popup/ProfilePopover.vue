@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 import { defineProps, computed } from 'vue'
-import type { User } from './messages'
+import type { User } from './types'
 import { dateFromNow } from '../../utils/filters'
 
 const props = defineProps<{ user: User }>()

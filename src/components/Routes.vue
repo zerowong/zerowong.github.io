@@ -9,8 +9,8 @@
     <router-link
       v-for="route in routesInfo"
       :key="route.to"
-      :class="routeClass"
-      :exact-active-class="routeActiveClass"
+      class="route"
+      exact-active-class="route-active"
       :to="route.to"
     >
       {{ route.name }}
@@ -27,9 +27,7 @@ import ProfileBtn from './btn/ProfileBtn.vue'
 
 const store = useStore()
 const isMobile = inject<boolean>('isMobile')
-const rootClass = isMobile ? 'routes-menu-root-mobile' : 'routes-menu-root-pc'
-const routeClass = isMobile ? 'route-mobile' : 'route-pc'
-const routeActiveClass = isMobile ? 'route-mobile-active' : 'route-active'
+const rootClass = isMobile ? 'routes-mobile' : 'routes'
 const operationClass = isMobile ? 'operation-mobile' : 'operation'
 
 const routesInfo = reactive([
@@ -53,12 +51,12 @@ watch($isAdmin, (val) => {
 </script>
 
 <style scoped>
-.routes-menu-root-pc {
+.routes {
   display: flex;
   column-gap: 10px;
 }
 
-.routes-menu-root-mobile {
+.routes-mobile {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -87,8 +85,7 @@ watch($isAdmin, (val) => {
   margin-bottom: 30px;
 }
 
-.route-pc,
-.route-mobile {
+.route {
   display: inline-block;
   text-align: center;
   padding: 1em;
@@ -101,22 +98,11 @@ watch($isAdmin, (val) => {
   color: var(--global-color);
   font-weight: bold;
   border-radius: 18px;
-}
-
-.route-pc {
   width: 80px;
+  z-index: 0;
 }
 
-.route-mobile {
-  width: 80%;
-}
-
-.route-mobile-active {
-  background-color: var(--primary-color);
-}
-
-.route-mobile::before,
-.route-pc::before {
+.route::before {
   content: '';
   position: absolute;
   z-index: -1;
@@ -131,11 +117,21 @@ watch($isAdmin, (val) => {
 }
 
 .route-active::before,
-.route-pc:hover::before {
+.route:hover::before {
   transform: scale(2);
 }
 
-.route-mobile:hover::before {
-  transform: scaleY(2);
+@media (max-width: 1024px) {
+  .route {
+    width: 80%;
+  }
+
+  .route:hover::before {
+    transform: scaleY(2);
+  }
+
+  .route-active {
+    background-color: var(--primary-color);
+  }
 }
 </style>

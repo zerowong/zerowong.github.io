@@ -1,4 +1,4 @@
-@import url('//at.alicdn.com/t/font_2218836_5abzj45g94u.css');
+@import url('//at.alicdn.com/t/font_2218836_17f5w7v5q0q.css');
 
 :root {
   --popup-header-bgcolor: #e2e2e2;
@@ -210,7 +210,25 @@ body {
   animation: 0.3s ease-in-out moveToLeft;
 }
 
+/* transitionName: fadeIn */
+.fadeIn-enter-from,
+.fadeIn-leave-to {
+  opacity: 0;
+}
+
+.fadeIn-enter-active,
+.fadeIn-leave-active {
+  transition-property: opacity;
+  transition-duration: 0.25s;
+}
+
 /* animation */
 .shadowPulse {
   animation: 1s infinite shadowPulse;
+}
+
+.entry-loading {
+  display: inline-block;
+  font-size: 40px !important;
+  animation: 2s linear infinite loading;
 }

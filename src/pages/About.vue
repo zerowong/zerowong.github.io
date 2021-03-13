@@ -29,6 +29,7 @@ const social = [
   { href: 'https://www.zhihu.com/people/wongzero', icon: 'icon-zhihu' },
   { href: 'https://github.com/zerowong', icon: 'icon-github' },
   { href: 'https://space.bilibili.com/8380727', icon: 'icon-bilibili' },
+  { href: 'https://twitter.com/ApassEr0x00', icon: 'icon-twitter' },
 ]
 </script>
 
@@ -77,5 +78,9 @@ const social = [
 
 .icon-bilibili {
   color: #fb7299;
+}
+
+.icon-twitter {
+  color: #1a91da;
 }
 </style>

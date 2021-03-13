@@ -58,7 +58,7 @@ ref: popupOpen = false
 
 function open() {
   if (isMobile) {
-    store.commit('updateDrawer', false)
+    store.commit('updateDrawerDisplay', false)
   }
   popupOpen = true
 }

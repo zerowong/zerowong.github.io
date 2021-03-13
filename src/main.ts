@@ -18,6 +18,13 @@ import { store, key } from './store'
 import App from './App.vue'
 import './styles/index.css'
 
+const loading = ElLoading.service({
+  lock: true,
+  spinner: 'iconfont icon-loading entry-loading',
+  background: 'var(--global-bgcolor)',
+})
+window.addEventListener('load', () => loading.close())
+
 const app = createApp(App)
 
 app.use(router)

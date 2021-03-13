@@ -33,7 +33,7 @@
         </div>
       </div>
     </popup>
-    <popup class="content" :title="currentPost.title" v-show="showContent">
+    <popup class="content" :title="currentPost.title" v-show="contentVisible">
       <div
         class="content-inner"
         v-loading="postsLoading"
@@ -47,23 +47,27 @@
           @touchmove="onTouchMove"
           @touchend="onTouchEnd"
         ></div>
-        <el-button
-          v-if="isMobile"
-          v-show="showBack"
-          class="back-btn"
-          type="primary"
-          icon="el-icon-back"
-          @click="backToList"
-          circle
-        ></el-button>
-        <el-button
-          class="back-top"
-          type="primary"
-          icon="el-icon-top"
-          @click="backTop"
-          v-show="backTopVisible"
-          circle
-        ></el-button>
+        <transition name="fadeIn">
+          <el-button
+            v-if="isMobile"
+            v-show="backListVisible"
+            class="back-btn"
+            type="primary"
+            icon="el-icon-back"
+            @click="backToList"
+            circle
+          ></el-button>
+        </transition>
+        <transition name="fadeIn">
+          <el-button
+            class="back-top"
+            type="primary"
+            icon="el-icon-top"
+            @click="backTop"
+            v-show="backTopVisible"
+            circle
+          ></el-button>
+        </transition>
       </div>
     </popup>
   </div>
@@ -97,8 +101,8 @@ ref: currentPost = computed(() => {
 ref: infiniteScrollDisable = computed(() => infiniteScrollLoading || noMore)
 ref: contentEl = null as HTMLElement | null
 // mobile
-ref: showContent = true
-ref: showBack = true
+ref: contentVisible = true
+ref: backListVisible = true
 ref: backTopVisible = false
 
 function updatePosts(data: any) {
@@ -141,7 +145,7 @@ function onClickListItem(index: number) {
   currentPostIndex = index
   backTop()
   if (isMobile) {
-    showContent = true
+    contentVisible = true
   }
 }
 
@@ -163,15 +167,15 @@ function backTop() {
 
 // mobile
 function backToList() {
-  showContent = false
+  contentVisible = false
 }
 
 function onTouchMove() {
-  showBack = false
+  backListVisible = false
 }
 
 function onTouchEnd() {
-  showBack = true
+  backListVisible = true
 }
 
 watch($currentPostIndex, (val) => {
@@ -182,12 +186,14 @@ watch($currentPostIndex, (val) => {
 onMounted(() => {
   initPosts()
   if (isMobile) {
-    showContent = false
+    contentVisible = false
   }
 })
 </script>
 
 <style scoped>
+@import url('https://unpkg.com/@highlightjs/cdn-assets@10.6.0/styles/atom-one-dark.min.css');
+
 .posts {
   display: flex;
   padding: 20px 40px;

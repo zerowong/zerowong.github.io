@@ -1,5 +1,8 @@
 <template>
-  <nav-bar />
+  <nav id="nav">
+    <routes v-if="!isMobile" />
+    <primary-link-icon />
+  </nav>
   <main id="main">
     <router-view v-slot="{ Component, route }">
       <transition :name="route.meta.transition ?? 'MTLFR'" mode="out-in">
@@ -7,31 +10,39 @@
       </transition>
     </router-view>
   </main>
-  <transition name="moveLeft">
-    <aside v-if="isMobile" v-show="drawer" id="drawer">
-      <routes />
-    </aside>
-  </transition>
-  <div class="drawer-mask" v-show="drawer" @click="closeDrawer"></div>
+  <template v-if="isMobile">
+    <el-button class="menu-btn" type="text" @click="openDrawer">
+      <i class="iconfont icon-menu"></i>
+    </el-button>
+    <transition name="moveLeft">
+      <aside id="drawer" v-show="drawerDisplay">
+        <routes />
+      </aside>
+    </transition>
+    <div class="fullscreen-mask" v-show="drawerDisplay" @click="closeDrawer"></div>
+  </template>
 </template>
 
 <script lang="ts" setup>
 import { toRef, watch, inject, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import ElLoading from 'element-plus/lib/el-loading'
 import { useStore } from './store'
 import { axios } from './utils'
-import NavBar from './components/NavBar.vue'
 import Routes from './components/Routes.vue'
+import PrimaryLinkIcon from './components/PrimaryLinkIcon.vue'
 
 const store = useStore()
 const isMobile = inject<boolean>('isMobile')
 
-ref: drawer = toRef(store.state, 'drawer')
+ref: drawerDisplay = toRef(store.state, 'drawerDisplay')
 ref: path = toRef(useRoute(), 'path')
 
+function openDrawer() {
+  store.commit('updateDrawerDisplay', true)
+}
+
 function closeDrawer() {
-  store.commit('updateDrawer', false)
+  store.commit('updateDrawerDisplay', false)
 }
 
 function polling() {
@@ -44,19 +55,11 @@ function init() {
   axios.get('/client').catch(() => {})
   // setTimeout(polling, 840000)
   if (isMobile) {
-    watch($path, () => store.commit('updateDrawer', false))
+    watch($path, closeDrawer)
   }
 }
 
 onMounted(init)
-
-const loading = ElLoading.service({
-  lock: true,
-  spinner: 'iconfont icon-loading',
-  background: 'var(--global-bgcolor)',
-})
-
-window.addEventListener('load', () => loading.close())
 </script>
 
 <style scoped>
@@ -64,23 +67,24 @@ window.addEventListener('load', () => loading.close())
   height: 100vh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
   overflow: hidden;
-  background-color: unset;
+}
+
+#nav {
+  height: 60px;
+  background-color: var(--nav-bar-bgcolor);
+  box-shadow: 0 5px 20px 0 black;
+  display: flex;
+  justify-content: center;
 }
 
 #main {
   height: calc(100% - 60px);
-  margin-top: 60px;
-  box-sizing: border-box;
-}
-
-:global(#popup-moveable-wrapper) {
-  position: absolute;
 }
 
 #drawer {
   position: absolute;
+  top: 0;
   width: 60vw;
   height: 100vh;
   background-color: var(--global-bgcolor);
@@ -91,17 +95,23 @@ window.addEventListener('load', () => loading.close())
   align-items: center;
 }
 
-.drawer-mask {
+.menu-btn {
   position: absolute;
+  top: 9px;
+  right: 10px;
+  padding: 0;
+}
+
+.icon-menu {
+  font-size: 40px;
+}
+
+.fullscreen-mask {
+  position: absolute;
+  top: 0;
   width: 100vw;
   height: 100vh;
   z-index: 9998;
   background-color: rgba(0, 0, 0, 0.6);
-}
-
-:global(.icon-loading) {
-  display: inline-block;
-  font-size: 40px !important;
-  animation: loading 2s linear infinite;
 }
 </style>

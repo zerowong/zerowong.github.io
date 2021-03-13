@@ -31,7 +31,7 @@
 <script lang="ts" setup>
 import { reactive, onMounted } from 'vue'
 import { axios, error } from '../../utils'
-import type { Message } from './messages'
+import type { Message } from './types'
 import Editor from '../Editor.vue'
 import MessageItem from './MessageItem.vue'
 

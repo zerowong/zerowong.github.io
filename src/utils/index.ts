@@ -1,16 +1,19 @@
-import axiosStatic from 'axios'
+import axiosStatic, { AxiosError } from 'axios'
 import ElNotification from 'element-plus/lib/el-notification'
-import type { AxiosError } from 'axios'
-import type { Notify } from './type'
+
+type NotifyMethods = 'success' | 'warning' | 'info' | 'error'
+type Notify = typeof ElNotification &
+  {
+    [method in NotifyMethods]: (message: string) => void
+  }
 
 export const axios = axiosStatic.create({
   baseURL: import.meta.env.DEV ? 'https://localhost:3000' : 'https://api.apasser.xyz',
   withCredentials: true,
 })
 
-type Methods = 'success' | 'warning' | 'info' | 'error'
 export const notify = ElNotification as Notify
-const methods: Methods[] = ['success', 'warning', 'info', 'error']
+const methods: NotifyMethods[] = ['success', 'warning', 'info', 'error']
 methods.forEach((type) => {
   notify[type] = (message: string) => {
     ElNotification({

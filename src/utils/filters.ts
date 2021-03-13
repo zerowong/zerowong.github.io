@@ -14,8 +14,7 @@ export function date(value: string): string {
 }
 
 const rtf = new Intl.RelativeTimeFormat('zh')
-type Base = [Intl.RelativeTimeFormatUnit, number][]
-const base: Base = [
+const base: [Intl.RelativeTimeFormatUnit, number][] = [
   ['second', 1],
   ['minute', 60],
   ['hour', 3600],

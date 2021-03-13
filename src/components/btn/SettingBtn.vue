@@ -4,7 +4,12 @@
   </el-button>
   <teleport to="#popup">
     <transition name="zoom">
-      <popup title="设置" :rect="{ width: 400, height: 600 }" v-if="popupOpen" v-model="popupOpen">
+      <popup
+        title="设置"
+        :rect="{ width: 400, height: 600 }"
+        v-show="popupOpen"
+        v-model="popupOpen"
+      >
         <div class="setting">
           <div class="setting-item">
             <div class="title">暗黑模式</div>
@@ -50,7 +55,7 @@
 
 <script lang="ts" setup>
 import { reactive, inject } from 'vue'
-import { useStore } from '../../store'
+import { key, useStore } from '../../store'
 import Popup from '../Popup.vue'
 
 const store = useStore()
@@ -62,19 +67,27 @@ const backgroundImages = [
   'https://cdn.apasser.xyz/blog/escape.jpg',
   'https://cdn.apasser.xyz/blog/october_rain.jpg',
 ]
+const darkmodeConfig = {
+  '--global-bgcolor': ['#252d38', 'white'],
+  '--nav-bar-bgcolor': ['#252d38', '#e2e2e2'],
+  '--global-color': ['white', 'black'],
+  '--input-bgcolor': ['#2f3133', '#e7e6ec'],
+  '--pre-bgcolor': ['#282c34', '#f8f8f8'],
+  '--code-bgcolor': ['#3d404c', '#d9dce6'],
+}
 const rootStyle = document.documentElement.style
 const bodyStyle = document.body.style
 
 const theme = reactive({
   darkmode: true,
-  popupHeader: '#e2e2e2',
+  popupHeader: color[0],
   backgroundImage: backgroundImages[0],
 })
 ref: popupOpen = false
 
 function open() {
   if (isMobile) {
-    store.commit('updateDrawer', false)
+    store.commit('updateDrawerDisplay', false)
   }
   popupOpen = true
 }
@@ -96,13 +109,10 @@ function imagePicker(img: string) {
 }
 
 function darkModeChange(isDarkmode: any) {
-  rootStyle.setProperty('--global-bgcolor', isDarkmode ? '#252d38' : 'white')
-  rootStyle.setProperty('--nav-bar-bgcolor', isDarkmode ? '#252d38' : '#e2e2e2')
-  rootStyle.setProperty('--global-color', isDarkmode ? 'white' : 'black')
-  // #2f3133: 深灰色; #e7e6ec: 浅灰色
-  rootStyle.setProperty('--input-bgcolor', isDarkmode ? '#2f3133' : '#e7e6ec')
-  rootStyle.setProperty('--pre-bgcolor', isDarkmode ? '#282c34' : '#f8f8f8')
-  rootStyle.setProperty('--code-bgcolor', isDarkmode ? '#3d404c' : '#d9dce6')
+  const index = isDarkmode ? 0 : 1
+  Object.entries(darkmodeConfig).forEach((pair) => {
+    rootStyle.setProperty(pair[0], pair[1][index])
+  })
   colorPicker(isDarkmode ? color[5] : color[0])
 }
 
@@ -177,13 +187,6 @@ init()
   transition: transform 0.3s;
 }
 
-@media (max-width: 1024px) {
-  .color-picker-item {
-    width: 30px;
-    height: 30px;
-  }
-}
-
 .color-picker > .color-picker-item:hover {
   opacity: 1;
   transform: scale(1.2);
@@ -236,11 +239,18 @@ init()
   margin-left: 6px;
 }
 
-::v-global(.icon-sun) {
+@media (max-width: 1024px) {
+  .color-picker-item {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+:deep(.icon-sun) {
   color: yellow !important;
 }
 
-::v-global(.icon-moon) {
+:deep(.icon-moon) {
   color: blueviolet !important;
 }
 </style>

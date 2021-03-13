@@ -54,8 +54,7 @@ function mouseUp() {
 }
 
 function mouseMove(event: MouseEvent) {
-  if (!root) return
-  if (!moving) return
+  if (!root || !moving) return
   root.style.left = `${event.clientX - offsetLeft}px`
   root.style.top = `${event.clientY - offsetTop}px`
 }
@@ -67,8 +66,7 @@ function close() {
 
 // 配置初始化
 function init() {
-  if (!root) return
-  if (!props.rect) return
+  if (!root || !props.rect) return
   if (isMobile) {
     root.style.width = '90vw'
     root.style.height = '90vh'
